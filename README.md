@@ -1,1 +1,1 @@
-# computer-vision
+# Artificial Intelligence
