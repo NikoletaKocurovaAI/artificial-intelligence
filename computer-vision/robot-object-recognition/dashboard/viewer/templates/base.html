@@ -1,0 +1,30 @@
+{% load static %}
+
+<html {% if LANGUAGE_CODE %}lang="{{ LANGUAGE_CODE }}"{% endif %}>
+
+  <head>
+
+  </head>
+
+  <body>
+
+    <div style="background-color: #333333; height: 50px">
+      <h3 style="text-align: right; color: #ffffff; padding-right: 50px; padding-top: 15px;">Login</h3>
+    </div>
+
+    <div id="white-left-and-right" style="background-color: #white; padding-left: 250px">
+
+      <div id="title" style="background-color: lightgrey; height: 120px; width: 1400px; font-size: 40px; text-align: center;
+             display: flex; align-items: center; justify-content: center;">
+        Robot Object Detection Dashboard
+      </div>
+
+      <div id="main-content" style="background-color: white; height: 600px; width: 1400px;">
+        {% block content %}{% endblock %}
+      </div>
+
+    </div>
+
+  </body>
+
+</html>
