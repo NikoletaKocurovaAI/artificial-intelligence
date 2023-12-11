@@ -1,9 +1,5 @@
 
-def main():
-    image_id = "458756"
-    image = ""
-    print("hey there")
 
-
-if __name__ == "__main__":
-    main()
+class ObjectDetector:
+    # TODO: Using stream from RPi camera, send signals to motor controller.
+    pass
