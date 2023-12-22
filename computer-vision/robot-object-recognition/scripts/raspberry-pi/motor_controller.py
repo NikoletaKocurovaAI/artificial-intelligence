@@ -1,58 +1,58 @@
 import RPi.GPIO as GPIO
 import time
 
-Motor1E = 25 # Enable1
-Motor1A = 24 #
-Motor1B = 23 #
-Motor2E = 17
-Motor2A = 22
-Motor2B = 27
+from constants import RpiPinsConstants as pins, RpiPwm as pwm
+
 
 # Set the pin numbering mode to BCM
 GPIO.setmode(GPIO.BCM)
 
-# Set up motor control pins
-GPIO.setup(Motor1A, GPIO.OUT)
-GPIO.setup(Motor2A, GPIO.OUT)
-GPIO.setup(Motor1B, GPIO.OUT)
-GPIO.setup(Motor2B, GPIO.OUT)
-GPIO.setup(Motor1E, GPIO.OUT)
-GPIO.setup(Motor2E, GPIO.OUT)
+# Set up motor 1 & 2 enable control pins
+GPIO.setup(pins.motor1_enable, GPIO.OUT)
+GPIO.setup(pins.motor2_enable2, GPIO.OUT)
 
-pwm1 = GPIO.PWM(Motor1E, 100)
-pwm1.start(50)
+pwm_motor1 = GPIO.PWM(pins.motor1_enable, pwm.pwm_frequency)
+pwm_motor1.start(pwm.duty_cycle)
 
-pwm2 = GPIO.PWM(Motor2E, 100)
-pwm2.start(50)
+pwm_motor2 = GPIO.PWM(pins.motor2_enable2, pwm.pwm_frequency)
+pwm_motor2.start(pwm.duty_cycle)
+
+# Set up motor 1 io control pins
+GPIO.setup(pins.motor1_input1, GPIO.OUT)
+GPIO.setup(pins.motor1_input2, GPIO.OUT)
+
+# Set up motor 2 io control pins
+GPIO.setup(pins.motor2_input3, GPIO.OUT)
+GPIO.setup(pins.motor2_input4, GPIO.OUT)
 
 for i in range(2):
-    GPIO.output(Motor1A, GPIO.HIGH)
-    GPIO.output(Motor1B, GPIO.LOW)
-    GPIO.output(Motor1E, GPIO.HIGH)
+    GPIO.output(pins.motor1_input1, GPIO.HIGH)
+    GPIO.output(pins.motor1_input2, GPIO.LOW)
+    GPIO.output(pins.motor1_enable, GPIO.HIGH)
 
-    GPIO.output(Motor2A, GPIO.HIGH)
-    GPIO.output(Motor2B, GPIO.LOW)
-    GPIO.output(Motor2E, GPIO.HIGH)
+    GPIO.output(pins.motor2_input3, GPIO.HIGH)
+    GPIO.output(pins.motor2_input4, GPIO.LOW)
+    GPIO.output(pins.motor2_enable2, GPIO.HIGH)
 
-    print("moving forwards")
-
-    time.sleep(3)
-
-    GPIO.output(Motor1A, GPIO.LOW)
-    GPIO.output(Motor1B, GPIO.HIGH)
-    GPIO.output(Motor1E, GPIO.HIGH)
-
-    GPIO.output(Motor2A, GPIO.LOW)
-    GPIO.output(Motor2B, GPIO.HIGH)
-    GPIO.output(Motor2E, GPIO.HIGH)
-
-    print("moving backwards")
+    print("Moving forwards")
 
     time.sleep(3)
 
-print("stop")
-GPIO.output(Motor1E, GPIO.LOW)
-GPIO.output(Motor2E, GPIO.LOW)
+    GPIO.output(pins.motor1_input1, GPIO.LOW)
+    GPIO.output(pins.motor1_input2, GPIO.HIGH)
+    GPIO.output(pins.motor1_enable, GPIO.HIGH)
 
-print("clean up")
+    GPIO.output(pins.motor2_input3, GPIO.LOW)
+    GPIO.output(pins.motor2_input4, GPIO.HIGH)
+    GPIO.output(pins.motor2_enable2, GPIO.HIGH)
+
+    print("Moving backwards")
+
+    time.sleep(3)
+
+print("Stopping")
+GPIO.output(pins.motor1_enable, GPIO.LOW)
+GPIO.output(pins.motor2_enable2, GPIO.LOW)
+
+print("Cleaning up")
 GPIO.cleanup()
