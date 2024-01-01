@@ -5,11 +5,13 @@ from constants import RpiPinsConstants as pins, RpiPwm as pwm
 
 class MotorController:
     """
-    This class sets control pins.
+    This class sets control pins, runs the robot and turns it left or right.
     """
-    def __init__(self):
-        # Set the pin numbering mode to BCM
-        self.pin_numbering_mode = GPIO.BCM
+    @staticmethod
+    def run() -> None:
+        print("Moving forwards")
+
+        GPIO.setmode(pins.pin_numbering_mode)
 
         # Set up motor 1 & 2 enable control pins
         GPIO.setup(pins.motor1_enable, GPIO.OUT)
@@ -29,31 +31,30 @@ class MotorController:
         GPIO.setup(pins.motor2_input3, GPIO.OUT)
         GPIO.setup(pins.motor2_input4, GPIO.OUT)
 
-    def run(self) -> None:
-        print("Moving forwards")
-
-        GPIO.setmode(self.pin_numbering_mode)
-
+        # Run motor 1
         GPIO.output(pins.motor1_input1, GPIO.HIGH)
         GPIO.output(pins.motor1_input2, GPIO.LOW)
         GPIO.output(pins.motor1_enable, GPIO.HIGH)
 
+        # Run motor 2
         GPIO.output(pins.motor2_input3, GPIO.HIGH)
         GPIO.output(pins.motor2_input4, GPIO.LOW)
         GPIO.output(pins.motor2_enable2, GPIO.HIGH)
 
-    def stop(self) -> None:
+    @staticmethod
+    def stop() -> None:
         print("Stopping")
 
-        GPIO.setmode(self.pin_numbering_mode)
+        GPIO.setmode(pins.pin_numbering_mode)
 
         GPIO.output(pins.motor1_enable, GPIO.LOW)
         GPIO.output(pins.motor2_enable2, GPIO.LOW)
 
         GPIO.cleanup()
 
-    def turn(self, direction: str) -> None:
-        GPIO.setmode(self.pin_numbering_mode)
+    @staticmethod
+    def turn(direction: str) -> None:
+        GPIO.setmode(pins.pin_numbering_mode)
 
         if direction == "right":
             print("Rotating right")
