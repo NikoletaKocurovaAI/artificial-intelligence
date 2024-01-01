@@ -29,9 +29,10 @@ class MotorController:
         GPIO.setup(pins.motor2_input3, GPIO.OUT)
         GPIO.setup(pins.motor2_input4, GPIO.OUT)
 
-    @staticmethod
-    def run() -> None:
+    def run(self) -> None:
         print("Moving forwards")
+
+        GPIO.setmode(self.pin_numbering_mode)
 
         GPIO.output(pins.motor1_input1, GPIO.HIGH)
         GPIO.output(pins.motor1_input2, GPIO.LOW)
@@ -41,14 +42,13 @@ class MotorController:
         GPIO.output(pins.motor2_input4, GPIO.LOW)
         GPIO.output(pins.motor2_enable2, GPIO.HIGH)
 
-    @staticmethod
-    def stop() -> None:
+    def stop(self) -> None:
         print("Stopping")
+
+        GPIO.setmode(self.pin_numbering_mode)
 
         GPIO.output(pins.motor1_enable, GPIO.LOW)
         GPIO.output(pins.motor2_enable2, GPIO.LOW)
-
-        print("Cleaning up")
 
         GPIO.cleanup()
 
@@ -61,5 +61,6 @@ class MotorController:
             GPIO.output(pins.motor1_input1, GPIO.HIGH)
             GPIO.output(pins.motor1_input2, GPIO.LOW)
             GPIO.output(pins.motor1_enable, GPIO.HIGH)
+
 
 motor_controller = MotorController()
