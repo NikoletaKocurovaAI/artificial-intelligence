@@ -10,12 +10,6 @@ def main():
 
     motor_controller.stop()
 
-    motor_controller.turn("right")
-
-    time.sleep(3)
-
-    motor_controller.stop()
-
 
 if __name__ == "__main__":
     main()
