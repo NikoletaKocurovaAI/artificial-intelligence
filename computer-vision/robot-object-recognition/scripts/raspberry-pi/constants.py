@@ -2,7 +2,7 @@
 
 class RpiPinsConstants:
     """
-    This class explains how to connect two DC motors to L293D motro controller.
+    This class explains how to connect two DC motors to L293D motor controller.
 
     Motor 1 connects to L293D's pins Enable, Input 1 and Input 2.
     Motor 2 connects to L293D's pins Enable 2, Input 3 and Input 4.
