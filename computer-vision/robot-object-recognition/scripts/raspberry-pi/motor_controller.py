@@ -1,5 +1,4 @@
 import RPi.GPIO as GPIO
-import time
 
 from constants import RpiPinsConstants as pins, RpiPwm as pwm
 
@@ -30,31 +29,17 @@ class MotorController:
     GPIO.setup(pins.motor2_input4, GPIO.OUT)
 
     @staticmethod
-    def run() -> None:
-        for i in range(2):
-            GPIO.output(pins.motor1_input1, GPIO.HIGH)
-            GPIO.output(pins.motor1_input2, GPIO.LOW)
-            GPIO.output(pins.motor1_enable, GPIO.HIGH)
+    def run(signal1: int, signal2: int, message: str) -> None:
+        print(message)
+            # motor 1
+        GPIO.output(pins.motor1_input1, signal1)
+        GPIO.output(pins.motor1_input2, signal2)
+        GPIO.output(pins.motor1_enable, GPIO.HIGH)
 
-            GPIO.output(pins.motor2_input3, GPIO.HIGH)
-            GPIO.output(pins.motor2_input4, GPIO.LOW)
-            GPIO.output(pins.motor2_enable2, GPIO.HIGH)
-
-            print("Moving forwards")
-
-            time.sleep(3)
-
-            GPIO.output(pins.motor1_input1, GPIO.LOW)
-            GPIO.output(pins.motor1_input2, GPIO.HIGH)
-            GPIO.output(pins.motor1_enable, GPIO.HIGH)
-
-            GPIO.output(pins.motor2_input3, GPIO.LOW)
-            GPIO.output(pins.motor2_input4, GPIO.HIGH)
-            GPIO.output(pins.motor2_enable2, GPIO.HIGH)
-
-            print("Moving backwards")
-
-            time.sleep(3)
+            # motor 2
+        GPIO.output(pins.motor2_input3, signal1)
+        GPIO.output(pins.motor2_input4, signal2)
+        GPIO.output(pins.motor2_enable2, GPIO.HIGH)
 
     @staticmethod
     def stop() -> None:
