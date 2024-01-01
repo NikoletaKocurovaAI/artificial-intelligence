@@ -53,8 +53,6 @@ class MotorController:
 
     @staticmethod
     def turn(direction: str) -> None:
-        GPIO.setmode(pins.pin_numbering_mode)
-
         if direction == "right":
             print("Rotating right")
 
