@@ -1,21 +1,20 @@
 import time
-import RPi.GPIO as GPIO
 
-from motor_controller import MotorController
+from motor_controller import motor_controller
 
 
 def main():
-    MotorController.run()
+    motor_controller.run()
 
     time.sleep(3)
 
-    MotorController.stop()
+    motor_controller.stop()
 
-    MotorController.turn("right")
+    motor_controller.turn("right")
 
     time.sleep(3)
 
-    MotorController.stop()
+    motor_controller.stop()
 
 
 if __name__ == "__main__":

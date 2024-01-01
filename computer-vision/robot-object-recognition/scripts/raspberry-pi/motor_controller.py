@@ -59,3 +59,5 @@ class MotorController:
             GPIO.output(pins.motor1_input1, GPIO.HIGH)
             GPIO.output(pins.motor1_input2, GPIO.LOW)
             GPIO.output(pins.motor1_enable, GPIO.HIGH)
+
+motor_controller = MotorController()
