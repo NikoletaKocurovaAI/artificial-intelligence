@@ -5,11 +5,14 @@ from motor_controller import MotorController
 
 
 def main():
-    # start the run
-    MotorController.run(GPIO.HIGH, GPIO.LOW, "Moving forwards")
+    MotorController.run()
+
     time.sleep(3)
 
-    MotorController.run(GPIO.LOW, GPIO.HIGH, "Moving backwards")
+    MotorController.stop()
+
+    MotorController.turn("right")
+
     time.sleep(3)
 
     MotorController.stop()

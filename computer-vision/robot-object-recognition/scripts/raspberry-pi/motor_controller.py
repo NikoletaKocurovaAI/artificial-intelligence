@@ -29,23 +29,33 @@ class MotorController:
     GPIO.setup(pins.motor2_input4, GPIO.OUT)
 
     @staticmethod
-    def run(signal1: int, signal2: int, message: str) -> None:
-        print(message)
-            # motor 1
-        GPIO.output(pins.motor1_input1, signal1)
-        GPIO.output(pins.motor1_input2, signal2)
+    def run() -> None:
+        print("Moving forwards")
+
+        GPIO.output(pins.motor1_input1, GPIO.HIGH)
+        GPIO.output(pins.motor1_input2, GPIO.LOW)
         GPIO.output(pins.motor1_enable, GPIO.HIGH)
 
-            # motor 2
-        GPIO.output(pins.motor2_input3, signal1)
-        GPIO.output(pins.motor2_input4, signal2)
+        GPIO.output(pins.motor2_input3, GPIO.HIGH)
+        GPIO.output(pins.motor2_input4, GPIO.LOW)
         GPIO.output(pins.motor2_enable2, GPIO.HIGH)
 
     @staticmethod
     def stop() -> None:
         print("Stopping")
+
         GPIO.output(pins.motor1_enable, GPIO.LOW)
         GPIO.output(pins.motor2_enable2, GPIO.LOW)
 
         print("Cleaning up")
+
         GPIO.cleanup()
+
+    @staticmethod
+    def turn(direction: str) -> None:
+        if direction == "right":
+            print("Rotating right")
+
+            GPIO.output(pins.motor1_input1, GPIO.HIGH)
+            GPIO.output(pins.motor1_input2, GPIO.LOW)
+            GPIO.output(pins.motor1_enable, GPIO.HIGH)
