@@ -66,5 +66,17 @@ class MotorController:
             GPIO.output(pins.motor1_input2, GPIO.LOW)
             GPIO.output(pins.motor1_enable, GPIO.LOW)
 
+        elif direction == "left":
+            print("Rotating left")
+
+            # Run motor 1
+            GPIO.output(pins.motor1_input1, GPIO.LOW)
+            GPIO.output(pins.motor1_input2, GPIO.LOW)
+            GPIO.output(pins.motor1_enable, GPIO.LOW)
+
+            # Stop motor 2
+            GPIO.output(pins.motor1_input1, GPIO.HIGH)
+            GPIO.output(pins.motor1_input2, GPIO.LOW)
+            GPIO.output(pins.motor1_enable, GPIO.HIGH)
 
 motor_controller = MotorController()
