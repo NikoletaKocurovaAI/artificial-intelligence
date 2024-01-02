@@ -19,5 +19,5 @@ class RpiPwm:
     """
     This class set-ups the Pulse With Modulation (PWM) for a motor control.
     """
-    pwm_frequency = 100
-    duty_cycle = 50
+    pwm_frequency = 40
+    duty_cycle = 40
