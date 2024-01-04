@@ -7,26 +7,26 @@ class MotorController:
     """
     This class sets control pins, runs the robot and turns it left or right.
     """
+    # Set the pin numbering mode
+    GPIO.setmode(GPIO.BCM)
+
+    # Set up control pins
+    GPIO.setup(pins.motor1_enable, GPIO.OUT)
+    GPIO.setup(pins.motor2_enable2, GPIO.OUT)
+    GPIO.setup(pins.motor1_input1, GPIO.OUT)
+    GPIO.setup(pins.motor1_input2, GPIO.OUT)
+    GPIO.setup(pins.motor2_input3, GPIO.OUT)
+    GPIO.setup(pins.motor2_input4, GPIO.OUT)
+
+    # Set up motor PWM and duty cycle
+    pwm_motor1 = GPIO.PWM(pins.motor1_enable, pwm.pwm_frequency_motor1)
+    pwm_motor1.start(pwm.duty_cycle_motor1)
+    pwm_motor2 = GPIO.PWM(pins.motor2_enable2, pwm.pwm_frequency_motor2)
+    pwm_motor2.start(pwm.duty_cycle_motor2)
+
     @staticmethod
     def run() -> None:
         print("Moving forwards")
-
-        # Set the pin numbering mode
-        GPIO.setmode(GPIO.BCM)
-
-        # Set up control pins
-        GPIO.setup(pins.motor1_enable, GPIO.OUT)
-        GPIO.setup(pins.motor2_enable2, GPIO.OUT)
-        GPIO.setup(pins.motor1_input1, GPIO.OUT)
-        GPIO.setup(pins.motor1_input2, GPIO.OUT)
-        GPIO.setup(pins.motor2_input3, GPIO.OUT)
-        GPIO.setup(pins.motor2_input4, GPIO.OUT)
-
-        # Set up motor PWM and duty cycle
-        pwm_motor1 = GPIO.PWM(pins.motor1_enable, pwm.pwm_frequency_motor1)
-        pwm_motor1.start(pwm.duty_cycle_motor1)
-        pwm_motor2 = GPIO.PWM(pins.motor2_enable2, pwm.pwm_frequency_motor2)
-        pwm_motor2.start(pwm.duty_cycle_motor2)
 
         # Run motor 1
         GPIO.output(pins.motor1_input1, GPIO.HIGH)
@@ -42,9 +42,6 @@ class MotorController:
     def stop() -> None:
         print("Stopping")
 
-        # Set the pin numbering mode
-        GPIO.setmode(GPIO.BCM)
-
         # Set up control pins
         GPIO.setup(pins.motor1_enable, GPIO.OUT)
         GPIO.setup(pins.motor2_enable2, GPIO.OUT)
@@ -56,23 +53,6 @@ class MotorController:
 
     @staticmethod
     def turn(direction: str) -> None:
-        # Set the pin numbering mode
-        GPIO.setmode(GPIO.BCM)
-
-        # Set up control pins
-        GPIO.setup(pins.motor1_enable, GPIO.OUT)
-        GPIO.setup(pins.motor2_enable2, GPIO.OUT)
-        GPIO.setup(pins.motor1_input1, GPIO.OUT)
-        GPIO.setup(pins.motor1_input2, GPIO.OUT)
-        GPIO.setup(pins.motor2_input3, GPIO.OUT)
-        GPIO.setup(pins.motor2_input4, GPIO.OUT)
-
-        # Set up motor PWM and duty cycle
-        pwm_motor1 = GPIO.PWM(pins.motor1_enable, pwm.pwm_frequency_motor1)
-        pwm_motor1.start(pwm.duty_cycle_motor1)
-        pwm_motor2 = GPIO.PWM(pins.motor2_enable2, pwm.pwm_frequency_motor2)
-        pwm_motor2.start(pwm.duty_cycle_motor2)
-
         # turning is achieved by driving one wheel forward while reversing the other.
         if direction == "right":
             print("Rotating right")
