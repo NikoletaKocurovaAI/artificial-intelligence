@@ -30,4 +30,4 @@ Install required packages:
 
 Generate a Django directory tree for this project:
 
-`django-admin startproject dashboard`
+`django-admin startproject frontend_app`
