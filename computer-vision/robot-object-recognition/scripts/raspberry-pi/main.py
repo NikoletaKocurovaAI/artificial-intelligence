@@ -7,12 +7,6 @@ def main():
     motor_controller.run()
     time.sleep(3)
 
-    motor_controller.turn("right")
-    time.sleep(3)
-
-    motor_controller.turn("left")
-    time.sleep(6)
-
     motor_controller.stop()
 
 

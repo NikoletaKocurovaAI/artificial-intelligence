@@ -19,6 +19,7 @@ class RpiPwm:
     """
     This class set-ups the Pulse With Modulation (PWM) for a motor control.
     """
+    # TODO: the lower the frequency, the faster motor 1 runs. This is unexpected behavior.
     pwm_frequency_motor1 = 40
     duty_cycle_motor1 = 40
     pwm_frequency_motor2 = 40
