@@ -53,28 +53,30 @@ class MotorController:
 
     @staticmethod
     def turn(direction: str) -> None:
-        # turning is achieved by driving one wheel forward while reversing the other.
         if direction == "right":
             print("Rotating right")
 
             # Run motor 1
             GPIO.output(pins.motor1_input1, GPIO.HIGH)
             GPIO.output(pins.motor1_input2, GPIO.LOW)
+            GPIO.output(pins.motor1_enable, GPIO.HIGH)
 
             # Stop motor 2
             GPIO.output(pins.motor2_input3, GPIO.LOW)
-            GPIO.output(pins.motor2_input4, GPIO.HIGH)
+            GPIO.output(pins.motor2_input4, GPIO.LOW)
+            GPIO.output(pins.motor2_enable2, GPIO.LOW)
 
-        # enable the left motor to move backward while the right motor moves forward
         elif direction == "left":
             print("Rotating left")
 
             # Run motor 1
             GPIO.output(pins.motor1_input1, GPIO.LOW)
-            GPIO.output(pins.motor1_input2, GPIO.HIGH)
+            GPIO.output(pins.motor1_input2, GPIO.LOW)
+            GPIO.output(pins.motor1_enable, GPIO.LOW)
 
             # Stop motor 2
             GPIO.output(pins.motor2_input3, GPIO.HIGH)
             GPIO.output(pins.motor2_input4, GPIO.LOW)
+            GPIO.output(pins.motor2_enable2, GPIO.HIGH)
 
 motor_controller = MotorController()
