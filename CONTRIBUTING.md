@@ -25,6 +25,7 @@ Each commit message consists of the type (such as feat, refator, ...), the scope
 - style: Formatting.
 - test: Tests.
 - docs: Documentation.
+- ci: Changes to the workflows configuration files (.github/workflows).
 
 ## Scope
 
