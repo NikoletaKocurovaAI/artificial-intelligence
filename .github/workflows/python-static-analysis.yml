@@ -22,4 +22,4 @@ jobs:
 
       - name: Static Analysis Formatting
         run: |
-          black --check computer-vision/robot-object-recognition/fontend_app
+          black --check computer-vision/robot-object-recognition/src/python/fontend_app

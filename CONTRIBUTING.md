@@ -10,7 +10,7 @@ followed by the task number, and concluding with the task name in lowercase lett
 
 Example:
 
-`AI-2-dummy-unit-test-to-run-in-github-pipeline`
+`AI-task2-dummy-unit-test-to-run-in-github-pipeline`
 
 # Commit Message Guidelines
 
@@ -41,6 +41,6 @@ Each commit message consists of the type (such as feat, refator, ...), the scope
 
 `git add .`
 
-`git commit -m "refactor(ror/frontend-app): Moving the app to src/python directory, so the black can be run on it."`
+`git commit -m "refactor(ror/frontend-app): Task5 Moving the app to src/python directory, so the black can be run on it."`
 
 `git push`
