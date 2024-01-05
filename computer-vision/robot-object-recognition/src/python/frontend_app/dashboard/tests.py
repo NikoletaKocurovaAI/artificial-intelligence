@@ -1,4 +1,9 @@
-from django.db import models
 from django.test import TestCase
+from .models import Robot
 
-# Create your tests here.
+
+class ModelTestCase(TestCase):
+    def test_model_creation(self):
+        robot = Robot(name="Robot 1", motor_type="DC")
+        self.assertEqual(robot.name, "Robot 1")
+        self.assertEqual(robot.motor_type, "DC")
