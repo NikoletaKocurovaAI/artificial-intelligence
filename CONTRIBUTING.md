@@ -28,6 +28,8 @@ Each commit message consists of the type (such as feat, refator, ...), the scope
 
 ## Scope
 
+- Artificial Intelligence (AI)
+- Computer Vision (CV)
 - Robot Object Recognition (ROR)
   - frontend-app
   - model
