@@ -1,5 +1,7 @@
 from django.test import TestCase
 from .models import Robot
+
+
 class ModelTestCase(TestCase):
     def test_model_creation(self):
         robot = Robot(name="Robot 1", motor_type="DC")
