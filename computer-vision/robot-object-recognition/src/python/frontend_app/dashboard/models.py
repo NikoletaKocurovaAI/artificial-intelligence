@@ -2,7 +2,8 @@ from django.db.models import Model, DateTimeField, TextField
 
 
 class Robot(Model):
-    name = TextField(null=True, blank=True)
+    name = TextField(null=False, blank=False)
+    motor_type = TextField(null=False, blank=False)
 
 
 class RobotRun(Model):
