@@ -5,4 +5,4 @@ from dashboard.models import Robot
 
 
 def index(request):
-  return render(request, template_name="index.html")
+    return render(request, template_name="index.html")

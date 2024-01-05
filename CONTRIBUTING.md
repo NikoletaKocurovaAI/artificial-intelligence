@@ -12,11 +12,23 @@ Example:
 
 `AI-task2-dummy-unit-test-to-run-in-github-pipeline`
 
+# Code style
+
+## Formatting
+
+For Python files, the black is used.
+
+Example:
+
+`black --check computer-vision/robot-object-recognition/src/python/frontend_app`
+
+`black computer-vision/robot-object-recognition/src/python/frontend_app`
+
 # Commit Message Guidelines
 
 ## Format
 
-Each commit message consists of the type (such as feat, refator, ...), the scope,
+Each commit message consists of the type (such as feat, refactor, ...), scope, task number and message text.
 
 ## Type
 

@@ -19,7 +19,4 @@ from django.urls import path
 from dashboard.views import index
 
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', index)
-]
+urlpatterns = [path("admin/", admin.site.urls), path("", index)]
