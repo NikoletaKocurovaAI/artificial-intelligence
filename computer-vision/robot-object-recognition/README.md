@@ -25,9 +25,3 @@ Deactivate virtual environment:
 Install required packages:
 
 `pip install -r requirements.txt`
-
-### Django project structure
-
-Generate a Django directory tree for this project:
-
-`django-admin startproject frontend_app`
