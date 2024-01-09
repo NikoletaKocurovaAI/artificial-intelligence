@@ -11,9 +11,3 @@ class RobotRun(Model):
     started = DateTimeField(auto_now_add=True)
     finished = DateTimeField(auto_now_add=True)
     status = TextField(null=True, blank=True)
-
-
-class RobotStatus(Model):
-    RUNNING = ""
-    STOPPED = ""
-    ERROR = ""

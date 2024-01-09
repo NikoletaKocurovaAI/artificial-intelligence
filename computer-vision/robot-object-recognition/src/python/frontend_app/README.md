@@ -17,3 +17,18 @@ Start the application server:
 
 `python manage.py runserver`
 
+## Migations
+
+Run the migration every time the change is made to the models.py file. Create migration script:
+
+`python manage.py makemigrations`
+
+Apply migration script:
+
+`python manage.py migrate`
+
+## Tests
+
+Run tests:
+
+`python manage.py test`
