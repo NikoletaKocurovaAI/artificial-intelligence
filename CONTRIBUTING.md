@@ -37,7 +37,7 @@ Each commit message consists of the type (such as feat, refactor, ...), scope, t
 - style: Formatting.
 - test: Tests.
 - docs: Documentation.
-- ci: Changes to the workflows configuration files (.github/workflows).
+- ci: Changes to the workflows configuration files (.github/workflows)
 
 ## Scope
 
@@ -48,6 +48,7 @@ Each commit message consists of the type (such as feat, refactor, ...), scope, t
   - model
   - status-api
   - model-api
+  - raspberry-pi-scripts
 
 **Example:**
 
