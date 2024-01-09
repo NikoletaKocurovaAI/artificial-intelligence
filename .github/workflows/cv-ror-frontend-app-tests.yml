@@ -22,4 +22,4 @@ jobs:
 
     - name: Django Frontend App Tests
       run: |
-        python manage.py test
+        python computer-vision/robot-object-recognition/src/python/frontend_app/manage.py test
