@@ -7,6 +7,7 @@ class MotorController:
     """
     This class sets control pins, runs the robot and turns it left or right.
     """
+
     # Set the pin numbering mode to BCM
     GPIO.setmode(GPIO.BCM)
 
@@ -29,18 +30,28 @@ class MotorController:
     GPIO.setup(pins.motor2_input4, GPIO.OUT)
 
     @staticmethod
-    def run() -> None:
-        print("Moving forwards")
+    def run(direction: str) -> None:
+        if direction == "forwards":
+            print("Moving forwards")
 
-        # Run motor 1
-        GPIO.output(pins.motor1_input1, GPIO.HIGH)
-        GPIO.output(pins.motor1_input2, GPIO.LOW)
-        GPIO.output(pins.motor1_enable, GPIO.HIGH)
+            GPIO.output(pins.motor1_input1, GPIO.HIGH)
+            GPIO.output(pins.motor1_input2, GPIO.LOW)
+            GPIO.output(pins.motor1_enable, GPIO.HIGH)
 
-        # Run motor 2
-        GPIO.output(pins.motor2_input3, GPIO.HIGH)
-        GPIO.output(pins.motor2_input4, GPIO.LOW)
-        GPIO.output(pins.motor2_enable2, GPIO.HIGH)
+            GPIO.output(pins.motor2_input3, GPIO.HIGH)
+            GPIO.output(pins.motor2_input4, GPIO.LOW)
+            GPIO.output(pins.motor2_enable2, GPIO.HIGH)
+
+        elif direction == "backwards":
+            print("Moving backwards")
+
+            GPIO.output(pins.motor1_input1, GPIO.LOW)
+            GPIO.output(pins.motor1_input2, GPIO.HIGH)
+            GPIO.output(pins.motor1_enable, GPIO.HIGH)
+
+            GPIO.output(pins.motor2_input3, GPIO.LOW)
+            GPIO.output(pins.motor2_input4, GPIO.HIGH)
+            GPIO.output(pins.motor2_enable2, GPIO.HIGH)
 
     @staticmethod
     def stop() -> None:
@@ -56,12 +67,10 @@ class MotorController:
         if direction == "right":
             print("Rotating right")
 
-            # Run motor 1
             GPIO.output(pins.motor1_input1, GPIO.HIGH)
             GPIO.output(pins.motor1_input2, GPIO.LOW)
             GPIO.output(pins.motor1_enable, GPIO.HIGH)
 
-            # Stop motor 2
             GPIO.output(pins.motor2_input3, GPIO.LOW)
             GPIO.output(pins.motor2_input4, GPIO.LOW)
             GPIO.output(pins.motor2_enable2, GPIO.LOW)
@@ -69,14 +78,13 @@ class MotorController:
         elif direction == "left":
             print("Rotating left")
 
-            # Run motor 1
             GPIO.output(pins.motor1_input1, GPIO.LOW)
             GPIO.output(pins.motor1_input2, GPIO.LOW)
             GPIO.output(pins.motor1_enable, GPIO.LOW)
 
-            # Stop motor 2
             GPIO.output(pins.motor2_input3, GPIO.HIGH)
             GPIO.output(pins.motor2_input4, GPIO.LOW)
             GPIO.output(pins.motor2_enable2, GPIO.HIGH)
+
 
 motor_controller = MotorController()
