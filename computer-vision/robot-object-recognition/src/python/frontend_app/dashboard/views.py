@@ -1,21 +1,18 @@
 from django.shortcuts import render
-from django.http import JsonResponse
 
 from .tests.testing_data import ROBOT, ROBOT_RUN
 
 
 def login(request):
-    return render(request, template_name="base.html")
+    return render(request, template_name="login.html")
 
 
 def register(request):
-    my_data = {"key1": "value1", "key2": "value2"}
-    return JsonResponse(my_data)
-
+    return render(request, template_name="register.html")
 
 def get_list(request):
     # all, by status
-    return render(request, "robot_run.html", {"data": ROBOT_RUN})
+    return render(request, "robot_run.html", {"data_robot_run": ROBOT_RUN, "data_robot": ROBOT})
 
 
 def get_one(request):

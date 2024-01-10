@@ -24,5 +24,5 @@ urlpatterns = [
     path("", login),
     path("register", register),
     path("robot-run", get_list),
-    path("robot-detail", get_one),
+    path("robot-detail", get_one, name="robot-detail"),
 ]

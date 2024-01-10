@@ -12,3 +12,6 @@ class RobotRun(Model):
     finished = DateTimeField(auto_now_add=False, default="")
     status = TextField(null=False, blank=False, default="")
     distance = IntegerField(null=False, blank=False, default=0)
+
+    class Meta:
+        ordering = ["distance"]
