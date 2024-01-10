@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div style="background-color: white; height: 560px; padding-left: 15px;">
+
+    <p>See the robot detail:</p>
+
+    <table style="background-color: white; padding-top: 15px; width: 1370px">
+        <thead>
+            <tr style="background-color: #333333; height: 40px; color: white">
+                <th>NAME</th>
+                <th>STARTED</th>
+                <th>FINISHED</th>
+                <th>STATUS</th>
+                <th>DISTANCE (m)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+                <tr style="background-color: lightgrey; height: 30px">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.started }}</td>
+                    <td>{{ item.finished }}</td>
+                    <td>{{ item.status }}</td>
+                    <td>{{ item.distance }}</td>
+                </tr>
+            {% endfor %}
+        <tbody>
+    </table>
+
+  </div>
+
+{% endblock %}
