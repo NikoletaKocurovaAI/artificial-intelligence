@@ -1,4 +1,4 @@
-from django.db.models import Model, DateTimeField, TextField
+from django.db.models import Model, DateTimeField, TextField, IntegerField
 
 
 class Robot(Model):
@@ -7,7 +7,8 @@ class Robot(Model):
 
 
 class RobotRun(Model):
-    robot_id = TextField(null=True, blank=True)
-    started = DateTimeField(auto_now_add=True)
-    finished = DateTimeField(auto_now_add=True)
-    status = TextField(null=True, blank=True)
+    robot_id = TextField(null=False, blank=False, default=0)
+    started = DateTimeField(auto_now_add=False, default="")
+    finished = DateTimeField(auto_now_add=False, default="")
+    status = TextField(null=False, blank=False, default="")
+    distance = IntegerField(null=False, blank=False, default=0)

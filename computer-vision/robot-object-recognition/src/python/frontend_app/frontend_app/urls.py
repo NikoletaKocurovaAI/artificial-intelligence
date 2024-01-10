@@ -16,7 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from dashboard.views import index
+from dashboard.views import login, get_list, get_one, register
 
 
-urlpatterns = [path("admin/", admin.site.urls), path("", index)]
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("", login),
+    path("register", register),
+    path("robot-run", get_list),
+    path("robot-detail", get_one)
+]
