@@ -2,9 +2,26 @@
 
 {% block content %}
 
-<h1>Login</h1>
+<h1 style="text-align: center; padding-top: 15px;">Login</h1>
 
-<p>If not registered yet, register redirects here: http://127.0.0.1:8000/register</p>
-<p>If registered, login redirects here: http://127.0.0.1:8000/robot-run</p>
+<form action="{% url 'robot-run' %}" method="post" novalidate style="padding-left: 400px;">
+
+    {% csrf_token %}
+
+    {% for field in form %}
+        {{ field.label_tag }} {{ field }}
+    {% endfor %}
+
+    <button type="submit" style="display: inline-block; padding: 10px 20px; background-color: #FFA500; color: white;
+                text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
+                margin-bottom: 5px">
+        Login
+    </button>
+
+</form>
+
+<center>
+    <a href="{% url 'register' %}" style="text-align: center;">Not registered yet? Click here.</a>
+</center>
 
 {% endblock %}

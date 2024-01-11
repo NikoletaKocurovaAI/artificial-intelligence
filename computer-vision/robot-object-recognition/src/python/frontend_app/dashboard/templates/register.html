@@ -2,8 +2,19 @@
 
 {% block content %}
 
-<h1>Register</h1>
+<h1 style="text-align: center; padding-top: 15px;">Register</h1>
 
-<p>Redirects to Login: http://127.0.0.1:8000/</p>
+<form action="{% url 'login' %}" method="post" style="padding-left: 400px;">
+
+
+    {% csrf_token %}
+
+        <button type="submit" style="display: inline-block; padding: 10px 20px; background-color: #FFA500; color: white;
+                    text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
+                    margin-bottom: 5px">
+            Register
+        </button>
+
+</form>
 
 {% endblock %}

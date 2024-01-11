@@ -2,7 +2,15 @@
 
 {% block content %}
 
-  <div style="background-color: white; height: 560px; padding-left: 15px;">
+
+  <div style="background-color: white; height: 560px; padding-left: 15px; ">
+
+      <a href="{% url 'register-robot' %}"
+         style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white;
+                text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
+                margin-bottom: 5px">
+          Register New Robot
+      </a>
 
       <form action="{% url 'robot-detail' %}" method="post">
         {% csrf_token %}
@@ -14,7 +22,7 @@
             {% endfor %}
         </select>
         <button type="submit">Go to robot detail</button>
-    </form>
+      </form>
 
     <p>Filtering by status calls get_list() with filtering option</p>
 
@@ -42,6 +50,15 @@
             {% endfor %}
         <tbody>
     </table>
+
+    <center>
+        <a href="{% url 'logout' %}"
+         style="display: inline-block; padding: 10px 20px; background-color: blue; color: white;
+                text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
+                margin-bottom: 5px">
+          Logout
+      </a>
+    </center>
 
   </div>
 

@@ -16,13 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from dashboard.views import login, get_list, get_one, register
+from dashboard.views import (login_user, show_robot_run, show_robot_detail, register_user, logout_user, register_robot)
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", login),
-    path("register", register),
-    path("robot-run", get_list),
-    path("robot-detail", get_one, name="robot-detail"),
+    path("", login_user, name="login"),
+    path("register", register_user, name="register"),
+    path("logout", logout_user, name="logout"),
+    path("robot-run", show_robot_run, name="robot-run"),
+    path("robot-detail", show_robot_detail, name="robot-detail"),  # TODO: robot-detail/<int:robot_id>
+    path("register-robot", register_robot, name="register-robot")
 ]
