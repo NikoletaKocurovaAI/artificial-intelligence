@@ -69,6 +69,7 @@ def show_robot_run(request):
 
     # if not.user.is_authenticated
     # Add id to html "{% url 'robot-detail' item.id %}"
+    # create distinct list  of status
 
     return render(request, "robot_run.html", {"data_robot_run": robot_run, "data_robot": robot})
 

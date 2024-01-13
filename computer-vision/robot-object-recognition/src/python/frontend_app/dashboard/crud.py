@@ -31,7 +31,7 @@ class Crud:
         """
         # robot = Robot.objects.get(id=)
 
-        return ROBOT[1]
+        return ROBOT
 
     @staticmethod
     def create_one():
