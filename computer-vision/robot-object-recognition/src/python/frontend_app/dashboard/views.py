@@ -64,14 +64,34 @@ def show_robot_run(request):
     :return:
     :raises
     """
-    robot_run = crud_api.get_list(status="COMPLETED")
-    robot = crud_api.get_one(id="1")
+    robot_run = crud_api.get_list(query='SELECT * FROM public."robot_run"')
 
+    postprocessed_robot_run = []
+
+    for row in robot_run:
+        postprocessed_robot_run.append({
+            "name": row[0],
+            "started": row[1],
+            "finished": row[2],
+            "status": row[3],
+            "distance": row[4]
+        })
+
+    robot = crud_api.get_list(query='SELECT * FROM public."robot"')
+
+    postprocessed_robot_name = []
+
+    for row in robot:
+        postprocessed_robot_name.append({"name": row[1]})
+
+    # get status TODO
+
+    # if robot, else reaise does not exist
     # if not.user.is_authenticated
     # Add id to html "{% url 'robot-detail' item.id %}"
     # create distinct list  of status
 
-    return render(request, "robot_run.html", {"data_robot_run": robot_run, "data_robot": robot})
+    return render(request, "robot_run.html", {"data_robot_run": postprocessed_robot_run, "data_robot_name": postprocessed_robot_name})
 
 
 #@login_required
@@ -96,6 +116,7 @@ def register_robot(request):
 
 # login required
 def show_robot_detail(request):
-    robot = crud_api.get_one(id="1")
+    # if robot, else reaise does not exist
+    robot = crud_api.get_one_by_id(id=2)
 
-    return render(request, "robot_detail.html", {"data": robot})
+    return render(request, "robot_detail.html", {"data": robot[0]})

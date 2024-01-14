@@ -1,11 +1,28 @@
-from typing import Optional
+from pydantic_settings import BaseSettings
+from sqlalchemy import create_engine, text
+from dotenv import load_dotenv
+import os
 
-from .tests.testing_data import ROBOT, ROBOT_RUN
+from .tests.testing_data import ROBOT_RUN
 
 
 class Crud:
-    @staticmethod
-    def get_list(status: Optional[str] = None):
+    def __init__(self):
+        load_dotenv()
+
+        DB_NAME = os.getenv("DB_NAME")
+        DB_PASSWORD = os.getenv("DB_PASSWORD")
+        DB_HOST = os.getenv("DB_HOST")
+        DB_USER = os.getenv("DB_USER")
+        DB_PORT = os.getenv("DB_PORT")
+
+        DATABASE_URL = f"postgresql+psycopg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
+        self.engine = create_engine(
+            DATABASE_URL, connect_args={}
+        )
+
+    def get_list(self, query: str):
         """
         This ..
 
@@ -18,10 +35,12 @@ class Crud:
         # robot = Robot.objects.get(id="
         # robot.robotRun
 
-        return ROBOT_RUN
+        with self.engine.connect() as connection:
+            result = connection.execute(text(query))
 
-    @staticmethod
-    def get_one(id: str):
+            return result
+
+    def get_one_by_id(self, id: int):
         """
         This ..
 
@@ -31,7 +50,16 @@ class Crud:
         """
         # robot = Robot.objects.get(id=)
 
-        return ROBOT
+        with self.engine.connect() as connection:
+            result = connection.execute(text('SELECT * FROM public."robot"'))
+
+            for row in result:
+                robot_id = row[0]
+
+                if robot_id == id:
+                    return [{"name": row[1], "motor_type": row[2]}]
+
+        return None
 
     @staticmethod
     def create_one():

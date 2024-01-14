@@ -7,7 +7,7 @@ class Robot(Model):
 
 
 class RobotRun(Model):
-    robot_id = TextField(null=False, blank=False, default=0)
+    robot_id = IntegerField(null=False, blank=False, default=0)
     started = DateTimeField(auto_now_add=False, default="")
     finished = DateTimeField(auto_now_add=False, default="")
     status = TextField(null=False, blank=False, default="")
