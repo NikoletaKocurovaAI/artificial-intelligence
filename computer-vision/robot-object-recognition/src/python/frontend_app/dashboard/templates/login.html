@@ -4,13 +4,13 @@
 
 <h1 style="text-align: center; padding-top: 15px;">Login</h1>
 
-<form action="{% url 'robot-run' %}" method="post" novalidate style="padding-left: 400px;">
+<form action="{% url 'robot-run' %}" method="post" novalidate style="max-width: 400px; margin: 0 auto;">
 
     {% csrf_token %}
-
     {% for field in form %}
-        <div style="margin-bottom: 10px;">
-            {{ field.label_tag }} {{ field }}
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; font-weight: bold; margin-bottom: 5px;">{{ field.label_tag }}</label>
+            {{ field }}
         </div>
     {% endfor %}
 
@@ -19,7 +19,6 @@
                 margin-bottom: 5px; width: 120px">
         Login
     </button>
-
 </form>
 
 <center>

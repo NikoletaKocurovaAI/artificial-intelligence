@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from dashboard.views import login_user, show_robot_run, show_robot_detail, register_user, logout_user, register_robot, read_data_test
+from dashboard.views import login_user, show_robot_run, show_robot_detail, register_user, logout_user, register_robot
 
 
 urlpatterns = [

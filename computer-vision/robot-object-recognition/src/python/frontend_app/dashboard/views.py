@@ -4,7 +4,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 
 from .crud import Crud
-from .forms import RegistrationForm
+from .forms import RegistrationForm, LoginForm
 
 crud_api = Crud()
 
@@ -17,7 +17,7 @@ def login_user(request):
     :return:
     :raises
     """
-    form = RegistrationForm()
+    form = LoginForm()
 
     if form.is_valid():
         username = form.cleaned_data["username"]
@@ -45,7 +45,9 @@ def register_user(request):
     # user = form.save() stores data into DB
     # if form.is_valid()
 
-    return render(request, template_name="register.html")
+    form = RegistrationForm()
+
+    return render(request, "register.html", {"form": form})
 
 
 # login required

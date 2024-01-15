@@ -1,9 +1,14 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from django.db.models import TextField
+from django.db.models import TextField, CharField
 
 from .models import Robot
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=65)
+    password = forms.CharField(max_length=65)
 
 
 class RegistrationForm(UserCreationForm):
@@ -12,6 +17,7 @@ class RegistrationForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
+        # TODO define users name max length to 65 chars
         widgets = {
             "username": forms.TextInput(),
             "email": forms.EmailInput(),
