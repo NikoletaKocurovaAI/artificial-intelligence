@@ -4,7 +4,7 @@
 
 <h1 style="text-align: center; padding-top: 15px;">Register new robot</h1>
 
-<form action="{% url 'robot-detail' %}" method="post" novalidate style="max-width: 400px; margin: 0 auto;">
+<form method="post" style="max-width: 400px; margin: 0 auto;">
 
         {% csrf_token %}
     {% for field in form %}

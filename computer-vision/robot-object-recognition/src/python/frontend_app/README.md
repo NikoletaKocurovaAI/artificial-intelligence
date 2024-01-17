@@ -17,7 +17,7 @@ Start the application server:
 
 `python manage.py runserver`
 
-## Migations
+## Migrations
 
 Run the migration every time the change is made to the models.py file. Create migration script:
 
@@ -26,6 +26,18 @@ Run the migration every time the change is made to the models.py file. Create mi
 Apply migration script:
 
 `python manage.py migrate`
+
+## Super user
+
+`python manage.py createsuperuser`
+
+Username: admin
+
+Email address: nikoletakocurovaai@gmail.com
+
+Password: admin
+
+The admin panel is available under the url http://127.0.0.1:8000/admin.
 
 ## Tests
 

@@ -6,8 +6,6 @@ from django.shortcuts import redirect
 from .forms import RegistrationForm, LoginForm, RegisterRobotForm
 from .models import Robot, RobotRun
 
-crud_api = Crud()
-
 
 def login_user(request):
     """
@@ -17,6 +15,7 @@ def login_user(request):
     :return:
     :raises
     """
+    # TODO if GET, POST
     form = LoginForm()
 
     if form.is_valid():
@@ -40,6 +39,7 @@ def register_user(request):
     :return:
     :raises
     """
+    # TODO if GET, POST
     # request.POST data passed via form
     # user = form.save() stores data into DB
     # if form.is_valid()
@@ -53,7 +53,7 @@ def register_user(request):
 def logout_user(request):
     # TODO logout(request)
 
-    return redirect("login")
+    return redirect("login") # GET ?
 
 
 # login required
@@ -66,6 +66,7 @@ def show_robot_run(request):
     :raises
     """
     # TODO robot name
+    # TODO refactor
     if request.method == "GET":
         robots_runs = RobotRun.objects.filter().values()
 
@@ -107,22 +108,31 @@ def register_robot(request):
     :return:
     :raises
     """
-    # html calls on submit create_one
-    # if form is valid
-    # name = form.cleaned_data["name"]
-    # motor_type = form.cleaned_data["motor_type"]
-    # robot = Robot(
-    # robot.save()
-    # else redirect register robot
-
     form = RegisterRobotForm()
 
-    return render(request, "register_robot.html", {"form": form})
+    if request.method == "GET":
+        return render(request, "register_robot.html", {"form": form})
+
+    if request.method == "POST":
+        # if form.is_valid():
+        #     name = form.cleaned_data["name"]
+        #     motor_type = form.cleaned_data["motor_type"]
+        #     redirect to the robot detail
+        # else redirect to the register robot
+
+        name = request.POST.get("name")
+        motor_type = request.POST.get("motor_type")
+
+        robot = Robot(name=name, motor_type=motor_type)
+
+        robot.save()
+
+        return render(request, "register_robot.html", {"form": form})
 
 
 # login required
 def show_robot_detail(request):
-    # if robot, else raise does not exist
+    # TODO if robot, else raise does not exist
     if request.method == "POST":
         robot_id = request.POST.get("selected_page")
 
