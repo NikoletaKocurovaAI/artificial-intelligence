@@ -2,8 +2,8 @@ from django.db.models import Model, DateTimeField, TextField, IntegerField, Char
 
 
 class Robot(Model):
-    name = CharField(max_length=128)
-    motor_type = CharField(max_length=128)
+    name = CharField(max_length=128, null=False, blank=False, default="")
+    motor_type = CharField(max_length=128, null=False, blank=False, default="")
 
 
 class RobotRun(Model):
@@ -11,7 +11,7 @@ class RobotRun(Model):
     started = DateTimeField(auto_now_add=False, default="")
     finished = DateTimeField(auto_now_add=False, default="")
     status = TextField(null=False, blank=False, default="")
-    distance = IntegerField(null=False, blank=False, default=0) # min_value=1, max_value=1
+    distance = IntegerField(null=False, blank=False, default=0) # TODO validators=[MinValueValidator(limit_value=5), max_value=20
 
     class Meta:
         ordering = ["distance"] # TODO asc or desc ?

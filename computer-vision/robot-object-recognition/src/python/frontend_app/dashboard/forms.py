@@ -16,7 +16,7 @@ class RegistrationForm(UserCreationForm):
 
 
 class RegisterRobotForm(forms.Form):
-    name = forms.CharField()
+    name = forms.CharField() # TODO models.py 128 chars
     motor_type = forms.CharField()
 
     # TODO Difference?

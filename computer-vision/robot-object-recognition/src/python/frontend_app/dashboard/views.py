@@ -114,17 +114,14 @@ def register_robot(request):
         return render(request, "register_robot.html", {"form": form})
 
     if request.method == "POST":
-        # if form.is_valid():
-        #     name = form.cleaned_data["name"]
-        #     motor_type = form.cleaned_data["motor_type"]
-        #     redirect to the robot detail
+        # TODO validate if the name does not exist yet
+        # if not redirect to the robot detail
         # else redirect to the register robot
 
         name = request.POST.get("name")
         motor_type = request.POST.get("motor_type")
 
         robot = Robot(name=name, motor_type=motor_type)
-
         robot.save()
 
         return render(request, "register_robot.html", {"form": form})
