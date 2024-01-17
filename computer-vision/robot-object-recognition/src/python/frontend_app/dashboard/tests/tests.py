@@ -24,7 +24,7 @@ class ModelTestCase(TestCase):
 
 class ViewsTestCase(TestCase):
     def test_show_robot_run(self):
-        # split into moe tests after views.py refactor
+        # split into more tests after views.py refactor
         pass
 
     def test_register_robot_get_method(self):

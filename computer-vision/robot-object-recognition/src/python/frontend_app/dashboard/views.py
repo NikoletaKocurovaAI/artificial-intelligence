@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
@@ -39,15 +40,23 @@ def register_user(request):
     :return:
     :raises
     """
-    # TODO if GET, POST
-    # request.POST data passed via form
-    # user = form.save() stores data into DB
-    # if form.is_valid()
+    if request.method == "GET":
+        return render(request, "register.html", {"form": RegistrationForm()})
 
-    form = RegistrationForm()
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
 
-    return render(request, "register.html", {"form": form})
+        # username = request.POST.get("username")
+        # email = request.POST.get("email")
+        # password1 = request.POST.get("password1")
+        # password2 = request.POST.get("password2")
 
+        if form.is_valid():
+            user = form.save()
+
+            return render(request, "registration/login.html", {"form": LoginForm()})
+        else:
+            return render(request, "register.html", {"form": RegistrationForm()})
 
 # login required
 def logout_user(request):
