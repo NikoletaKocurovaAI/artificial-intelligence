@@ -3,7 +3,9 @@ django==3.0.10
 fastapi[all]
 opencv-python==4.8.1.78
 pydantic==2.5.3
+
 python-dotenv==1.0.0
+environ==1.0
 
 SQLAlchemy==2.0.25
 asyncpg==0.29.0

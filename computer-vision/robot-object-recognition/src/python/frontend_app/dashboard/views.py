@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
-from .crud import Crud
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, RegisterRobotForm
+from .models import Robot, RobotRun
 
 crud_api = Crud()
 
@@ -32,7 +32,6 @@ def login_user(request):
     return render(request, "login.html", {"form": form})
 
 
-#login required
 def register_user(request):
     """
     This ..
@@ -52,7 +51,7 @@ def register_user(request):
 
 # login required
 def logout_user(request):
-    #logout(request)
+    # TODO logout(request)
 
     return redirect("login")
 
@@ -66,34 +65,37 @@ def show_robot_run(request):
     :return:
     :raises
     """
-    robot_run = crud_api.get_list(query='SELECT * FROM public."robot_run"')
+    # TODO robot name
+    if request.method == "GET":
+        robots_runs = RobotRun.objects.filter().values()
 
-    postprocessed_robot_run = []
+    if request.method == "POST":
+        status = request.POST.get("selected_filter")
 
-    for row in robot_run:
-        postprocessed_robot_run.append({
-            "name": row[0],
-            "started": row[1],
-            "finished": row[2],
-            "status": row[3],
-            "distance": row[4]
-        })
+        robots_runs = RobotRun.objects.filter(status=status).values()
 
-    robot = crud_api.get_list(query='SELECT * FROM public."robot"')
+    robots = Robot.objects.filter().values()
 
-    postprocessed_robot_name = []
+    robots_runs_statuses = RobotRun.objects.filter().values('status')
 
-    for row in robot:
-        postprocessed_robot_name.append({"name": row[1]})
+    all_robots_runs_statuses = []
 
-    # get status TODO
+    for item in robots_runs_statuses:
+        all_robots_runs_statuses.append(item.get("status"))
 
-    # if robot, else reaise does not exist
-    # if not.user.is_authenticated
-    # Add id to html "{% url 'robot-detail' item.id %}"
-    # create distinct list  of status
+    distinct_robots_runs_statuses = list(set(all_robots_runs_statuses))
 
-    return render(request, "robot_run.html", {"data_robot_run": postprocessed_robot_run, "data_robot_name": postprocessed_robot_name})
+    postprocessed_robots_runs_statuses = []
+
+    for item in distinct_robots_runs_statuses:
+        postprocessed_robots_runs_statuses.append({"status": item})
+
+    # TODO if robot, else raise does not exist
+    # TODO if not.user.is_authenticated
+
+    return render(request, "robot_run.html", {"data_robots_runs": robots_runs,
+                                              "data_robots_names": robots,
+                                              "data_robots_runs_statuses": postprocessed_robots_runs_statuses})
 
 
 #@login_required
@@ -113,12 +115,22 @@ def register_robot(request):
     # robot.save()
     # else redirect register robot
 
-    return render(request, "register_robot.html")
+    form = RegisterRobotForm()
+
+    return render(request, "register_robot.html", {"form": form})
 
 
 # login required
 def show_robot_detail(request):
-    # if robot, else reaise does not exist
-    robot = crud_api.get_one_by_id(id=2)
+    # if robot, else raise does not exist
+    if request.method == "POST":
+        robot_id = request.POST.get("selected_page")
 
-    return render(request, "robot_detail.html", {"data": robot[0]})
+        robot = Robot.objects.filter(id=robot_id).values()
+
+        robot_payload = []
+
+        for item in robot:
+            robot_payload.append({"name": item.get("name"), "motor_type": item.get("motor_type")})
+
+        return render(request, "robot_detail.html", {"data": robot_payload[0]})
