@@ -12,12 +12,12 @@ an on-line store, it could be divided into an application sales, blog and applic
 
 Add 'dashboard' to INSTALLED_APPS variable in the dashboard/settings.py folder.
 
-## Start
+### Start
 Start the application server:
 
 `python manage.py runserver`
 
-## Migrations
+### Migrations
 
 Run the migration every time the change is made to the models.py file. Create migration script:
 
@@ -27,17 +27,47 @@ Apply migration script:
 
 `python manage.py migrate`
 
-## Super user
+## Endpoints
+
+- **Endpoint: ""**
+- **Method**: [GET, POST]
+- **Desciption**: This endpoint is not implemented in the **views.py** file like the other endpoints. It uses the Django's **LoginView.as_view()**,
+which is set in the **urls.py** file. The corresponding template is defined within the **templates/registration** directory. Upon successful user login, 
+the redirection is configured to follow the endpoint specified in the **LOGIN_REDIRECT_URL** variable within the **settings.py** file.
+
+## Create user
+
+### Super user
 
 `python manage.py createsuperuser`
 
-Username: admin
+**Username**: admin
 
-Email address: nikoletakocurovaai@gmail.com
+**Email address**: nikoletakocurovaai@gmail.com
 
-Password: admin
+**Password**: admin
 
 The admin panel is available under the url http://127.0.0.1:8000/admin.
+
+### User
+
+Login details:
+
+**Username**: UserName1
+
+**Email address**: nikoletakocurovaai@gmail.com
+
+**Password**: PassWord25*
+
+Permission group: User1 (employee) permission group
+
+**Username**: UserName2
+
+**Email address**: nikoletakocurovaai@gmail.com
+
+**Password**: PassWord52*
+
+Permission group: User2 (supervisor) permission group
 
 ## Tests
 

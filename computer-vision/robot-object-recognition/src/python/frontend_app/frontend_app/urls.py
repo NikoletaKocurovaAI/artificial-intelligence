@@ -15,15 +15,15 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth.views import LoginView
 
 from dashboard.models import Robot, RobotRun
 from dashboard.views import show_robot_run, show_robot_detail, register_user, logout_user, register_robot
 
+
 admin.site.register(Robot)
 admin.site.register(RobotRun)
-
 
 urlpatterns = [
     path("admin/", admin.site.urls),

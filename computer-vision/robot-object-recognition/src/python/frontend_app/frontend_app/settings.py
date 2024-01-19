@@ -127,4 +127,4 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 LOGIN_REDIRECT_URL = "robot-run"
-LOGOUT_REDIRECT_URL = "login"
+# LOGOUT_REDIRECT_URL = "login"

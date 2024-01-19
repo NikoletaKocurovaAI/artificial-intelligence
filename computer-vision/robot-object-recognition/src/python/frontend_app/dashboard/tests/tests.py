@@ -15,7 +15,6 @@ class ModelTestCase(TestCase):
         pass
 
     def test_robot_run_model_created_successfully(self):
-        #robot_run = RobotRun()
         pass
 
     def test_robot_run_distance_max_value_limit(self):
@@ -23,8 +22,16 @@ class ModelTestCase(TestCase):
 
 
 class ViewsTestCase(TestCase):
+    def test_login_user(self):
+        pass
+
+    def test_register_user(self):
+        pass
+
+    def test_logout_user(self):
+        pass
+
     def test_show_robot_run(self):
-        # split into more tests after views.py refactor
         pass
 
     def test_register_robot_get_method(self):
@@ -51,9 +58,8 @@ class ViewsTestCase(TestCase):
         self.assertTemplateUsed(response, 'register_robot.html')
 
     def test_show_robot_detail_post_method(self):
-        url = reverse('robot-detail')
-        data = {"robot_id": 5}
-
-        response = self.client.post(url, data)
-
         pass
+
+
+class ViewsIntegrationTestCase(TestCase):
+    pass

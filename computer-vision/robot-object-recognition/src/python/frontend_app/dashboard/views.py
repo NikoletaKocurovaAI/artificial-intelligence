@@ -8,30 +8,6 @@ from .forms import RegistrationForm, LoginForm, RegisterRobotForm
 from .models import Robot, RobotRun
 
 
-def login_user(request):
-    """
-    This ..
-
-    :param request:
-    :return:
-    :raises
-    """
-    # TODO if GET, POST
-    form = LoginForm()
-
-    if form.is_valid():
-        username = form.cleaned_data["username"]
-        password = form.cleaned_data["password"]
-
-        # user = authenticate(request, username=username, password=password)
-        # if user
-        # login(request, user), return robot_run.html
-
-        return render(request, "login.html", {"form": form})
-
-    return render(request, "login.html", {"form": form})
-
-
 def register_user(request):
     """
     This ..
@@ -46,26 +22,23 @@ def register_user(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
 
-        # username = request.POST.get("username")
-        # email = request.POST.get("email")
-        # password1 = request.POST.get("password1")
-        # password2 = request.POST.get("password2")
-
         if form.is_valid():
-            user = form.save()
+            form.save()
 
             return render(request, "registration/login.html", {"form": LoginForm()})
         else:
             return render(request, "register.html", {"form": RegistrationForm()})
 
-# login required
+#@login_required
 def logout_user(request):
-    # TODO logout(request)
+    # settings.py DEBUG = False
+    # settings.ALLOWED_HOSTS
+    # logout(request)
 
-    return redirect("login") # GET ?
+    return redirect("login")
 
 
-# login required
+@login_required
 def show_robot_run(request):
     """
     This ..
@@ -76,13 +49,18 @@ def show_robot_run(request):
     """
     # TODO robot name
     # TODO refactor
+    # TODO if robot, else raise does not exist
+    # TODO if not.user.is_authenticated
     if request.method == "GET":
         robots_runs = RobotRun.objects.filter().values()
 
     if request.method == "POST":
         status = request.POST.get("selected_filter")
 
-        robots_runs = RobotRun.objects.filter(status=status).values()
+        if status == "all":
+            robots_runs = RobotRun.objects.filter().values()
+        else:
+            robots_runs = RobotRun.objects.filter(status=status).values()
 
     robots = Robot.objects.filter().values()
 
@@ -95,20 +73,20 @@ def show_robot_run(request):
 
     distinct_robots_runs_statuses = list(set(all_robots_runs_statuses))
 
+    # TODO add all option
     postprocessed_robots_runs_statuses = []
 
     for item in distinct_robots_runs_statuses:
         postprocessed_robots_runs_statuses.append({"status": item})
 
-    # TODO if robot, else raise does not exist
-    # TODO if not.user.is_authenticated
+    postprocessed_robots_runs_statuses.append({"status": "all"})
 
     return render(request, "robot_run.html", {"data_robots_runs": robots_runs,
                                               "data_robots_names": robots,
                                               "data_robots_runs_statuses": postprocessed_robots_runs_statuses})
 
 
-#@login_required
+@login_required
 def register_robot(request):
     """
     This ..
@@ -122,6 +100,7 @@ def register_robot(request):
     if request.method == "GET":
         return render(request, "register_robot.html", {"form": form})
 
+    # TODO if robot, else raise does not exist
     if request.method == "POST":
         # TODO validate if the name does not exist yet
         # if not redirect to the robot detail
@@ -136,17 +115,24 @@ def register_robot(request):
         return render(request, "register_robot.html", {"form": form})
 
 
-# login required
+@login_required
 def show_robot_detail(request):
     # TODO if robot, else raise does not exist
     if request.method == "POST":
         robot_id = request.POST.get("selected_page")
 
-        robot = Robot.objects.filter(id=robot_id).values()
+        # redirect from robot-run to robot-detail
+        if robot_id:
+            robot = Robot.objects.filter(id=robot_id).values()
 
-        robot_payload = []
+            robot_payload = []
 
-        for item in robot:
-            robot_payload.append({"name": item.get("name"), "motor_type": item.get("motor_type")})
+            for item in robot:
+                robot_payload.append({"name": item.get("name"), "motor_type": item.get("motor_type")})
 
-        return render(request, "robot_detail.html", {"data": robot_payload[0]})
+            return render(request, "robot_detail.html", {"data": robot_payload[0]})
+        else:
+            name = request.POST.get("robot_name")
+            # TODO: delete
+
+            return redirect("robot-run")

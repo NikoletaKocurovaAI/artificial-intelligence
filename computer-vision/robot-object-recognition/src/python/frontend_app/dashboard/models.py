@@ -14,4 +14,4 @@ class RobotRun(Model):
     distance = IntegerField(null=False, blank=False, default=0) # TODO validators=[MinValueValidator(limit_value=5), max_value=20
 
     class Meta:
-        ordering = ["distance"] # TODO asc or desc ?
+        ordering = ["-distance"]

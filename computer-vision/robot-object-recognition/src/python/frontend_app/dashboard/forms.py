@@ -3,25 +3,24 @@ from django.contrib.auth.models import User
 from django import forms
 
 
-class LoginForm(forms.Form): # TODO from django.views.generic import FormView
+class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField()
 
 
 class RegistrationForm(UserCreationForm):
-
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
 
 class RegisterRobotForm(forms.Form):
-    name = forms.CharField() # TODO models.py 128 chars
-    motor_type = forms.CharField()
+    name = forms.CharField(max_length=128)
+    motor_type = forms.CharField(max_length=128)
 
-    # TODO Difference?
+    # TODO
     # class Meta:
     #     model = Robot
-    #     fields = ("name", "motor_type")
+    #     fields = ('name', 'motor_type')
 
     # TODO validate if robot name already exists

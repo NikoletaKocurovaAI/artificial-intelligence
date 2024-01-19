@@ -29,6 +29,7 @@
             Go to robot detail
         </button>
     </form>
+
     <form action="{% url 'robot-run' %}" method="post"
           style="text-align: center; margin-top: 20px; display: inline-block;">
         {% csrf_token %}
@@ -46,8 +47,6 @@
             Filter
         </button>
     </form>
-
-    <p>Add option to sort by ... Default is by ID (by distance). Order by statistic - in view</p>
 
     <table style="background-color: white; padding-top: 15px; width: 1370px">
         <thead>
