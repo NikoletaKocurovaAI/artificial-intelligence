@@ -26,7 +26,7 @@ SECRET_KEY = "ch)nsa_%cl4q06som9p94n0l6rgi#-9-tek3&ap**rarsn-o^("
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  # "127.0.0.1"
 
 
 # Application definition
@@ -84,7 +84,11 @@ DATABASES = {
         "USER": os.getenv("DB_USER"),
         "NAME": os.getenv("DB_NAME"),
         "PORT": os.getenv("DB_PORT")
-    }
+    },
+    'test': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / "test_db.sqlite3",
+    },
 }
 
 
@@ -127,4 +131,3 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 LOGIN_REDIRECT_URL = "robot-run"
-# LOGOUT_REDIRECT_URL = "login"

@@ -29,11 +29,10 @@ def register_user(request):
         else:
             return render(request, "register.html", {"form": RegistrationForm()})
 
-#@login_required
+
+@login_required
 def logout_user(request):
-    # settings.py DEBUG = False
-    # settings.ALLOWED_HOSTS
-    # logout(request)
+    logout(request)
 
     return redirect("login")
 
