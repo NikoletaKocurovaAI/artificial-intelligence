@@ -4,6 +4,7 @@ from django.db.models import Model, DateTimeField, TextField, IntegerField, Char
 class Robot(Model):
     name = CharField(max_length=128, null=False, blank=False, default="")
     motor_type = CharField(max_length=128, null=False, blank=False, default="")
+    next_run = DateTimeField(auto_now_add=False, null=True)
 
     def validate_name(self):
         # TODO validate method or CharField unique=True
