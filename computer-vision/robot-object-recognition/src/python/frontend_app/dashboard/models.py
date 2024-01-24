@@ -5,6 +5,10 @@ class Robot(Model):
     name = CharField(max_length=128, null=False, blank=False, default="")
     motor_type = CharField(max_length=128, null=False, blank=False, default="")
 
+    def validate_name(self):
+        # TODO validate method or CharField unique=True
+        pass
+
 
 class RobotRun(Model):
     robot_id = IntegerField(null=False, blank=False, default=0) # ForeignKey(Genre, on_delete=DO_NOTHING); min_value=1, max_value=10

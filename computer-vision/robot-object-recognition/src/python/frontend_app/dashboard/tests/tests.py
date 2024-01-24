@@ -1,5 +1,10 @@
-from django.test import TestCase
+import time
+
+from django.test import TestCase, override_settings
 from django.urls import reverse
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 from dashboard.models import Robot
 
@@ -34,10 +39,11 @@ class ViewsTestCase(TestCase):
     def test_show_robot_run(self):
         pass
 
+    @override_settings(LOGIN_URL='/login/')
     def test_register_robot_get_method(self):
         url = reverse('register-robot')
 
-        response = self.client.get(url)
+        response = self.client.get(url, follow=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'register_robot.html')
@@ -63,3 +69,24 @@ class ViewsTestCase(TestCase):
 
 class ViewsIntegrationTestCase(TestCase):
     pass
+
+
+class EndToEndTestCase(TestCase):
+    def test_login_url_has_text(self):
+        selenium_webdriver = webdriver.Chrome()
+        selenium_webdriver.get("http://127.0.0.1:8000/")
+
+        assert "Login" in selenium_webdriver.page_source
+
+    def test_login_button_exists(self):
+        selenium_webdriver = webdriver.Chrome()
+        selenium_webdriver.get("http://127.0.0.1:8000/")
+
+        # login_inputs = selenium_webdriver.find_element(By.ID, "login-input")
+
+        login_button = selenium_webdriver.find_element(By.ID, "login-button")
+
+        # click on the button
+        login_button.send_keys(Keys.RETURN)
+
+        # assert "Robot run" in selenium_webdriver.page_source

@@ -3,6 +3,7 @@ Django==5.0.1
 fastapi[all]
 opencv-python==4.8.1.78
 pydantic==2.5.3
+selenium==4.17.2
 
 python-dotenv==1.0.0
 environ==1.0

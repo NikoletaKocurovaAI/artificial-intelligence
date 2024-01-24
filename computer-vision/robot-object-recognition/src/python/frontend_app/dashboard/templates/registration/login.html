@@ -10,12 +10,14 @@
 
     {% for field in form %}
         <div style="margin-bottom: 15px;">
-            <label style="display: block; font-weight: bold; margin-bottom: 5px;">{{ field.label_tag }}</label>
+
+            <label id="login-input" style="display: block; font-weight: bold; margin-bottom: 5px;">{{ field.label_tag }}</label>
             {{ field }}
+
         </div>
     {% endfor %}
 
-    <button type="submit" style="display: inline-block; padding: 10px 20px; background-color: #FFA500; color: white;
+    <button id="login-button" type="submit" style="display: inline-block; padding: 10px 20px; background-color: #FFA500; color: white;
                 text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
                 margin-bottom: 5px; width: 120px">
         Login

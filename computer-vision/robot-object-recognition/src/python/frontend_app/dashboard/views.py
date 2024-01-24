@@ -72,7 +72,6 @@ def show_robot_run(request):
 
     distinct_robots_runs_statuses = list(set(all_robots_runs_statuses))
 
-    # TODO add all option
     postprocessed_robots_runs_statuses = []
 
     for item in distinct_robots_runs_statuses:
@@ -85,7 +84,7 @@ def show_robot_run(request):
                                               "data_robots_runs_statuses": postprocessed_robots_runs_statuses})
 
 
-@login_required
+#@login_required
 def register_robot(request):
     """
     This ..
