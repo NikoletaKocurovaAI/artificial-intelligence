@@ -47,7 +47,6 @@ def show_robot_run(request):
     :raises
     """
     # TODO robot name
-    # TODO refactor
     # TODO if robot, else raise does not exist
     # TODO if not.user.is_authenticated
     if request.method == "GET":
@@ -56,32 +55,15 @@ def show_robot_run(request):
     if request.method == "POST":
         status = request.POST.get("selected_filter")
 
-        if status == "all":
-            robots_runs = RobotRun.objects.filter().values()
-        else:
-            robots_runs = RobotRun.objects.filter(status=status).values()
+        robots_runs = RobotRun.get_filtered_robot_runs(RobotRun(), status)
 
     robots = Robot.objects.filter().values()
 
-    robots_runs_statuses = RobotRun.objects.filter().values('status')
-
-    all_robots_runs_statuses = []
-
-    for item in robots_runs_statuses:
-        all_robots_runs_statuses.append(item.get("status"))
-
-    distinct_robots_runs_statuses = list(set(all_robots_runs_statuses))
-
-    postprocessed_robots_runs_statuses = []
-
-    for item in distinct_robots_runs_statuses:
-        postprocessed_robots_runs_statuses.append({"status": item})
-
-    postprocessed_robots_runs_statuses.append({"status": "all"})
+    robots_runs_statuses = RobotRun.get_robots_runs_statuses(RobotRun())
 
     return render(request, "robot_run.html", {"data_robots_runs": robots_runs,
                                               "data_robots_names": robots,
-                                              "data_robots_runs_statuses": postprocessed_robots_runs_statuses})
+                                              "data_robots_runs_statuses": robots_runs_statuses})
 
 
 #@login_required

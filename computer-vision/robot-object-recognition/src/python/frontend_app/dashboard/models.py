@@ -19,3 +19,31 @@ class RobotRun(Model):
 
     class Meta:
         ordering = ["-distance"]
+
+    def get_filtered_robot_runs(self, status):
+
+        if status == "all":
+            robots_runs = RobotRun.objects.filter().values()
+        else:
+            robots_runs = RobotRun.objects.filter(status=status).values()
+
+        return robots_runs
+
+    def get_robots_runs_statuses(self):
+        statuses = RobotRun.objects.filter().values('status')
+
+        all_robots_runs_statuses = []
+
+        for item in statuses:
+            all_robots_runs_statuses.append(item.get("status"))
+
+        distinct_robots_runs_statuses = list(set(all_robots_runs_statuses))
+
+        postprocessed_robots_runs_statuses = []
+
+        for item in distinct_robots_runs_statuses:
+            postprocessed_robots_runs_statuses.append({"status": item})
+
+        postprocessed_robots_runs_statuses.append({"status": "all"})
+
+        return postprocessed_robots_runs_statuses
