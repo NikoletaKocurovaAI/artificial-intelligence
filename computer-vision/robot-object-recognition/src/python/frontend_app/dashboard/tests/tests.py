@@ -1,6 +1,6 @@
 import time
 
-from django.test import TestCase, override_settings
+from django.test import TestCase, override_settings, TransactionTestCase
 from django.urls import reverse
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -48,6 +48,7 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'register_robot.html')
 
+    # TODO is this integration test?
     def test_register_robot_post_method(self):
         url = reverse('register-robot')
         data = {'name': 'Robot 3', 'motor_type': 'servo'}
@@ -67,9 +68,15 @@ class ViewsTestCase(TestCase):
         pass
 
 
-class ViewsIntegrationTestCase(TestCase):
-    pass
+class ViewsIntegrationTestCase(TransactionTestCase):
+    def register_robot(self):
+        name = 'Robot integration test'
 
+        response = self.client.post(reverse('register'),
+                                    {'name': name, 'motor_type': 'motor integration test'})
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Robot.objects.filter(name=name).count(), 1)
 
 class EndToEndTestCase(TestCase):
     def test_login_url_has_text(self):
