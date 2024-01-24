@@ -80,12 +80,7 @@ def register_robot(request):
     if request.method == "GET":
         return render(request, "register_robot.html", {"form": form})
 
-    # TODO if robot, else raise does not exist
     if request.method == "POST":
-        # TODO validate if the name does not exist yet
-        # if not redirect to the robot detail
-        # else redirect to the register robot
-
         name = request.POST.get("name")
         motor_type = request.POST.get("motor_type")
 
@@ -111,8 +106,10 @@ def show_robot_detail(request):
                 robot_payload.append({"name": item.get("name"), "motor_type": item.get("motor_type")})
 
             return render(request, "robot_detail.html", {"data": robot_payload[0]})
+        # redirect from robot-detail to robot run
         else:
             name = request.POST.get("robot_name")
-            # TODO: delete
+
+            Robot.objects.filter(name=name).delete()
 
             return redirect("robot-run")
