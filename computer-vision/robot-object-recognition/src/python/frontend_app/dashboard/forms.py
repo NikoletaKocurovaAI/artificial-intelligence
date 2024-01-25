@@ -24,3 +24,6 @@ class RegisterRobotForm(forms.Form):
     #     fields = ('name', 'motor_type')
 
     # TODO validate if robot name already exists
+
+class RobotDetailForm(forms.Form):
+    pass

@@ -87,11 +87,7 @@ def register_robot(request):
         return render(request, "register_robot.html", {"form": form})
 
     if request.method == "POST":
-        name = request.POST.get("name")
-        motor_type = request.POST.get("motor_type")
-
-        robot = Robot(name=name, motor_type=motor_type)
-        robot.save()
+        Robot(name=request.POST.get("name"), motor_type=request.POST.get("motor_type")).save()
 
         return render(request, "register_robot.html", {"form": form})
 
@@ -100,22 +96,13 @@ def register_robot(request):
 def show_robot_detail(request):
     # TODO if robot, else raise does not exist
     if request.method == "POST":
-        robot_id = request.POST.get("selected_page")
-        robot_name = request.POST.get("robot_name")
+        robot_detail_id = request.POST.get("selected_page")
+        robot_to_delete = request.POST.get("robot_name")
 
-        # redirect from robot-run to robot-detail
-        if robot_id:
-            robot = Robot.objects.filter(id=robot_id).values()
+        if robot_detail_id:
+            return render(request, "robot_detail.html", {"data": Robot.get_by_id(Robot(), robot_detail_id)})
 
-            robot_payload = []
+        if robot_to_delete:
+            Robot.objects.filter(name=robot_to_delete).delete()
 
-            for item in robot:
-                robot_payload.append({"name": item.get("name"), "motor_type": item.get("motor_type")})
-
-            return render(request, "robot_detail.html", {"data": robot_payload[0]})
-
-        # redirect from robot-detail to robot run
-        if robot_name:
-            Robot.objects.filter(name=robot_name).delete()
-
-            return redirect("robot-run")
+        return redirect("robot-run")

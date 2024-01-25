@@ -7,6 +7,18 @@ class Robot(Model):
     motor_type = CharField(max_length=128, null=False, blank=False, default="")
     next_run = DateTimeField(auto_now_add=False, null=True)
 
+    def get_by_id(self, id):
+        robot = Robot.objects.filter(id=id).values()
+
+        robot_payload = []
+
+        for item in robot:
+            robot_payload.append({"name": item.get("name"), "motor_type": item.get("motor_type")})
+
+        print(f"get by id")
+
+        return robot_payload[0]
+
     def validate_name(self):
         # TODO validate method or CharField unique=True
         pass
