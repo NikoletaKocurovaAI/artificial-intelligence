@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django.core.paginator import Paginator
 
 from .forms import RegistrationForm, LoginForm, RegisterRobotForm
 from .models import Robot, RobotRun
@@ -49,21 +50,19 @@ def show_robot_run(request):
     # TODO robot name
     # TODO if robot, else raise does not exist
     # TODO if not.user.is_authenticated
+
     if request.method == "GET":
         robots_runs = RobotRun.objects.filter().values()
+        page_number = request.GET.get('page')
 
     if request.method == "POST":
-        status = request.POST.get("selected_filter")
-
-        robots_runs = RobotRun.get_filtered_robot_runs(RobotRun(), status)
-
-    robots = Robot.objects.filter().values()
-
-    robots_runs_statuses = RobotRun.get_robots_runs_statuses(RobotRun())
+        robots_runs = RobotRun.get_filtered_robot_runs(RobotRun(), status=request.POST.get("selected_filter"))
+        page_number = 1
 
     return render(request, "robot_run.html", {"data_robots_runs": robots_runs,
-                                              "data_robots_names": robots,
-                                              "data_robots_runs_statuses": robots_runs_statuses})
+                                              "data_robots_names": Robot.objects.filter().values(),
+                                              "data_robots_runs_statuses": RobotRun.get_robots_runs_statuses(RobotRun()),
+                                              "data_robots_runs2": Paginator(robots_runs, per_page=3).get_page(page_number)})
 
 
 #@login_required

@@ -60,7 +60,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in data_robots_runs %}
+            {% for item in data_robots_runs2 %}
                 <tr style="background-color: lightgrey; height: 30px">
                     <td>{{ item.name }}</td>
                     <td>{{ item.started }}</td>
@@ -71,6 +71,26 @@
             {% endfor %}
         <tbody>
     </table>
+
+      {% if data_robots_runs2.has_other_pages %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if data_robots_runs2.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ data_robots_runs2.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ data_robots_runs2.number }} of {{ data_robots_runs2.paginator.num_pages }}.
+            </span>
+
+            {% if data_robots_runs2.has_next %}
+                <a href="?page={{ data_robots_runs2.next_page_number }}">next</a>
+                <a href="?page={{ data_robots_runs2.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endif %}
 
     <center>
         <a href="{% url 'logout' %}"
