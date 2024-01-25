@@ -8,6 +8,12 @@
 <p style="margin-left: 400px;">MOTOR TYPE: {{ data.motor_type }}</p>
 <p style="margin-left: 400px;">NEXT RUN: {{ data.next_run }}</p>
 
+<form method="post" style="margin-left: 400px;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="next_run">Update next run</button>
+</form>
+
 <center>
     <a href="{% url 'robot-run' %}"
      style="display: inline-block; padding: 10px 20px; background-color: #FFA500; color: white;

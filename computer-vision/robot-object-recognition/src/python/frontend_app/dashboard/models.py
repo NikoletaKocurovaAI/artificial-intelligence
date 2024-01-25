@@ -15,8 +15,6 @@ class Robot(Model):
         for item in robot:
             robot_payload.append({"name": item.get("name"), "motor_type": item.get("motor_type")})
 
-        print(f"get by id")
-
         return robot_payload[0]
 
     def validate_name(self):

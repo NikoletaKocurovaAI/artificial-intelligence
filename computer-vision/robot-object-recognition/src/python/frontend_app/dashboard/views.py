@@ -5,7 +5,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
 
-from .forms import RegistrationForm, LoginForm, RegisterRobotForm
+from .forms import RegistrationForm, LoginForm, RegisterRobotForm, RobotDetailForm
 from .models import Robot, RobotRun
 
 
@@ -98,9 +98,11 @@ def show_robot_detail(request):
     if request.method == "POST":
         robot_detail_id = request.POST.get("selected_page")
         robot_to_delete = request.POST.get("robot_name")
+        robot_next_run = request.POST.get("next_run")
 
         if robot_detail_id:
-            return render(request, "robot_detail.html", {"data": Robot.get_by_id(Robot(), robot_detail_id)})
+            return render(request, "robot_detail.html", {"data": Robot.get_by_id(Robot(), robot_detail_id),
+                                                         "form": RobotDetailForm()})
 
         if robot_to_delete:
             Robot.objects.filter(name=robot_to_delete).delete()
