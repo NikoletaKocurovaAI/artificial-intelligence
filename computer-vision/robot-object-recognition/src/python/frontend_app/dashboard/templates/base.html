@@ -3,18 +3,13 @@
 <html>
   <body>
 
-    <div id="base-header-div" style="background-color: #333333; height: 50px"></div>
+    <div id="base-header-div"></div>
 
-    <div id="left-and-right-pannel-div" style="background-color: lightgrey;">
+    <div id="common-dashboard-title-and-content-div">
 
-        <div id="dashboard-title-div" style="background-color: lightgrey; height: 120px; font-size: 40px; text-align: center;
-             display: flex; align-items: center; justify-content: center;">
-            Robot Object Detection Dashboard
-        </div>
+        <div id="dashboard-title-div">Robot Object Detection Dashboard</div>
 
-        <div id="main-dashboard-content-div" style="background-color: white; height: 600px; ">
-            {% block content %}{% endblock %}
-        </div>
+        <div id="main-dashboard-content-div">{% block content %}{% endblock %}</div>
 
     </div>
 
