@@ -1,30 +1,22 @@
 {% load static %}
 
-<html {% if LANGUAGE_CODE %}lang="{{ LANGUAGE_CODE }}"{% endif %}>
-
-  <head>
-
-  </head>
-
+<html>
   <body>
 
-    <div style="background-color: #333333; height: 50px">
+    <div id="base-header-div" style="background-color: #333333; height: 50px"></div>
 
-    </div>
+    <div id="left-and-right-pannel-div" style="background-color: lightgrey;">
 
-    <div id="white-left-and-right" style="background-color: lightgrey;">
-
-      <div id="title" style="background-color: lightgrey; height: 120px; font-size: 40px; text-align: center;
+        <div id="dashboard-title-div" style="background-color: lightgrey; height: 120px; font-size: 40px; text-align: center;
              display: flex; align-items: center; justify-content: center;">
-        Robot Object Detection Dashboard
-      </div>
+            Robot Object Detection Dashboard
+        </div>
 
-      <div id="main-content" style="background-color: white; height: 600px; ">
-        {% block content %}{% endblock %}
-      </div>
+        <div id="main-dashboard-content-div" style="background-color: white; height: 600px; ">
+            {% block content %}{% endblock %}
+        </div>
 
     </div>
 
   </body>
-
 </html>

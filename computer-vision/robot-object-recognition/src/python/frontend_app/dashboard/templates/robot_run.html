@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% load static %}
 
-<h1 style="text-align: center; padding-top: 15px;">Robot run</h1>
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+
+    <h1>Robot run</h1>
 
   <div style="background-color: white; height: 560px; padding-left: 15px; ">
 

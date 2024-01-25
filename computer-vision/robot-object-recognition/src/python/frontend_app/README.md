@@ -74,3 +74,9 @@ Permission group: User2 (supervisor) permission group
 Run tests:
 
 `python manage.py test`
+
+## CSS
+
+If you've recently added or modified static files, make sure to run:
+
+`python manage.py collectstatic`
