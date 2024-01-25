@@ -1,4 +1,5 @@
 from django.db.models import Model, DateTimeField, TextField, IntegerField, CharField
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class Robot(Model):
@@ -12,11 +13,22 @@ class Robot(Model):
 
 
 class RobotRun(Model):
-    robot_id = IntegerField(null=False, blank=False, default=0) # ForeignKey(Genre, on_delete=DO_NOTHING); min_value=1, max_value=10
+    robot_id = IntegerField(null=False, blank=False, default=0)
     started = DateTimeField(auto_now_add=False, default="")
     finished = DateTimeField(auto_now_add=False, default="")
     status = TextField(null=False, blank=False, default="")
-    distance = IntegerField(null=False, blank=False, default=0) # TODO validators=[MinValueValidator(limit_value=5), max_value=20
+    distance = IntegerField(null=False, blank=False, default=0) # TODO validators=[MinValueValidator(limit_value=5), min_value=1, max_value=20
+
+    def add_robot_name(self, robots_runs):
+        for robot_run in robots_runs:
+            try:
+                robot = Robot.objects.get(id=robot_run.get("id"))
+                robot_run["name"] = robot.name
+
+            except ObjectDoesNotExist:
+                robot_run["name"] = ""
+
+        return robots_runs
 
     class Meta:
         ordering = ["-distance"]

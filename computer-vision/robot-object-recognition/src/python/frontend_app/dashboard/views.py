@@ -33,6 +33,13 @@ def register_user(request):
 
 @login_required
 def logout_user(request):
+    """
+    This ..
+
+    :param request:
+    :return:
+    :raises
+    """
     logout(request)
 
     return redirect("login")
@@ -59,7 +66,7 @@ def show_robot_run(request):
         robots_runs = RobotRun.get_filtered_robot_runs(RobotRun(), status=request.POST.get("selected_filter"))
         page_number = 1
 
-    return render(request, "robot_run.html", {"data_robots_runs": robots_runs,
+    return render(request, "robot_run.html", {"data_robots_runs": RobotRun.add_robot_name(RobotRun(), robots_runs),
                                               "data_robots_names": Robot.objects.filter().values(),
                                               "data_robots_runs_statuses": RobotRun.get_robots_runs_statuses(RobotRun()),
                                               "data_robots_runs2": Paginator(robots_runs, per_page=3).get_page(page_number)})
@@ -94,6 +101,7 @@ def show_robot_detail(request):
     # TODO if robot, else raise does not exist
     if request.method == "POST":
         robot_id = request.POST.get("selected_page")
+        robot_name = request.POST.get("robot_name")
 
         # redirect from robot-run to robot-detail
         if robot_id:
@@ -105,10 +113,9 @@ def show_robot_detail(request):
                 robot_payload.append({"name": item.get("name"), "motor_type": item.get("motor_type")})
 
             return render(request, "robot_detail.html", {"data": robot_payload[0]})
-        # redirect from robot-detail to robot run
-        else:
-            name = request.POST.get("robot_name")
 
-            Robot.objects.filter(name=name).delete()
+        # redirect from robot-detail to robot run
+        if robot_name:
+            Robot.objects.filter(name=robot_name).delete()
 
             return redirect("robot-run")
