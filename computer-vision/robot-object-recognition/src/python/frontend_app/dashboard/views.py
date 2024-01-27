@@ -72,7 +72,7 @@ def show_robot_run(request):
                                               "data_robots_runs2": Paginator(robots_runs, per_page=3).get_page(page_number)})
 
 
-#@login_required
+@login_required
 def register_robot(request):
     """
     This ..

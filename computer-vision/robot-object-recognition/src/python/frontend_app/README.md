@@ -75,6 +75,8 @@ Run tests:
 
 `python manage.py test`
 
+`python manage.py test dashboard.tests.tests.ViewsTestCase.test_register_robot_get_method`
+
 ## CSS
 
 If you've recently added or modified static files, make sure to run:

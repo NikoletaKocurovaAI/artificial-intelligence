@@ -39,11 +39,13 @@ class ViewsTestCase(TestCase):
     def test_show_robot_run(self):
         pass
 
-    @override_settings(LOGIN_URL='/login/')
+    # @override_settings(LOGIN_URL='')
     def test_register_robot_get_method(self):
         url = reverse('register-robot')
 
-        response = self.client.get(url, follow=True)
+        # Users.
+
+        response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'register_robot.html')

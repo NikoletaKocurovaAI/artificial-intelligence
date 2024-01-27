@@ -84,9 +84,9 @@ DATABASES = {
         "NAME": os.getenv("DB_NAME"),
         "PORT": os.getenv("DB_PORT")
     },
-    'test': {
+    "test": {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, "test_db.sqlite3")
+            'NAME': ':memory:'
     },
 }
 
