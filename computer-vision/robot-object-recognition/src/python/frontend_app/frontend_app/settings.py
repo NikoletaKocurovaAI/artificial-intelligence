@@ -75,6 +75,8 @@ WSGI_APPLICATION = "frontend_app.wsgi.application"
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 load_dotenv()
 
+TEST_DATABASE_PREFIX = 'test_'
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
