@@ -7,28 +7,34 @@
 
     <h1>Login</h1>
 
-<form method="post" style="max-width: 400px; margin: 0 auto;">
+    <div style="display: flex; justify-content: center;">
 
-    {% csrf_token %}
+        <form method="post" style="max-width: 400px; margin: 0 auto;">
 
-    {% for field in form %}
-        <div style="margin-bottom: 15px;">
+            {% csrf_token %}
 
-            <label id="login-input" style="display: block; font-weight: bold; margin-bottom: 5px;">{{ field.label_tag }}</label>
-            {{ field }}
+            <div style="margin-bottom: 15px;">
+                <label for="username" style="display: block; font-weight: bold; margin-bottom: 5px;">Username:</label>
+                <input type="text" id="username" name="username">
+            </div>
 
-        </div>
-    {% endfor %}
+            <div style="margin-bottom: 15px;">
+                <label for="password" style="display: block; font-weight: bold; margin-bottom: 5px;">Password:</label>
+                <input type="password" id="password" name="password">
+            </div>
 
-    <button id="login-button" type="submit" style="display: inline-block; padding: 10px 20px; background-color: #FFA500; color: white;
-                text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
-                margin-bottom: 5px; width: 120px">
-        Login
-    </button>
-</form>
+            <button type="submit" style="display: inline-block; padding: 10px 20px; background-color: #FFA500; color: white;
+                    text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
+                    margin-bottom: 5px; width: 120px">
+                Login
+            </button>
 
-<center>
-    <a href="{% url 'register' %}" style="text-align: center;">Not registered yet? Click here.</a>
-</center>
+        </form>
+
+    </div>
+
+    <div style="display: flex; justify-content: center;">
+        <a href="{% url 'register' %}" style="text-decoration: none; color: blue;">Not registered yet? Click here.</a>
+    </div>
 
 {% endblock %}
