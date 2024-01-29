@@ -73,9 +73,13 @@ Permission group: User2 (supervisor) permission group
 
 Run tests:
 
-`python manage.py test`
+```
+python manage.py test
+```
 
-`python manage.py test dashboard.tests.tests.ViewsUnitTestCase.test_register_robot_get_method`
+```
+python manage.py test dashboard.tests.tests.ViewsUnitTestCase.test_register_robot_get_method
+```
 
 ## CSS
 

@@ -1,5 +1,3 @@
-import time
-
 from django.test import TestCase, override_settings, TransactionTestCase
 from django.urls import reverse
 from selenium import webdriver
@@ -87,15 +85,17 @@ class EndToEndTestCase(TestCase):
 
         assert "Login" in selenium_webdriver.page_source
 
-    def test_login_button_exists(self):
+    def test_login_button_redirects_to_robot_run(self):
         selenium_webdriver = webdriver.Chrome()
         selenium_webdriver.get("http://127.0.0.1:8000/")
 
-        # login_inputs = selenium_webdriver.find_element(By.ID, "login-input")
+        username_input = selenium_webdriver.find_element(By.ID, "username")
+        username_input.send_keys("admin")
+
+        password_input = selenium_webdriver.find_element(By.ID, "password")
+        password_input.send_keys("admin")
 
         login_button = selenium_webdriver.find_element(By.ID, "login-button")
-
-        # click on the button
         login_button.send_keys(Keys.RETURN)
 
-        # assert "Robot run" in selenium_webdriver.page_source
+        assert "Robot run" in selenium_webdriver.page_source
