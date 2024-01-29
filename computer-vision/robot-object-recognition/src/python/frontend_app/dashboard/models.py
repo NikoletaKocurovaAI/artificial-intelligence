@@ -1,5 +1,6 @@
 from django.db.models import Model, DateTimeField, TextField, IntegerField, CharField
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Robot(Model):
@@ -32,7 +33,7 @@ class RobotRun(Model):
     started = DateTimeField(auto_now_add=False, default="")
     finished = DateTimeField(auto_now_add=False, default="")
     status = TextField(null=False, blank=False, default="")
-    distance = IntegerField(null=False, blank=False, default=0) # TODO validators=[MinValueValidator(limit_value=5), min_value=1, max_value=20
+    distance = IntegerField(null=False, blank=False, default=0, validators=[MinValueValidator(5), MaxValueValidator(20)])
 
     def add_robot_name(self, robots_runs):
         for robot_run in robots_runs:
@@ -49,7 +50,6 @@ class RobotRun(Model):
         ordering = ["-distance"]
 
     def get_filtered_robot_runs(self, status):
-
         if status == "all":
             robots_runs = RobotRun.objects.filter().values()
         else:
