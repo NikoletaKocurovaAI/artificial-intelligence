@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 class Robot(Model):
-    name = CharField(max_length=128, null=False, blank=False, default="")
+    name = CharField(max_length=128, null=False, blank=False, default="", unique=True)
     motor_type = CharField(max_length=128, null=False, blank=False, default="")
     next_run = DateTimeField(auto_now_add=False, null=True)
 

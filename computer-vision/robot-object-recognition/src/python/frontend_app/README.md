@@ -21,11 +21,15 @@ Start the application server:
 
 Run the migration every time the change is made to the models.py file. Create migration script:
 
-`python manage.py makemigrations`
+```
+python manage.py makemigrations
+```
 
 Apply migration script:
 
-`python manage.py migrate`
+```
+python manage.py migrate
+```
 
 ## Endpoints
 
