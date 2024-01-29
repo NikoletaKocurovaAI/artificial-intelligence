@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 from dashboard.models import Robot
 
 
-class ModelTestCase(TestCase):
+class ModelUnitTestCase(TestCase):
     def test_robot_model_created_successfully(self):
         robot = Robot(name="Robot 1", motor_type="DC")
 
@@ -26,7 +26,7 @@ class ModelTestCase(TestCase):
         pass
 
 
-class ViewsTestCase(TestCase):
+class ViewsUnitTestCase(TestCase):
     def test_login_user(self):
         pass
 
