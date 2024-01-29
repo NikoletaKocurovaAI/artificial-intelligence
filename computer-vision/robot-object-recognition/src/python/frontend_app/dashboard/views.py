@@ -54,8 +54,6 @@ def show_robot_run(request):
     :return:
     :raises
     """
-    # TODO robot name
-    # TODO if robot, else raise does not exist
     # TODO if not.user.is_authenticated
 
     if request.method == "GET":
@@ -94,11 +92,18 @@ def register_robot(request):
 
 @login_required
 def show_robot_detail(request):
-    # TODO if robot, else raise does not exist
+    """
+    This ..
+
+    :param request:
+    :return:
+    :raises
+    """
     if request.method == "POST":
         robot_detail_id = request.POST.get("selected_page")
-        robot_to_delete = request.POST.get("robot_name")
-        robot_next_run = request.POST.get("next_run")
+        robot_to_delete = request.POST.get("robot_detail_robot_name")
+        robot_next_run = request.POST.get("robot_detail_next_run_datetime")
+        robot_id_next_run = request.POST.get("robot_detail_robot_id_for_next_run")
 
         if robot_detail_id:
             return render(request, "robot_detail.html", {"data": Robot.get_by_id(Robot(), robot_detail_id),
@@ -106,5 +111,10 @@ def show_robot_detail(request):
 
         if robot_to_delete:
             Robot.objects.filter(name=robot_to_delete).delete()
+
+        if robot_next_run:
+            robot = Robot.objects.get(id=int(robot_id_next_run))
+            robot.next_run = robot_next_run
+            robot.save()
 
         return redirect("robot-run")

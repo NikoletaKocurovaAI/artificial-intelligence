@@ -26,4 +26,5 @@ class RegisterRobotForm(forms.Form):
     # TODO validate if robot name already exists
 
 class RobotDetailForm(forms.Form):
-    datetime_field = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
+    datetime_field = forms.DateTimeField(
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))

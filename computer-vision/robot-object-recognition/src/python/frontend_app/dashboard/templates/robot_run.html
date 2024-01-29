@@ -7,7 +7,7 @@
 
     <h1>Robot run</h1>
 
-  <div style="background-color: white; height: 560px; padding-left: 15px; ">
+    <div style="background-color: white; height: 560px; padding-left: 15px; ">
 
       <a href="{% url 'register-robot' %}"
          style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white;
@@ -18,20 +18,27 @@
 
     <form action="{% url 'robot-detail' %}" method="post"
           style="text-align: center; margin-top: 20px; display: inline-block;">
+
         {% csrf_token %}
+
         <label for="redirectDropdown" style="display: block; font-weight: bold; margin-bottom: 10px;">Select a robot:</label>
-        <select id="redirectDropdown" name="selected_page"
-                style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;
+
+        <select id="redirectDropdown" name="selected_page" style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;
                  color: #333; font-size: 14px; width: 200px; margin-bottom: 10px;">
+
             <option value="" selected disabled style="background-color: #fff; color: #333;">Select an option</option>
+
             {% for item in data_robots_names %}
                 <option value="{{ item.id }}" style="background-color: #fff; color: #333;">{{ item.name }}</option>
             {% endfor %}
+
         </select>
+
         <button type="submit" style="padding: 10px 20px; background-color: #FFA500; color: white;
                     text-decoration: none; border: none; border-radius: 5px; cursor: pointer; width: 160px">
             Go to robot detail
         </button>
+
     </form>
 
     <form action="{% url 'robot-run' %}" method="post"

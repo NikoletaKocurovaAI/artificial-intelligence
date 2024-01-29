@@ -7,49 +7,69 @@
 
     <h1>Robot detail</h1>
 
+    <p style="margin-left: 550px;">ID: {{ data.id }}</p>
     <p style="margin-left: 550px;">NAME: {{ data.name }}</p>
     <p style="margin-left: 550px;">MOTOR TYPE: {{ data.motor_type }}</p>
     <p style="margin-left: 550px;">NEXT RUN: {{ data.next_run }}</p>
 
-<form method="post" style="margin-left: 400px;">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" name="next_run">Update next run</button>
-</form>
-
-<center>
-    <a href="{% url 'robot-run' %}"
-     style="display: inline-block; padding: 10px 20px; background-color: #FFA500; color: white;
-            text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
-            margin-bottom: 5px; width: 120px">
-      Go to dashboard
-  </a>
-</center>
-
-<center>
-    <form method="post">
+    <form method="post" style="margin-left: 550px;">
 
         {% csrf_token %}
 
-        <input type="hidden" name="robot_name" value="{{ data.name }}">
+        {% for field in form %}
 
-        <button type="submit"
-                style="display: inline-block; padding: 10px 20px; background-color: red; color: white;
-                text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
-                margin-bottom: 5px; width: 120px">
-            Delete
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px;">{{ field.label_tag }}</label>
+                {{ field }}
+            </div>
+
+        {% endfor %}
+
+        <input type="datetime-local" name="robot_detail_next_run_datetime">
+
+        <input type="hidden" name="robot_detail_robot_id_for_next_run" value="{{ data.id }}">
+
+        <button type="submit" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white;
+                    text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
+                    margin-bottom: 5px; width: 160px">
+            Update next run
         </button>
 
     </form>
-</center>
 
-<center>
-    <a href="{% url 'logout' %}"
-     style="display: inline-block; padding: 10px 20px; background-color: blue; color: white;
-            text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
-            margin-bottom: 5px; width: 120px">
-      Logout
-  </a>
-</center>
+    <div style="display: flex; justify-content: center;">
+         <a href="{% url 'robot-run' %}"
+         style="display: inline-block; padding: 10px 20px; background-color: #FFA500; color: white;
+                text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 0px;
+                margin-bottom: 5px; width: 120px">Go to dashboard
+         </a>
+    </div>
+
+    <div style="display: flex; justify-content: center;">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <input type="hidden" name="robot_detail_robot_name" value="{{ data.name }}">
+
+            <button type="submit"
+                    style="display: inline-block; padding: 10px 20px; background-color: red; color: white;
+                    text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 8px;
+                    margin-bottom: 0px; width: 160px">
+                Delete
+            </button>
+
+        </form>
+
+    </div>
+
+    <div style="display: flex; justify-content: center;">
+         <a href="{% url 'logout' %}"
+         style="display: inline-block; padding: 10px 20px; background-color: blue; color: white;
+                text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 0px;
+                margin-bottom: 5px; width: 120px">Logout
+         </a>
+    </div>
 
 {% endblock %}

@@ -13,7 +13,12 @@ class Robot(Model):
         robot_payload = []
 
         for item in robot:
-            robot_payload.append({"name": item.get("name"), "motor_type": item.get("motor_type")})
+            robot_payload.append({
+                "id": item.get("id"),
+                "name": item.get("name"),
+                "motor_type": item.get("motor_type"),
+                "next_run": item.get("next_run")
+            })
 
         return robot_payload[0]
 
