@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import sys
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -78,23 +79,29 @@ WSGI_APPLICATION = "frontend_app.wsgi.application"
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 load_dotenv()
 
-TEST_DATABASE_PREFIX = 'test_'
+if 'test' in sys.argv:
+    # print("Using the sqlite3 test db")
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "USER": os.getenv("DB_USER"),
-        "NAME": os.getenv("DB_NAME"),
-        "PORT": os.getenv("DB_PORT")
-    },
-    "test": {
+    DATABASES = {
+        'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': ':memory:'
-    },
-}
+            'NAME': BASE_DIR + '/' + 'db.sqlite3',
+        }
+    }
 
+else:
+    # print("Using the production postgres db")
+
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "PASSWORD": os.getenv("DB_PASSWORD"),
+            "HOST": os.getenv("DB_HOST"),
+            "USER": os.getenv("DB_USER"),
+            "NAME": os.getenv("DB_NAME"),
+            "PORT": os.getenv("DB_PORT"),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

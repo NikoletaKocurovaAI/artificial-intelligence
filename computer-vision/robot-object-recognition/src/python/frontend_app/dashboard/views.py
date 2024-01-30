@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout
-from django.shortcuts import redirect
-from django.core.paginator import Paginator
+from django.db import IntegrityError
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
 
 from .forms import RegistrationForm, LoginForm, RegisterRobotForm, RobotDetailForm
 from .models import Robot, RobotRun
@@ -85,9 +86,15 @@ def register_robot(request):
         return render(request, "register_robot.html", {"form": form})
 
     if request.method == "POST":
-        Robot(name=request.POST.get("name"), motor_type=request.POST.get("motor_type")).save()
+        try:
+            Robot(name=request.POST.get("name"), motor_type=request.POST.get("motor_type")).save()
 
-        return render(request, "register_robot.html", {"form": form})
+            return render(request, "register_robot.html", {"form": form})
+
+        except IntegrityError:
+            return HttpResponse("You have provided the robot name that already exists.")
+
+
 
 
 @login_required
@@ -100,7 +107,7 @@ def show_robot_detail(request):
     :raises
     """
     if request.method == "POST":
-        robot_detail_id = request.POST.get("selected_page")
+        robot_detail_id = request.POST.get("robot_run_selected_robot")
         robot_to_delete = request.POST.get("robot_detail_robot_name")
         robot_next_run = request.POST.get("robot_detail_next_run_datetime")
         robot_id_next_run = request.POST.get("robot_detail_robot_id_for_next_run")

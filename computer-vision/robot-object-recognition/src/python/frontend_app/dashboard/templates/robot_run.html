@@ -7,110 +7,117 @@
 
     <h1>Robot run</h1>
 
-    <div style="background-color: white; height: 560px; padding-left: 15px; ">
+    <div style="background-color: white; height: 560px; padding-left: 25px; ">
 
-      <a href="{% url 'register-robot' %}"
-         style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white;
-                text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
-                margin-bottom: 5px">
-          Register New Robot
-      </a>
+        <a href="{% url 'register-robot' %}"
+            style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white;
+                    text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
+                    margin-bottom: 5px">
+            Register New Robot
+        </a>
 
-    <form action="{% url 'robot-detail' %}" method="post"
-          style="text-align: center; margin-top: 20px; display: inline-block;">
+        <form action="{% url 'robot-detail' %}" method="post"
+              style="text-align: center; margin-top: 20px; display: inline-block;">
 
-        {% csrf_token %}
+            {% csrf_token %}
 
-        <label for="redirectDropdown" style="display: block; font-weight: bold; margin-bottom: 10px;">Select a robot:</label>
-
-        <select id="redirectDropdown" name="selected_page" style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;
+            <select id="redirectDropdown" name="robot_run_selected_robot" style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;
                  color: #333; font-size: 14px; width: 200px; margin-bottom: 10px;">
 
-            <option value="" selected disabled style="background-color: #fff; color: #333;">Select an option</option>
+                <option value="" selected disabled style="background-color: #fff; color: #333;">Select a robot</option>
 
-            {% for item in data_robots_names %}
-                <option value="{{ item.id }}" style="background-color: #fff; color: #333;">{{ item.name }}</option>
-            {% endfor %}
+                {% for item in data_robots_names %}
+                    <option value="{{ item.id }}" style="background-color: #fff; color: #333;">{{ item.name }}</option>
+                {% endfor %}
 
-        </select>
+            </select>
 
-        <button type="submit" style="padding: 10px 20px; background-color: #FFA500; color: white;
-                    text-decoration: none; border: none; border-radius: 5px; cursor: pointer; width: 160px">
-            Go to robot detail
-        </button>
+            <button type="submit" style="padding: 10px 20px; background-color: #FFA500; color: white;
+                        text-decoration: none; border: none; border-radius: 5px; cursor: pointer; width: 160px">
+                Go to robot detail
+            </button>
 
-    </form>
+        </form>
 
-    <form action="{% url 'robot-run' %}" method="post"
-          style="text-align: center; margin-top: 20px; display: inline-block;">
-        {% csrf_token %}
-        <label for="redirectDropdown" style="display: block; font-weight: bold; margin-bottom: 10px;">Filter by status</label>
-        <select id="redirectDropdown" name="selected_filter"
-                style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;
-                 color: #333; font-size: 14px; width: 200px; margin-bottom: 10px;">
-            <option value="" selected disabled style="background-color: #fff; color: #333;">Select an option</option>
-            {% for item in data_robots_runs_statuses %}
-                <option value="{{ item.status }}" style="background-color: #fff; color: #333;">{{ item.status }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit" style="padding: 10px 20px; background-color: #FFA500; color: white;
-                    text-decoration: none; border: none; border-radius: 5px; cursor: pointer; width: 160px">
-            Filter
-        </button>
-    </form>
+        <form action="{% url 'robot-run' %}" method="post"
+              style="text-align: center; margin-top: 20px; display: inline-block;">
 
-    <table style="background-color: white; padding-top: 15px; width: 1370px">
-        <thead>
-            <tr style="background-color: #333333; height: 40px; color: white">
-                <th>NAME</th>
-                <th>STARTED</th>
-                <th>FINISHED</th>
-                <th>STATUS</th>
-                <th>DISTANCE (m)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in data_robots_runs2 %}
-                <tr style="background-color: lightgrey; height: 30px">
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.started }}</td>
-                    <td>{{ item.finished }}</td>
-                    <td>{{ item.status }}</td>
-                    <td>{{ item.distance }}</td>
+            {% csrf_token %}
+
+            <select id="redirectDropdown" name="selected_filter"
+                    style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;
+                     color: #333; font-size: 14px; width: 200px; margin-bottom: 10px;">
+
+                <option value="" selected disabled style="background-color: #fff; color: #333;">Select a status</option>
+
+                {% for item in data_robots_runs_statuses %}
+                    <option value="{{ item.status }}" style="background-color: #fff; color: #333;">{{ item.status }}</option>
+                {% endfor %}
+
+            </select>
+
+            <button type="submit" style="padding: 10px 20px; background-color: #FFA500; color: white;
+                        text-decoration: none; border: none; border-radius: 5px; cursor: pointer; width: 160px">
+                Filter by status
+            </button>
+        </form>
+
+        <table style="background-color: white; padding-top: 15px; width: 1370px">
+            <thead>
+                <tr style="background-color: #333333; height: 40px; color: white">
+                    <th>NAME</th>
+                    <th>STARTED</th>
+                    <th>FINISHED</th>
+                    <th>STATUS</th>
+                    <th>DISTANCE (m)</th>
                 </tr>
-            {% endfor %}
-        <tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for item in data_robots_runs2 %}
+                    <tr style="background-color: lightgrey; height: 30px">
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.started }}</td>
+                        <td>{{ item.finished }}</td>
+                        <td>{{ item.status }}</td>
+                        <td>{{ item.distance }}</td>
+                    </tr>
+                {% endfor %}
+            <tbody>
+        </table>
 
-      {% if data_robots_runs2.has_other_pages %}
-    <div class="pagination">
-        <span class="step-links">
-            {% if data_robots_runs2.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ data_robots_runs2.previous_page_number }}">previous</a>
-            {% endif %}
+        {% if data_robots_runs2.has_other_pages %}
 
-            <span class="current">
-                Page {{ data_robots_runs2.number }} of {{ data_robots_runs2.paginator.num_pages }}.
+        <div class="pagination" style="display: flex; justify-content: center; margin-top: 10px">
+            <span class="step-links">
+
+                {% if data_robots_runs2.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ data_robots_runs2.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ data_robots_runs2.number }} of {{ data_robots_runs2.paginator.num_pages }}.
+                </span>
+
+                {% if data_robots_runs2.has_next %}
+                    <a href="?page={{ data_robots_runs2.next_page_number }}">next</a>
+                    <a href="?page={{ data_robots_runs2.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+
             </span>
+        </div>
 
-            {% if data_robots_runs2.has_next %}
-                <a href="?page={{ data_robots_runs2.next_page_number }}">next</a>
-                <a href="?page={{ data_robots_runs2.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
+        {% endif %}
+
+        <div style="display: flex; justify-content: center;">
+             <a href="{% url 'logout' %}"
+             style="display: inline-block; padding: 10px 20px; background-color: blue; color: white;
+                    text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px;
+                    margin-bottom: 5px; width: 120px; text-align: center;">
+             Logout
+             </a>
+        </div>
+
     </div>
-{% endif %}
-
-    <center>
-        <a href="{% url 'logout' %}"
-         style="display: inline-block; padding: 10px 20px; background-color: blue; color: white;
-                text-decoration: none; border: none; border-radius: 5px; cursor: pointer; margin-top: 5px;
-                margin-bottom: 5px; width: 120px">
-          Logout
-      </a>
-    </center>
-
-  </div>
 
 {% endblock %}

@@ -15,7 +15,9 @@ Add 'dashboard' to INSTALLED_APPS variable in the dashboard/settings.py folder.
 ### Start
 Start the application server:
 
-`python manage.py runserver`
+```
+python manage.py runserver
+```
 
 ### Migrations
 
@@ -43,7 +45,9 @@ the redirection is configured to follow the endpoint specified in the **LOGIN_RE
 
 ### Super user
 
-`python manage.py createsuperuser`
+```
+python manage.py createsuperuser
+```
 
 **Username**: admin
 
@@ -89,4 +93,6 @@ python manage.py test dashboard.tests.tests.ViewsUnitTestCase.test_register_robo
 
 If you've recently added or modified static files, make sure to run:
 
-`python manage.py collectstatic`
+```
+python manage.py collectstatic
+```
