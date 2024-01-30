@@ -24,7 +24,7 @@ class Robot(Model):
         return robot_payload[0]
 
     def validate_name(self):
-        # TODO validate method or CharField unique=True
+        # TODO validate method replace with clean()
         pass
 
 

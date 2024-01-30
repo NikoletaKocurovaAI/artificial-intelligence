@@ -20,9 +20,13 @@ For Python files, the black is used.
 
 Example:
 
-`black --check computer-vision/robot-object-recognition/src/python/frontend_app`
+```
+black --check computer-vision/robot-object-recognition/src/python/frontend_app
+```
 
-`black computer-vision/robot-object-recognition/src/python/frontend_app`
+```
+black computer-vision/robot-object-recognition/src/python/frontend_app
+```
 
 # Commit Message Guidelines
 
@@ -52,8 +56,14 @@ Each commit message consists of the type (such as feat, refactor, ...), scope, t
 
 **Example:**
 
-`git add .`
+```
+git add .
+```
 
-`git commit -m "refactor(ror/frontend-app): Task5 Moving the app to src/python directory, so the black can be run on it."`
+```
+git commit -m "refactor(ror/frontend-app): Task5 Moving the app to src/python directory, so the black can be run on it."
+```
 
-`git push`
+```
+git push
+```
