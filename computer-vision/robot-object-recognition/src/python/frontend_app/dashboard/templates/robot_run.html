@@ -44,7 +44,7 @@
 
             {% csrf_token %}
 
-            <select id="redirectDropdown" name="selected_filter"
+            <select id="redirectDropdown" name="selected_status_filter"
                     style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;
                      color: #333; font-size: 14px; width: 200px; margin-bottom: 10px;">
 
@@ -75,7 +75,7 @@
             <tbody>
                 {% for item in data_robots_runs2 %}
                     <tr style="background-color: lightgrey; height: 30px">
-                        <td>{{ item.name }}</td>
+                        <td>{{ item.robot_name }}</td>
                         <td>{{ item.started }}</td>
                         <td>{{ item.finished }}</td>
                         <td>{{ item.status }}</td>

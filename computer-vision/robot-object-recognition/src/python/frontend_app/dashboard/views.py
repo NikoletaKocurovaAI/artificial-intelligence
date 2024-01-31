@@ -1,3 +1,4 @@
+from typing import Optional, List, Dict, Any
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -56,19 +57,33 @@ def show_robot_run(request):
     :raises
     """
     # TODO if not.user.is_authenticated
+    page_number: Optional[int] = None
+    robots_runs: List[Dict[str, Any]] = list()
 
     if request.method == "GET":
-        robots_runs = RobotRun.objects.filter().values()
-        page_number = request.GET.get('page')
+        robots_runs: List[Dict[str, Any]] = list(RobotRun.objects.filter().values())
+        page_number: Optional[int] = request.GET.get("page")
 
-    if request.method == "POST":
-        robots_runs = RobotRun.get_filtered_robot_runs(RobotRun(), status=request.POST.get("selected_filter"))
-        page_number = 1
+    elif request.method == "POST":
+        status: str = request.POST.get("selected_status_filter")
 
-    return render(request, "robot_run.html", {"data_robots_runs": RobotRun.add_robot_name(RobotRun(), robots_runs),
-                                              "data_robots_names": Robot.objects.filter().values(),
-                                              "data_robots_runs_statuses": RobotRun.get_robots_runs_statuses(RobotRun()),
-                                              "data_robots_runs2": Paginator(robots_runs, per_page=3).get_page(page_number)})
+        robots_runs: List[Dict[str, Any]] = list(
+            RobotRun.get_filtered_robot_runs(status=status)
+        )
+        page_number: int = 1
+
+    return render(
+        request,
+        "robot_run.html",
+        {
+            "data_robots_runs": RobotRun.add_robot_name(robots_runs),
+            "data_robots_names": Robot.objects.filter().values().order_by("name"),
+            "data_robots_runs_statuses": RobotRun.get_robots_runs_statuses(),
+            "data_robots_runs2": Paginator(robots_runs, per_page=3).get_page(
+                page_number
+            ),
+        },
+    )
 
 
 @login_required
@@ -87,14 +102,14 @@ def register_robot(request):
 
     if request.method == "POST":
         try:
-            Robot(name=request.POST.get("name"), motor_type=request.POST.get("motor_type")).save()
+            Robot(
+                name=request.POST.get("name"), motor_type=request.POST.get("motor_type")
+            ).save()
 
             return render(request, "register_robot.html", {"form": form})
 
         except IntegrityError:
             return HttpResponse("You have provided the robot name that already exists.")
-
-
 
 
 @login_required
@@ -113,8 +128,14 @@ def show_robot_detail(request):
         robot_id_next_run = request.POST.get("robot_detail_robot_id_for_next_run")
 
         if robot_detail_id:
-            return render(request, "robot_detail.html", {"data": Robot.get_by_id(Robot(), robot_detail_id),
-                                                         "form": RobotDetailForm()})
+            return render(
+                request,
+                "robot_detail.html",
+                {
+                    "data": Robot.get_by_id(Robot(), robot_detail_id),
+                    "form": RobotDetailForm(),
+                },
+            )
 
         if robot_to_delete:
             Robot.objects.filter(name=robot_to_delete).delete()

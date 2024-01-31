@@ -1,5 +1,3 @@
-
-
 ROBOT = [
     {"name": "Robot 1", "motor_type": "DC"},
     {"name": "Robot 2", "motor_type": "servo"},

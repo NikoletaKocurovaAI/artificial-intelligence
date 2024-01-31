@@ -1,6 +1,8 @@
 from django.db.models import Model, DateTimeField, TextField, IntegerField, CharField
+from django.db.models.query import QuerySet
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import MinValueValidator, MaxValueValidator
+from typing import List, Dict, Any
 
 
 class Robot(Model):
@@ -8,22 +10,30 @@ class Robot(Model):
     motor_type = CharField(max_length=128, null=False, blank=False, default="")
     next_run = DateTimeField(auto_now_add=False, null=True)
 
-    def get_by_id(self, id):
-        robot = Robot.objects.filter(id=id).values()
+    def get_by_id(self, id: int) -> Dict[str, Any]:
+        """
+        This method is called by the show_robot_detail view.
 
-        robot_payload = []
+        It gets the robot by its ID and returns dictionary, that is used in the robot_detail.html.
 
-        for item in robot:
-            robot_payload.append({
-                "id": item.get("id"),
-                "name": item.get("name"),
-                "motor_type": item.get("motor_type"),
-                "next_run": item.get("next_run")
-            })
+        :param int id: Robot ID
+        :return: Dict[str, Any] Robot object with attributes id, name, motor_type, next_run
+        :raises
+        """
 
-        return robot_payload[0]
+        robot: Dict[str, Any] = Robot.objects.filter(id=id).values().first()
+
+        return robot
 
     def validate_name(self):
+        """
+        This ..
+
+        :param request:
+        :return:
+        :raises
+        """
+
         # TODO validate method replace with clean()
         pass
 
@@ -33,45 +43,95 @@ class RobotRun(Model):
     started = DateTimeField(auto_now_add=False, default="")
     finished = DateTimeField(auto_now_add=False, default="")
     status = TextField(null=False, blank=False, default="")
-    distance = IntegerField(null=False, blank=False, default=0, validators=[MinValueValidator(5), MaxValueValidator(20)])
-
-    def add_robot_name(self, robots_runs):
-        for robot_run in robots_runs:
-            try:
-                robot = Robot.objects.get(id=robot_run.get("id"))
-                robot_run["name"] = robot.name
-
-            except ObjectDoesNotExist:
-                robot_run["name"] = ""
-
-        return robots_runs
+    distance = IntegerField(
+        null=False,
+        blank=False,
+        default=0,
+        validators=[MinValueValidator(5), MaxValueValidator(20)],
+    )
 
     class Meta:
         ordering = ["-distance"]
 
-    def get_filtered_robot_runs(self, status):
-        if status == "all":
-            robots_runs = RobotRun.objects.filter().values()
-        else:
-            robots_runs = RobotRun.objects.filter(status=status).values()
+    @staticmethod
+    def add_robot_name(robots_runs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        This method is called by the show_robot_run view.
+
+        To all robot runs, it gets robot names and adds them to the robot runs object.
+
+        Returned values are used in the robot_run.html.
+
+        :param List[Dict[str, Any] robots_runs: The list of robot run objects, that should be enriched by the robot
+        names
+        :return: List[Dict[str, Any]] Robot run objects enriched by the robot names with attributes id, robot_id,
+        started, finished, status, distance, robot_name
+        :raises
+        """
+
+        for robot_run in robots_runs:
+            try:
+                robot: Robot = Robot.objects.get(id=robot_run["robot_id"])
+                robot_run["robot_name"] = robot.name
+
+            except ObjectDoesNotExist:
+                robot_run["robot_name"] = ""
 
         return robots_runs
 
-    def get_robots_runs_statuses(self):
-        statuses = RobotRun.objects.filter().values('status')
+    @staticmethod
+    def get_filtered_robot_runs(status: str) -> List[Dict[str, Any]]:
+        """
+        This method is called by the show_robot_run view.
 
-        all_robots_runs_statuses = []
+        Status has either value "all", in this case no filter is applied. Or it contains the status value, that is used
+        to filter results from the robot run table and show these filtered results in the table on robot-run page.
 
-        for item in statuses:
-            all_robots_runs_statuses.append(item.get("status"))
+        Returned values are used in the robot_run.html.
 
-        distinct_robots_runs_statuses = list(set(all_robots_runs_statuses))
+        :param str status: The status passed from the view, to filter results in the table on robot-run page.
+        :return: List[Dict[str, Any]] Robot run objects filtered or not filtered by status with attributes id, robot_id,
+        started, finished, status, distance
+        :raises
+        """
 
-        postprocessed_robots_runs_statuses = []
+        if status == "all":
+            robots_runs: List[Dict[str, Any]] = list(RobotRun.objects.filter().values())
+        else:
+            robots_runs: List[Dict[str, Any]] = list(
+                RobotRun.objects.filter(status=status).values()
+            )
 
-        for item in distinct_robots_runs_statuses:
-            postprocessed_robots_runs_statuses.append({"status": item})
+        return robots_runs
+
+    @staticmethod
+    def get_robots_runs_statuses() -> List[Dict[str, str]]:
+        """
+        This method is called by the show_robot_run view.
+
+        It gets sorted statuses from the robot run table, which are not unique. The unique values are stored in the
+        variable distinct_robots_runs_statuses. It appends "all" option in the variable
+        postprocessed_robots_runs_statuses on the first index meaning, that applied "all" filter will be shown as the
+        first option in the UI. Then the rest of statuses is appended to this variable.
+
+        Returned values are used in the robot_run.html.
+
+        :return: List[Dict[str, str]]: The list of statuses, that are used on the robot-run page to filter table
+        results.
+        :raises
+        """
+
+        statuses: QuerySet[List[str]] = (
+            RobotRun.objects.order_by("status")
+            .values_list("status", flat=True)
+            .distinct()
+        )
+
+        postprocessed_robots_runs_statuses: List[Dict[str, str]] = list()
 
         postprocessed_robots_runs_statuses.append({"status": "all"})
+
+        for item in statuses:
+            postprocessed_robots_runs_statuses.append({"status": item})
 
         return postprocessed_robots_runs_statuses

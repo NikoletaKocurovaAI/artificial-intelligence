@@ -1,3 +1,8 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+from django.test import TestCase
 
 
 class EndToEndTestCase(TestCase):
@@ -21,4 +26,3 @@ class EndToEndTestCase(TestCase):
         login_button.send_keys(Keys.RETURN)
 
         assert "Robot run" in selenium_webdriver.page_source
-        

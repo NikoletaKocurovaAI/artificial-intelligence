@@ -86,7 +86,7 @@ python manage.py test
 ```
 
 ```
-python manage.py test dashboard.tests.tests.ViewsUnitTestCase.test_register_robot_get_method
+python manage.py test dashboard.tests.test_model.ModelUnitTestCase.test_robot_run_model_created_successfully
 ```
 
 ## CSS

@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Set the STATIC_ROOT setting
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -79,18 +79,22 @@ WSGI_APPLICATION = "frontend_app.wsgi.application"
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 load_dotenv()
 
-if 'test' in sys.argv:
+# print(f"settings data {sys.argv}")
+
+if "test" in sys.argv:
     # print("Using the sqlite3 test db")
+    # settings data ['manage.py', 'test', 'dashboard.tests.test_model.ModelUnitTestCase.test_get_robots_runs_statuses']
 
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR + '/' + 'db.sqlite3',
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR + "/" + "db.sqlite3",
         }
     }
 
 else:
     # print("Using the production postgres db")
+    # ['manage.py', 'runserver']
 
     DATABASES = {
         "default": {
