@@ -5,7 +5,7 @@ from django import forms
 
 class LoginForm(forms.Form):
     username = forms.CharField()
-    password = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
 
 
 class RegistrationForm(UserCreationForm):
@@ -23,7 +23,7 @@ class RegisterRobotForm(forms.Form):
     #     model = Robot
     #     fields = ('name', 'motor_type')
 
-    # TODO validate if robot name already exists
+    # TODO validate if robot name already exists, clean section in J.
 
 
 class RobotDetailForm(forms.Form):

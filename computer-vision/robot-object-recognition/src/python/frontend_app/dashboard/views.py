@@ -2,7 +2,7 @@ from typing import Optional, List, Dict, Any
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login, authenticate
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -18,6 +18,27 @@ from .models import Robot, RobotRun
     Template - Data presentation
     View - Business logic
 """
+
+
+def login_user(request):
+    if request.method == "GET":
+        return render(request, "login.html", {"form": LoginForm()})
+
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('robot-run')
+
+        else:
+            return render(request, "login.html", {"form": LoginForm()})
 
 
 def register_user(request):
@@ -71,7 +92,7 @@ def logout_user(request):
 
     logout(request)
 
-    return redirect("login")
+    return redirect("custom-login")
 
 
 @login_required

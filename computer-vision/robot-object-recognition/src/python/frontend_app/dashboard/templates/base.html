@@ -12,18 +12,23 @@
 
 <html>
 
-  <body>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Dashboard</title>
+    </head>
 
-    <div id="base-header-div"></div>
+    <body>
 
-    <div id="common-dashboard-title-and-content-div">
+        <div id="base-header-div"></div>
 
-        <div id="dashboard-title-div">Robot Object Detection Dashboard</div>
+        <div id="common-dashboard-title-and-content-div">
 
-        <div id="main-dashboard-content-div">{% block content %}{% endblock %}</div>
+            <div id="dashboard-title-div">Robot Object Detection Dashboard</div>
 
-    </div>
+            <div id="main-dashboard-content-div">{% block content %}{% endblock %}</div>
 
-  </body>
+        </div>
+
+    </body>
 
 </html>

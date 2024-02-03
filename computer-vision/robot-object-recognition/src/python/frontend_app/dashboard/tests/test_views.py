@@ -22,7 +22,7 @@ class ViewsUnitTestCase(TestCase):
 
             # Check that the response is a redirect to the login page
             self.assertEqual(response.status_code, 302)
-            self.assertEqual(response.url, reverse('login'))
+            self.assertEqual(response.url, reverse('custom-login'))
 
             # Check that the user is logged out
             user = authenticate(username=self.username, password=self.password)
@@ -63,7 +63,7 @@ class ViewsUnitTestCase(TestCase):
         # response = self.client.post(reverse('register'), valid_data, follow=True)
         #
         # # Check that the user is redirected to the login page
-        # self.assertRedirects(response, reverse('login'))
+        # self.assertRedirects(response, reverse('custom-login'))
         #
         # # Check that the user is created in the database
         # self.assertTrue(User.objects.filter(username='testuser').exists())
@@ -99,7 +99,6 @@ class ViewsUnitTestCase(TestCase):
     def test_show_robot_run(self):
         pass
 
-    # @override_settings(LOGIN_URL='')
     def test_register_robot_get_method(self):
         url = reverse("register-robot")
 

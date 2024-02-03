@@ -13,12 +13,12 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth.views import LoginView
 
 from dashboard.models import Robot, RobotRun
 from dashboard.views import (
     show_robot_run,
     show_robot_detail,
+    login_user,
     register_user,
     logout_user,
     register_robot,
@@ -40,7 +40,7 @@ admin.site.register(RobotRun)
 """
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", LoginView.as_view(), name="login"),
+    path("", login_user, name="custom-login"),
     path("register", register_user, name="register"),
     path("logout", logout_user, name="logout"),
     path("robot-run", show_robot_run, name="robot-run"),
