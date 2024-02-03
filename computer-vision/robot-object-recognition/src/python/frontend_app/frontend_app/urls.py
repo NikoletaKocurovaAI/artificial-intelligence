@@ -1,17 +1,14 @@
-"""frontend_app URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+    Examples:
+    Function views
+        1. Add an import:  from my_app import views
+        2. Add a URL to urlpatterns:  path('', views.home, name='home')
+    Class-based views
+        1. Add an import:  from other_app.views import Home
+        2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+    Including another URLconf
+        1. Import the include() function: from django.urls import include, path
+        2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
 from django.contrib import admin
@@ -28,9 +25,19 @@ from dashboard.views import (
 )
 
 
+"""
+     Used to register Django model classes with the Django admin interface, allowing you to manage and interact with 
+     instances of these models through the Django admin.
+"""
 admin.site.register(Robot)
 admin.site.register(RobotRun)
 
+
+"""
+    When browser sends request HTTP to a specific URL, URL dispatcher looks for a function registered here.
+    Django runs the found function with the argument request containing the data from the browser turned into a Python 
+    object.
+"""
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", LoginView.as_view(), name="login"),

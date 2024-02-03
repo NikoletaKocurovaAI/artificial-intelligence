@@ -5,7 +5,9 @@
 
 Generate the dashboard subdirectory.
 
-`python manage.py startapp dashboard`
+```
+python manage.py startapp dashboard
+```
 
 The dashboard is an application folder. The project collects one or more applications. Example: by making a project of 
 an on-line store, it could be divided into an application sales, blog and application contact.
@@ -79,6 +81,14 @@ Permission group: User2 (supervisor) permission group
 
 ## Tests
 
+Test user:
+
+- Username: TestUserName
+
+- Email address: nikoletakocurovaai@gmail.com
+
+- Password: PassWord99*
+
 Run tests:
 
 ```
@@ -91,7 +101,7 @@ python manage.py test dashboard.tests.test_model.ModelUnitTestCase.test_robot_ru
 
 ## CSS
 
-If you've recently added or modified static files, make sure to run:
+This is for production:
 
 ```
 python manage.py collectstatic

@@ -5,6 +5,16 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from typing import List, Dict, Any
 
 
+"""
+    MVC pattern (Model-View-Controller)
+    
+    Django's MTV:
+    Model - Data from database
+    Template - Data presentation
+    View - Business logic
+"""
+
+
 class Robot(Model):
     name = CharField(max_length=128, null=False, blank=False, default="", unique=True)
     motor_type = CharField(max_length=128, null=False, blank=False, default="")

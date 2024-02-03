@@ -10,15 +10,38 @@ from django.shortcuts import redirect, render
 from .forms import RegistrationForm, LoginForm, RegisterRobotForm, RobotDetailForm
 from .models import Robot, RobotRun
 
+"""
+    MVC pattern (Model-View-Controller)
+
+    Django's MTV:
+    Model - Data from database
+    Template - Data presentation
+    View - Business logic
+"""
+
 
 def register_user(request):
     """
-    This ..
+    View function for registering a new user.
 
-    :param request:
-    :return:
+    method = ['GET']
+    Renders the registration form page with an empty RegistrationForm instance.
+
+    method = ['POST']
+    Validates the submitted registration form data.
+        - from django.contrib.auth.forms import UserCreationForm
+    If the form is valid, saves the new user and renders the login page with an empty LoginForm instance.
+        - path("", LoginView.as_view(), name="login"),
+        - class LoginForm(forms.Form):
+    If the form is invalid, re-renders the registration form page with the validation errors and the submitted form
+    data.
+
+    :param request: HttpRequest object representing the HTTP request.
+    :return: The function returns a Python response object. Django delivers converted HttpResponse object to the
+    browser.
     :raises
     """
+
     if request.method == "GET":
         return render(request, "register.html", {"form": RegistrationForm()})
 
@@ -36,12 +59,16 @@ def register_user(request):
 @login_required
 def logout_user(request):
     """
-    This ..
+   View function for logging out a user.
 
-    :param request:
-    :return:
+    Logs out the currently authenticated user by calling Django's logout() function,
+    then redirects the user to the login page.
+
+    :param request: HttpRequest object representing the HTTP request.
+    :return: HttpResponseRedirect object redirecting the user to the login page.
     :raises
     """
+
     logout(request)
 
     return redirect("login")
@@ -50,13 +77,18 @@ def logout_user(request):
 @login_required
 def show_robot_run(request):
     """
-    This ..
+    View function for displaying a list of robot runs.
 
-    :param request:
-    :return:
+    Retrieves a list of robot runs and renders them on the 'robot_run.html' template.
+    If the request method is GET, retrieves all robot runs and paginates them.
+    If the request method is POST, filters the robot runs based on the selected status filter.
+
+    :param request: HttpRequest object representing the HTTP request.
+    :return: The function returns a Python response object. Django delivers converted HttpResponse object to the
+    browser.
     :raises
     """
-    # TODO if not.user.is_authenticated
+
     page_number: Optional[int] = None
     robots_runs: List[Dict[str, Any]] = list()
 
@@ -89,12 +121,18 @@ def show_robot_run(request):
 @login_required
 def register_robot(request):
     """
-    This ..
+    View function for registering a new robot.
 
-    :param request:
-    :return:
+    Renders the 'register_robot.html' template with an empty RegisterRobotForm instance for GET requests.
+    Processes the submitted form data to create a new robot instance for POST requests.
+    If the robot name already exists, returns an error message indicating duplication.
+
+    :param request: HttpRequest object representing the HTTP request.
+    :return: The function returns a Python response object. Django delivers converted HttpResponse object to the
+    browser.
     :raises
     """
+
     form = RegisterRobotForm()
 
     if request.method == "GET":
@@ -115,12 +153,20 @@ def register_robot(request):
 @login_required
 def show_robot_detail(request):
     """
-    This ..
+    View function for displaying details of a robot and handling related actions.
 
-    :param request:
-    :return:
+    Renders the 'robot_detail.html' template with details of the selected robot if a robot ID is provided via POST
+    request.
+    Deletes the robot with the provided name if a robot name is provided via POST request.
+    Updates the next run datetime for the robot with the provided ID if a new next run datetime is provided via POST
+    request.
+    Redirects the user to the 'robot-run' URL after handling the actions.
+
+    :param request: HttpRequest object representing the HTTP request.
+    :return: HttpResponse object representing the HTTP response or HttpResponseRedirect object redirecting the user.
     :raises
     """
+
     if request.method == "POST":
         robot_detail_id = request.POST.get("robot_run_selected_robot")
         robot_to_delete = request.POST.get("robot_detail_robot_name")
