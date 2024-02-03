@@ -28,14 +28,14 @@ def login_user(request):
         form = LoginForm(request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
 
             user = authenticate(request, username=username, password=password)
 
             if user is not None:
                 login(request, user)
-                return redirect('robot-run')
+                return redirect("robot-run")
 
         else:
             return render(request, "login.html", {"form": LoginForm()})
@@ -80,14 +80,14 @@ def register_user(request):
 @login_required
 def logout_user(request):
     """
-   View function for logging out a user.
+    View function for logging out a user.
 
-    Logs out the currently authenticated user by calling Django's logout() function,
-    then redirects the user to the login page.
+     Logs out the currently authenticated user by calling Django's logout() function,
+     then redirects the user to the login page.
 
-    :param request: HttpRequest object representing the HTTP request.
-    :return: HttpResponseRedirect object redirecting the user to the login page.
-    :raises
+     :param request: HttpRequest object representing the HTTP request.
+     :return: HttpResponseRedirect object redirecting the user to the login page.
+     :raises
     """
 
     logout(request)

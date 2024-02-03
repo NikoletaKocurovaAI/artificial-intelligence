@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("dashboard", "0004_robotrun_distance_alter_robotrun_finished_and_more"),
     ]

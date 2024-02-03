@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("dashboard", "0008_alter_robot_motor_type_alter_robot_name"),
     ]
