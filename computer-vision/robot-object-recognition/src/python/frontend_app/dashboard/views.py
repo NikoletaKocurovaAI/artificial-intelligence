@@ -21,7 +21,29 @@ from .models import Robot, RobotRun
 
 
 def login_user(request):
+    """
+    View function for user login.
+
+    If the request method is GET, renders the login form page with an empty login form.
+
+    If the request method is POST:
+        - Retrieves the submitted form data.
+        - Validates the form data.
+        - Authenticates the user using the provided credentials.
+        - If authentication is successful, logs the user in and redirects to the 'robot-run' page.
+        - If authentication fails or the form is invalid, renders the login form page with the submitted form and error messages.
+
+    Parameters:
+    - request: The HTTP request object.
+
+    Returns:
+    - If the request method is GET, returns a rendered login form page with an empty login form.
+    - If the request method is POST and authentication is successful, redirects to the 'robot-run' page.
+    - If the request method is POST and authentication fails or the form is invalid, returns a rendered login form page with the submitted form and error messages.
+    """
+
     if request.method == "GET":
+        # TODO center login button
         return render(request, "login.html", {"form": LoginForm()})
 
     if request.method == "POST":
@@ -38,6 +60,7 @@ def login_user(request):
                 return redirect("robot-run")
 
         else:
+            # TODO replace with error html
             return render(request, "login.html", {"form": LoginForm()})
 
 
@@ -64,6 +87,8 @@ def register_user(request):
     """
 
     if request.method == "GET":
+        # TODO center register form
+        # TODO <form novalidate> on vs. off
         return render(request, "register.html", {"form": RegistrationForm()})
 
     if request.method == "POST":
@@ -77,6 +102,7 @@ def register_user(request):
             return render(request, "register.html", {"form": RegistrationForm()})
 
 
+# TODO login required vs. is user authenticated
 @login_required
 def logout_user(request):
     """
@@ -157,6 +183,7 @@ def register_robot(request):
     form = RegisterRobotForm()
 
     if request.method == "GET":
+        # TODO center text in buttons
         return render(request, "register_robot.html", {"form": form})
 
     if request.method == "POST":
@@ -195,6 +222,7 @@ def show_robot_detail(request):
         robot_id_next_run = request.POST.get("robot_detail_robot_id_for_next_run")
 
         if robot_detail_id:
+            # TODO center text in buttons
             return render(
                 request,
                 "robot_detail.html",
@@ -208,6 +236,7 @@ def show_robot_detail(request):
             Robot.objects.filter(name=robot_to_delete).delete()
 
         if robot_next_run:
+            # TODO remove duplicate datetime field form
             robot = Robot.objects.get(id=int(robot_id_next_run))
             robot.next_run = robot_next_run
             robot.save()

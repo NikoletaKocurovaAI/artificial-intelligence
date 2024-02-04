@@ -12,15 +12,25 @@ pip install virtualenv
 
 Install virtualenv library for Windows:
 
-`python -m pip install virtualenv`
+```
+python -m pip install virtualenv
+```
+
+#### Create
 
 Create virtual environment for Mac OS:
 
-`virtualenv robot-object-recognition`
+```
+virtualenv robot-object-recognition
+```
 
 Create virtual environment for Windows:
 
-`python -m virtualenv robot-object-recognition`
+```
+python -m virtualenv robot-object-recognition
+```
+
+#### Activate
 
 Activate virtual environment for Mac OS:
 
@@ -30,14 +40,14 @@ source ./robot-object-recognition/bin/activate
 
 Activate virtual environment for Windows:
 
-`.\robot-object-recognition\Scripts\activate`
+```
+.\robot-object-recognition\Scripts\activate
+```
+
+#### Deactivate
 
 Deactivate virtual environment:
 
-`deactivate`
-
-### Required packages
-
-Install required packages:
-
-`pip install -r requirements.txt`
+```
+deactivate
+```

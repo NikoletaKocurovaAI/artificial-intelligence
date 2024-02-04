@@ -5,6 +5,7 @@ from django.urls import reverse
 
 
 class ViewsIntegrationTestCase(TestCase):
+    # TODO this test fails in pipeline due to missing DB credentials
     def register_robot(self) -> None:
         name = "Robot integration test"
 

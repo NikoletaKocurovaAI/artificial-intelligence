@@ -23,8 +23,6 @@ class RegisterRobotForm(forms.Form):
     #     model = Robot
     #     fields = ('name', 'motor_type')
 
-    # TODO validate if robot name already exists, clean section in J.
-
 
 class RobotDetailForm(forms.Form):
     datetime_field = forms.DateTimeField(

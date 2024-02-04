@@ -39,6 +39,7 @@ admin.site.register(RobotRun)
     object.
 """
 urlpatterns = [
+    # TODO Roles
     path("admin/", admin.site.urls),
     path("", login_user, name="custom-login"),
     path("register", register_user, name="register"),

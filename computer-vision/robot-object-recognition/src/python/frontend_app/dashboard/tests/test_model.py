@@ -4,6 +4,7 @@ from django.test import TestCase, override_settings, TransactionTestCase
 from dashboard.models import Robot, RobotRun
 
 
+# TODO TestCase vs. TransactionTestCase
 class ModelUnitTestCase(TestCase):
     def setUp(self) -> None:
         self.robot1 = Robot.objects.create(

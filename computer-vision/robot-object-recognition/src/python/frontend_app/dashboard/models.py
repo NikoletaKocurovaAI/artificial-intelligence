@@ -16,6 +16,7 @@ from typing import List, Dict, Any
 
 
 class Robot(Model):
+    # TODO unique True raises IntegrityError
     name = CharField(max_length=128, null=False, blank=False, default="", unique=True)
     motor_type = CharField(max_length=128, null=False, blank=False, default="")
     next_run = DateTimeField(auto_now_add=False, null=True)
@@ -44,7 +45,7 @@ class Robot(Model):
         :raises
         """
 
-        # TODO validate method replace with clean()
+        # TODO validate name method replace with some other clean() logic
         pass
 
 

@@ -3,6 +3,15 @@
 
 ## Project set-up
 
+### Required packages
+
+Install required packages:
+
+```
+pip install -r requirements.txt
+```
+
+### Dashboard APP
 Generate the dashboard subdirectory.
 
 ```
@@ -14,7 +23,7 @@ an on-line store, it could be divided into an application sales, blog and applic
 
 Add 'dashboard' to INSTALLED_APPS variable in the dashboard/settings.py folder.
 
-### Start
+### Start Dashboard APP
 Start the application server:
 
 ```
@@ -51,11 +60,9 @@ the redirection is configured to follow the endpoint specified in the **LOGIN_RE
 python manage.py createsuperuser
 ```
 
-**Username**: admin
-
-**Email address**: nikoletakocurovaai@gmail.com
-
-**Password**: admin
+- **Username**: admin
+- **Email address**: nikoletakocurovaai@gmail.com
+- **Password**: admin
 
 The admin panel is available under the url http://127.0.0.1:8000/admin.
 
@@ -63,31 +70,19 @@ The admin panel is available under the url http://127.0.0.1:8000/admin.
 
 Login details:
 
-**Username**: UserName1
-
-**Email address**: nikoletakocurovaai@gmail.com
-
-**Password**: PassWord25*
+- **Username**: UserName1
+- **Email address**: nikoletakocurovaai@gmail.com
+- **Password**: PassWord25*
 
 Permission group: User1 (employee) permission group
 
-**Username**: UserName2
-
-**Email address**: nikoletakocurovaai@gmail.com
-
-**Password**: PassWord52*
+- **Username**: UserName2
+- **Email address**: nikoletakocurovaai@gmail.com
+- **Password**: PassWord52*
 
 Permission group: User2 (supervisor) permission group
 
 ## Tests
-
-Test user:
-
-- Username: TestUserName
-
-- Email address: nikoletakocurovaai@gmail.com
-
-- Password: PassWord99*
 
 Run tests:
 

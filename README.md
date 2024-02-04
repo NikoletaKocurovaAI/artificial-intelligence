@@ -6,4 +6,5 @@ This project includes the following topics:
   - Object Detection and classification by differential wheeled robot.
   - **Technologies** covered:
     - Raspberry Pi 3
+    - OpenCV
     - Django framework
