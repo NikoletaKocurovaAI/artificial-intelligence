@@ -1,3 +1,7 @@
+import cv2
+import numpy as np
+import skimage.io as io
+
 from requests.models import Response
 from pycocotools.coco import COCO
 from typing import Any
@@ -49,6 +53,16 @@ class CocoAnnotationsGetter:
 
     @staticmethod
     def download_images(images: list[dict[str, Any]], category_name: str):
+        """
+        Given the metadata about images, fetched from the instances_train2017.json file, the url is used to download
+        the image and save it in the .jpg format.
+
+        :param images:
+        :param category_name:
+        :return:
+        """
+        count: int = 0
+
         for image in images:
             response: Response = urlopen(image.get("coco_url"))
 
@@ -62,12 +76,28 @@ class CocoAnnotationsGetter:
                 ) as f:
                     f.write(image_data)
 
-                break
+            else:
+                print(f"Response code {response.getcode()}")
+
+            # keep track
+            count = count + 1
+
+            if count % 100 == 0:
+                print(count)
 
     @staticmethod
     def get_bounding_boxes_by_image_id(
         instances_annotations: COCO, images: list[dict[str, Any]], category_id: int
     ) -> dict[str, list[list[float]]]:
+        """
+        Given the metadata about images, fetched from the instances_train2017.json file, all objects bounding boxes,that
+        belong to the specified category are returned by this method.
+
+        :param instances_annotations:
+        :param images:
+        :param category_id:
+        :return:
+        """
         bounding_boxes: dict[str, list[list[float]]] = dict()
 
         for image in images:
@@ -92,15 +122,53 @@ class CocoAnnotationsGetter:
         return bounding_boxes
 
     @staticmethod
-    def crop_images(images: list[dict[str, Any]], bounding_boxes: dict[str, list[list[float]]]):
+    def crop_images_by_bounding_boxes(
+        images: list[dict[str, Any]],
+        bounding_boxes: dict[str, list[list[float]]],
+        category_name: str,
+    ) -> None:
+        """
+        Given the bounding boxes, objects on the image are cropped and saved in the .jpg format.
+
+        :param images:
+        :param bounding_boxes:
+        :param category_name:
+        :return:
+        """
         for image in images:
             image_id: str = str(image.get("id"))
 
+            image_numpy_array: np.ndarray = io.imread(
+                f"data/images/{category_name}/train_image_{image_id}.jpg"
+            )
+
+            no_objects_in_image: int = 0
+
             bounding_boxes: list[list[float]] = bounding_boxes.get(image_id)
 
-            print(bounding_boxes)
+            for bounding_box in bounding_boxes:
+                start_x: int = int(bounding_box[0])
+                end_x: int = start_x + int(bounding_box[2])
 
-            break
+                start_y: int = int(bounding_box[1])
+                end_y: int = start_y + int(bounding_box[3])
+
+                cropped_image: np.ndarray = image_numpy_array[
+                    start_y:end_y, start_x:end_x, :
+                ]
+
+                image_numpy_array_bgr: np.ndarray = cv2.cvtColor(cropped_image, cv2.COLOR_RGB2BGR)
+
+                cv2.imwrite(
+                    f"data/cropped_images/{category_name}/cropped_train_image_{image_id}_{no_objects_in_image}.jpg",
+                    image_numpy_array_bgr,
+                )
+
+                no_objects_in_image += 1
+
+    @staticmethod
+    def resize_images():
+        pass
 
 
 def main() -> None:
@@ -118,16 +186,17 @@ def main() -> None:
         )
     )
 
-    coco_annotations_getter.download_images(instances_annotations_images, category_name)
+    # coco_annotations_getter.download_images(instances_annotations_images, category_name)
 
     bounding_boxes: dict[str, list[list[float]]] = (
         coco_annotations_getter.get_bounding_boxes_by_image_id(
             instances_annotations, instances_annotations_images, category_id
         )
     )
-    print(bounding_boxes)
 
-    coco_annotations_getter.crop_images(instances_annotations_images, bounding_boxes)
+    coco_annotations_getter.crop_images_by_bounding_boxes(
+        instances_annotations_images, bounding_boxes, category_name
+    )
 
 
 if __name__ == "__main__":
