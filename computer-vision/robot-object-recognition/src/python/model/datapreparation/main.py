@@ -117,24 +117,25 @@ class CocoAnnotationsGetter:
 
             bounding_boxes[str(image.get("id"))] = bounding_boxes_one_image
 
-            break
-
         return bounding_boxes
 
     @staticmethod
     def crop_images_by_bounding_boxes(
         images: list[dict[str, Any]],
-        bounding_boxes: dict[str, list[list[float]]],
+        bounding_boxes_all: dict[str, list[list[float]]],
         category_name: str,
     ) -> None:
         """
         Given the bounding boxes, objects on the image are cropped and saved in the .jpg format.
 
         :param images:
-        :param bounding_boxes:
+        :param bounding_boxes_all:
         :param category_name:
         :return:
         """
+
+        count: int = 0
+
         for image in images:
             image_id: str = str(image.get("id"))
 
@@ -144,7 +145,7 @@ class CocoAnnotationsGetter:
 
             no_objects_in_image: int = 0
 
-            bounding_boxes: list[list[float]] = bounding_boxes.get(image_id)
+            bounding_boxes: list[list[float]] = bounding_boxes_all.get(image_id)
 
             for bounding_box in bounding_boxes:
                 start_x: int = int(bounding_box[0])
@@ -153,22 +154,31 @@ class CocoAnnotationsGetter:
                 start_y: int = int(bounding_box[1])
                 end_y: int = start_y + int(bounding_box[3])
 
-                cropped_image: np.ndarray = image_numpy_array[
-                    start_y:end_y, start_x:end_x, :
-                ]
+                try:
+                    # 3D array
+                    cropped_image: np.ndarray = image_numpy_array[
+                                                start_y:end_y, start_x:end_x, :
+                                                ]
 
-                image_numpy_array_bgr: np.ndarray = cv2.cvtColor(cropped_image, cv2.COLOR_RGB2BGR)
+                    cropped_image: np.ndarray = cv2.cvtColor(cropped_image, cv2.COLOR_RGB2BGR)
+                except IndexError:
+                    # grayscale 2D array
+                    cropped_image: np.ndarray = image_numpy_array[
+                                                start_y:end_y, start_x:end_x
+                                                ]
 
                 cv2.imwrite(
                     f"data/cropped_images/{category_name}/cropped_train_image_{image_id}_{no_objects_in_image}.jpg",
-                    image_numpy_array_bgr,
+                    cropped_image,
                 )
 
                 no_objects_in_image += 1
 
-    @staticmethod
-    def resize_images():
-        pass
+                # keep track
+                count = count + 1
+
+                if count % 100 == 0:
+                    print(count)
 
 
 def main() -> None:
