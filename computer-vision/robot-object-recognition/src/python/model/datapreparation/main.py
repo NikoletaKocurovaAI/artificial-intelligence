@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import os
 import skimage.io as io
 
 from requests.models import Response
@@ -26,7 +27,7 @@ class CocoAnnotationsGetter:
         instances_annotations: COCO, category: str
     ) -> tuple[int, list[dict[str, Any]]]:
         """
-        Given the category name, getCatIds() returns the category ID.
+        Given the category name, getCatIds() returns the category ID from the file instances_train2017.
 
         getImgIds() gets the list of image IDs for the given category.
 
@@ -52,14 +53,13 @@ class CocoAnnotationsGetter:
         return category_id, images
 
     @staticmethod
-    def download_images(images: list[dict[str, Any]], category_name: str):
+    def download_images(images: list[dict[str, Any]], category_name: str) -> None:
         """
         Given the metadata about images, fetched from the instances_train2017.json file, the url is used to download
         the image and save it in the .jpg format.
 
         :param images:
         :param category_name:
-        :return:
         """
         count: int = 0
 
@@ -93,11 +93,12 @@ class CocoAnnotationsGetter:
         Given the metadata about images, fetched from the instances_train2017.json file, all objects bounding boxes,that
         belong to the specified category are returned by this method.
 
-        :param instances_annotations:
+        :param instances_annotations: i.e. instances_train2017.json file
         :param images:
         :param category_id:
-        :return:
+        :return: bounding_boxes dict containing the image ID and the list of bounding boxes float values
         """
+
         bounding_boxes: dict[str, list[list[float]]] = dict()
 
         for image in images:
@@ -181,32 +182,88 @@ class CocoAnnotationsGetter:
                     print(count)
 
 
+def pad_images(category_name: str) -> None:
+    """
+    After cleaning the images (excl. blured images), empty black canvas is created and all images are placed into it.
+    This way we avoid losing some information when resizing images to smaler size then original.
+
+    :return:
+    """
+
+    print("padding images")
+
+    images_sample_size: int = 2000
+    canvas_height: int = 640
+    canvas_width: int = 640
+    center_x: int = 320
+    center_y: int = 320
+
+    successfully_postprocessed_images: list[str] = list()
+    failed_to_postproces_images: list[str] = list()
+
+    for image_name in os.listdir(f"data/cleaned_images/{category_name}"):
+        canvas = np.zeros((canvas_height, canvas_width, 3), dtype=np.uint8)
+
+        try:
+            image = cv2.imread(f"data/cleaned_images/{category_name}/" + image_name)
+
+            image_width: int = image.shape[1]
+            image_height: int = image.shape[0]
+
+            start_x: int = int(center_x - (image_height / 2))
+            end_x: int = int(start_x + image_height)
+
+            start_y: int = int(center_y - (image_width / 2))
+            end_y: int = int(start_y + image_width)
+
+            canvas[start_x:end_x, start_y:end_y] = image
+
+            cv2.imwrite(
+                f"data/images_with_padding/{category_name}/cropped_train_image_{image_name}",
+                canvas,
+            )
+
+            successfully_postprocessed_images.append(image_name)
+
+        except Exception:
+            failed_to_postproces_images.append(image_name)
+
+        if len(successfully_postprocessed_images) == images_sample_size:
+            # we have enough pictures
+            break
+
+    print(f"successfully_postprocessed_images {len(successfully_postprocessed_images)}")
+    print(f"failed_to_postproces_images {len(failed_to_postproces_images)}")
+
+
 def main() -> None:
-    category_name: str = "cup"
+    category_name: str = "apple"
 
-    coco_annotations_getter = CocoAnnotationsGetter()
-
-    instances_annotations: COCO = coco_annotations_getter.load_annotations(
-        INSTANCES_TRAIN_FILE
-    )
-
-    category_id, instances_annotations_images = (
-        coco_annotations_getter.get_images_by_category(
-            instances_annotations, category_name
-        )
-    )
+    # coco_annotations_getter = CocoAnnotationsGetter()
+    #
+    # instances_annotations: COCO = coco_annotations_getter.load_annotations(
+    #     INSTANCES_TRAIN_FILE
+    # )
+    #
+    # category_id, instances_annotations_images = (
+    #     coco_annotations_getter.get_images_by_category(
+    #         instances_annotations, category_name
+    #     )
+    # )
 
     # coco_annotations_getter.download_images(instances_annotations_images, category_name)
 
-    bounding_boxes: dict[str, list[list[float]]] = (
-        coco_annotations_getter.get_bounding_boxes_by_image_id(
-            instances_annotations, instances_annotations_images, category_id
-        )
-    )
+    # bounding_boxes: dict[str, list[list[float]]] = (
+    #     coco_annotations_getter.get_bounding_boxes_by_image_id(
+    #         instances_annotations, instances_annotations_images, category_id
+    #     )
+    # )
+    #
+    # coco_annotations_getter.crop_images_by_bounding_boxes(
+    #     instances_annotations_images, bounding_boxes, category_name
+    # )
 
-    coco_annotations_getter.crop_images_by_bounding_boxes(
-        instances_annotations_images, bounding_boxes, category_name
-    )
+    pad_images(category_name)
 
 
 if __name__ == "__main__":
