@@ -192,14 +192,16 @@ def pad_images(category_name: str) -> None:
 
     print("padding images")
 
-    images_sample_size: int = 2000
-    canvas_height: int = 640
-    canvas_width: int = 640
-    center_x: int = 320
-    center_y: int = 320
+    images_sample_size: int = 200
+    canvas_height: int = 416
+    min_image_height: int = 229
+    min_image_width: int = 229
+    canvas_width: int = 416
+    center_x: int = 208
+    center_y: int = 208
 
     successfully_postprocessed_images: list[str] = list()
-    failed_to_postproces_images: list[str] = list()
+    skipped_images: list[str] = list()
 
     for image_name in os.listdir(f"data/cleaned_images/{category_name}"):
         canvas = np.zeros((canvas_height, canvas_width, 3), dtype=np.uint8)
@@ -210,30 +212,33 @@ def pad_images(category_name: str) -> None:
             image_width: int = image.shape[1]
             image_height: int = image.shape[0]
 
-            start_x: int = int(center_x - (image_height / 2))
-            end_x: int = int(start_x + image_height)
+            # image height and width cannot be more than canvas_height, canvas_width
+            if image_width < canvas_width+1 and image_width > min_image_width and image_height < canvas_height+1 and image_height > min_image_height:
 
-            start_y: int = int(center_y - (image_width / 2))
-            end_y: int = int(start_y + image_width)
+                start_x: int = int(center_x - (image_height / 2))
+                end_x: int = int(start_x + image_height)
 
-            canvas[start_x:end_x, start_y:end_y] = image
+                start_y: int = int(center_y - (image_width / 2))
+                end_y: int = int(start_y + image_width)
 
-            cv2.imwrite(
-                f"data/images_with_padding/{category_name}/cropped_train_image_{image_name}",
-                canvas,
-            )
+                canvas[start_x:end_x, start_y:end_y] = image
 
-            successfully_postprocessed_images.append(image_name)
+                cv2.imwrite(
+                    f"data/images_with_padding/{category_name}/cropped_train_image_{image_name}",
+                    canvas,
+                )
+
+                successfully_postprocessed_images.append(image_name)
 
         except Exception:
-            failed_to_postproces_images.append(image_name)
+            skipped_images.append(image_name)
 
         if len(successfully_postprocessed_images) == images_sample_size:
             # we have enough pictures
             break
 
     print(f"successfully_postprocessed_images {len(successfully_postprocessed_images)}")
-    print(f"failed_to_postproces_images {len(failed_to_postproces_images)}")
+    print(f"skipped_images {len(skipped_images)}")
 
 
 def main() -> None:
