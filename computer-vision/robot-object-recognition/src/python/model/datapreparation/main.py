@@ -194,8 +194,8 @@ def pad_images(category_name: str) -> None:
 
     images_sample_size: int = 200
     canvas_height: int = 416
-    min_image_height: int = 229
-    min_image_width: int = 229
+    min_image_height: int = 210
+    min_image_width: int = 210
     canvas_width: int = 416
     center_x: int = 208
     center_y: int = 208
@@ -242,7 +242,7 @@ def pad_images(category_name: str) -> None:
 
 
 def main() -> None:
-    category_name: str = "apple"
+    category_name: str = "cup"
 
     # coco_annotations_getter = CocoAnnotationsGetter()
     #
