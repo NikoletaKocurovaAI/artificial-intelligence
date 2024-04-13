@@ -1,7 +1,15 @@
-# Frontend App set-up
+# 
 
-## Django project structure
+## API
 
-Generate a Django directory tree for this project:
+## Frontend APP
 
-`django-admin startproject frontend_app`
+Robot object recognition dashboard
+
+## Model
+
+Data collection and preparation.
+
+## Robot
+
+Scripts for running the robot on RPi
