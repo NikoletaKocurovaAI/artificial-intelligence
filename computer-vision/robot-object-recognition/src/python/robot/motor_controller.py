@@ -31,8 +31,6 @@ class MotorController:
     @staticmethod
     def run(direction: str) -> None:
         if direction == "forwards":
-            print("Moving forwards")
-
             GPIO.output(pins.motor1_input1, GPIO.HIGH)
             GPIO.output(pins.motor1_input2, GPIO.LOW)
             GPIO.output(pins.motor1_enable, GPIO.HIGH)
@@ -42,8 +40,6 @@ class MotorController:
             GPIO.output(pins.motor2_enable2, GPIO.HIGH)
 
         elif direction == "backwards":
-            print("Moving backwards")
-
             GPIO.output(pins.motor1_input1, GPIO.LOW)
             GPIO.output(pins.motor1_input2, GPIO.HIGH)
             GPIO.output(pins.motor1_enable, GPIO.HIGH)
@@ -54,8 +50,6 @@ class MotorController:
 
     @staticmethod
     def stop() -> None:
-        print("Stopping")
-
         GPIO.output(pins.motor1_enable, GPIO.LOW)
         GPIO.output(pins.motor2_enable2, GPIO.LOW)
 
@@ -64,8 +58,6 @@ class MotorController:
     @staticmethod
     def turn(direction: str) -> None:
         if direction == "right":
-            print("Rotating right")
-
             GPIO.output(pins.motor1_input1, GPIO.HIGH)
             GPIO.output(pins.motor1_input2, GPIO.LOW)
             GPIO.output(pins.motor1_enable, GPIO.HIGH)
@@ -75,8 +67,6 @@ class MotorController:
             GPIO.output(pins.motor2_enable2, GPIO.LOW)
 
         elif direction == "left":
-            print("Rotating left")
-
             GPIO.output(pins.motor1_input1, GPIO.LOW)
             GPIO.output(pins.motor1_input2, GPIO.LOW)
             GPIO.output(pins.motor1_enable, GPIO.LOW)
