@@ -5,25 +5,44 @@
 
 ### Required packages
 
+Navigate to this directory:
+```
+cd artificial-intelligence/computer-vision/robot-object-recognition/src/python/frontend_app/
+```
+
+Create virtual environment for Mac OS:
+
+```
+virtualenv frontend-app-venv
+```
+
+#### Activate
+
+Activate virtual environment for Mac OS:
+
+```
+source ./frontend-app-venv/bin/activate
+```
+
 Install required packages:
 
 ```
 pip install -r requirements.txt
 ```
 
-### Dashboard APP
+### Create New APP
 Generate the dashboard subdirectory.
 
 ```
-python manage.py startapp dashboard
+python manage.py startapp <app-name>
 ```
 
-The dashboard is an application folder. The project collects one or more applications. Example: by making a project of 
+The <app-name> is an application folder. The project collects one or more applications. Example: by making a project of 
 an on-line store, it could be divided into an application sales, blog and application contact.
 
-Add 'dashboard' to INSTALLED_APPS variable in the dashboard/settings.py folder.
+Add <app-name> to INSTALLED_APPS variable in the <app-name>/settings.py folder.
 
-### Start Dashboard APP
+### Start the Dashboard APP
 Start the application server:
 
 ```
