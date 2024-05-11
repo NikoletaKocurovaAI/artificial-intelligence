@@ -46,3 +46,7 @@ pip install "picamera[array]"
 ```
 pip install opencv-python
 ```
+
+```
+pip install -r requirements-dev.text
+```
