@@ -2,6 +2,14 @@
 
 ## Project set-up
 
+### YOLOv3
+
+```
+cd Desktop
+mkdir artificial-intelligence/computer-vision/robot-object-recognition/src/python/robot/data
+mv yolo_v3 artificial-intelligence/computer-vision/robot-object-recognition/src/python/robot/data
+```
+
 ### Virtual environment
 
 #### Create
