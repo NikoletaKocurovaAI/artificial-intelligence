@@ -7,10 +7,15 @@ from typing import Sequence
 class ObjectDetector:
     @staticmethod
     def load_yolov3() -> (dnn_Net, list):
-        net: dnn_Net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg")
+        print("loading yolo weights")
+
+        net: dnn_Net = cv2.dnn.readNet("data/yolo_v3/yolov3.weights", "yolov3.cfg")
 
         layer_names: Sequence[str] = net.getLayerNames()
         output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+
+        print(f"net {net}")
+        print(f"output_layers {output_layers}")
 
         return net, output_layers
 
@@ -20,19 +25,27 @@ class ObjectDetector:
         return 5
 
     def detect_objects(self, net, output_layers, frame):
+        print(f"detecting objects")
+
         # Perform object detection
         blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
         net.setInput(blob)
         outs = net.forward(output_layers)
 
+        print(f"outs {outs}")
+
         # Process each detected object
         for out in outs:
             for detection in out:
+                print(f"detection in out {detection}")
+
                 scores = detection[5:]
                 class_id = np.argmax(scores)
                 confidence = scores[class_id]
 
                 if confidence > 0.5:
+                    print("confidence higher than 0.5")
+
                     # Get object coordinates
                     center_x = int(detection[0] * frame.shape[1])
                     center_y = int(detection[1] * frame.shape[0])

@@ -12,6 +12,8 @@ def main():
     # motor_controller.run("forwards")
 
     while position_estimator.should_robot_continue():
+        print("reading frame")
+
         ret, frame = camera.read()
         if not ret:
             break
