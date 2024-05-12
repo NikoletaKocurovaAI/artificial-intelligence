@@ -3,13 +3,16 @@ import numpy as np
 from cv2 import dnn_Net
 from typing import Sequence
 
+from constants import ObjectDetectorConstants as detector_cons
+from position_estimator import position_estimator
+
 
 class ObjectDetector:
     @staticmethod
     def load_yolov3() -> (dnn_Net, list):
         print("loading yolo weights")
 
-        net: dnn_Net = cv2.dnn.readNet("data/yolo_v3/yolov3.weights", "yolov3.cfg")
+        net: dnn_Net = cv2.dnn.readNet("data/yolov3.weights", "data/yolov3.cfg")
 
         layer_names: Sequence[str] = net.getLayerNames()
         output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
@@ -20,17 +23,17 @@ class ObjectDetector:
         return net, output_layers
 
     @staticmethod
-    def _calculate_distance(frame) -> int:
-        # return (real_object_size_mm * focal_length_mm) / object_size_pixels
-        return 5
-
-    def detect_objects(self, net, output_layers, frame):
+    def detect_objects(net, output_layers, frame) -> None:
         print(f"detecting objects")
 
         # Perform object detection
-        blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
+        blob = cv2.dnn.blobFromImage(
+            frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False
+        )
         net.setInput(blob)
         outs = net.forward(output_layers)
+
+        is_detecting_objects_enabled: bool = True
 
         print(f"outs {outs}")
 
@@ -43,7 +46,7 @@ class ObjectDetector:
                 class_id = np.argmax(scores)
                 confidence = scores[class_id]
 
-                if confidence > 0.5:
+                if confidence > detector_cons.CONFIDENCE:
                     print("confidence higher than 0.5")
 
                     # Get object coordinates
@@ -53,15 +56,25 @@ class ObjectDetector:
                     h = int(detection[3] * frame.shape[0])
 
                     # Draw bounding box
-                    cv2.rectangle(frame, (center_x - w // 2, center_y - h // 2), (center_x + w // 2, center_y + h // 2),
-                                  (255, 0, 0), 2)
+                    cv2.rectangle(
+                        frame,
+                        (center_x - w // 2, center_y - h // 2),
+                        (center_x + w // 2, center_y + h // 2),
+                        (255, 0, 0),
+                        2,
+                    )
 
-                    # Calculate distance from object size
-                    distance = self._calculate_distance(frame)
+                    if position_estimator.should_robot_avoid_object(
+                        frame, center_x, center_y
+                    ):
+                        is_detecting_objects_enabled = False
 
-                    # Display distance on frame
-                    cv2.putText(frame, f"Distance: {distance:.2f} mm", (center_x, center_y), cv2.FONT_HERSHEY_SIMPLEX,
-                                0.5, (0, 255, 0), 2)
+                        break
+
+            if not is_detecting_objects_enabled:
+                position_estimator.avoid_object()
+
+                break
 
         cv2.imshow("Frame", frame)
 

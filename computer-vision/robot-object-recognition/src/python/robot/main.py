@@ -11,14 +11,19 @@ def main():
 
     # motor_controller.run("forwards")
 
-    while position_estimator.should_robot_continue():
+    running_robot_enabled: bool = True
+
+    while running_robot_enabled:
         print("reading frame")
 
         ret, frame = camera.read()
+
         if not ret:
             break
 
         object_detector.detect_objects(net, output_layers, frame)
+
+        running_robot_enabled: bool = position_estimator.should_robot_continue()
 
     # motor_controller.stop()
 

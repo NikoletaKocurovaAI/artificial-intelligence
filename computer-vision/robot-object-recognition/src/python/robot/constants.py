@@ -6,29 +6,37 @@ class RpiPinsConstants:
     Motor 2 connects to L293D's pins Enable 2, Input 3 and Input 4.
     """
 
-    motor1_enable = 25
-    motor1_input1 = 24
-    motor1_input2 = 23
-    motor2_enable2 = 17
-    motor2_input3 = 22
-    motor2_input4 = 27
+    MOTOR1_ENABLE: int = 25
+    MOTOR1_INPUT1: int = 24
+    MOTOR1_INPUT2: int = 23
+    MOTOR2_ENABLE2: int = 17
+    MOTOR2_INPUT3: int = 22
+    MOTOR2_INPUT4: int = 27
 
-    motor1_encoder_channelA_pin = 5
-    motor1_encoder_channelB_pin = 6
+    MOTOR1_ENCODER_CHANNEL_A_PIN: int = 5
+    MOTOR1_ENCODER_CHANNEL_B_PIN: int = 6
 
 
-class RpiPwm:
+class RpiPwmConstants:
     """
     This class set-ups the Pulse With Modulation (PWM) for a motor control.
     """
 
-    pwm_frequency_motor1 = 40
-    duty_cycle_motor1 = 40
-    pwm_frequency_motor2 = 40
-    duty_cycle_motor2 = 40
+    PWM_FREQUENCY_MOTOR1: int = 40
+    DUTY_CYCLE_MOTOR1: int = 40
+
+    PWM_FREQUENCY_MOTOR2: int = 40
+    DUTY_CYCLE_MOTOR2: int = 40
 
 
-class YoloV3:
+class DistanceTrackerConstants:
+    ALLOWED_DISTANCE_TOTAL_ROTATIONS: int = 20
+    ALLOWED_DISTANCE_FROM_OBJECT_PX: int = 5
+
     # Set the real size of the object (in millimeters) and the focal length of the camera (in millimeters)
-    real_object_size_mm = 100  # Example: Size of an object in millimeters
-    focal_length_mm = 1000  # Example: Focal length of the camera in millimeters
+    REAL_OBJECT_SIZE_MM: int = 100  # Example: Size of an object in millimeters
+    FOCAL_LENGTH_MM: int = 1000  # Example: Focal length of the camera in millimeters
+
+
+class ObjectDetectorConstants:
+    CONFIDENCE: float = 0.5

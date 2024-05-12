@@ -6,8 +6,18 @@
 
 ```
 cd Desktop
-cp yolo_v3/yolov3.cfg artificial-intelligence/computer-vision/robot-object-recognition/src/python/robot
-cp yolo_v3/yolov3.weights artificial-intelligence/computer-vision/robot-object-recognition/src/python/robot
+```
+
+```
+mkdir artificial-intelligence/computer-vision/robot-object-recognition/src/python/robot/data
+```
+
+```
+cp yolo_v3/yolov3.cfg artificial-intelligence/computer-vision/robot-object-recognition/src/python/robot/data
+```
+
+```
+cp yolo_v3/yolov3.weights artificial-intelligence/computer-vision/robot-object-recognition/src/python/robot/data
 ```
 
 ### Virtual environment
