@@ -15,7 +15,7 @@ class PositionEstimator:
     # GPIO.IN This constant is used to configure a GPIO pin as an input pin. It indicates that the GPIO pin will be
     # used to read external signals or data from sensors.
     # GPIO.PUD_UP enables the internal pull-up resistor on the GPIO pin, ensuring a defined logic level
-    GPIO.setup(pins.MOTOR1_ENCODER_CHANNEL_A_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(pins.MOTOR1_IR_SPEED_SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(pins.MOTOR1_ENCODER_CHANNEL_B_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     # rotations_counter: int = 0
