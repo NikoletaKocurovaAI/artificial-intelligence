@@ -1,6 +1,3 @@
-from typing import Optional
-import time
-
 import RPi.GPIO as GPIO
 
 from constants import RpiPinsConstants as pins, RpiPwmConstants as pwm
@@ -31,28 +28,23 @@ class MotorController:
     # GPIO.setup(pins.MOTOR2_INPUT3, GPIO.OUT)
     # GPIO.setup(pins.MOTOR2_INPUT4, GPIO.OUT)
 
-    # Set up motor 1 IR speed sensor
-    # use the GPIO.IN to read signals from the sensor
-    # pull_up_down sets the internal pull-up resistor for the pin (handles RPI's voltage logic)
-    GPIO.setup(pins.MOTOR1_IR_SPEED_SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    # def __init__(self, last_time_pulse_measured: Optional[float]) -> None:
+    #     self.last_time_pulse_measured: Optional[float] = last_time_pulse_measured
+    #
+    #     GPIO.add_event_detect(pins.MOTOR1_IR_SPEED_SENSOR_PIN, GPIO.RISING, callback=self.on_pulse_event)
 
-    def __init__(self, last_time_pulse_measured: Optional[float]) -> None:
-        self.last_time_pulse_measured: Optional[float] = last_time_pulse_measured
-
-        GPIO.add_event_detect(pins.MOTOR1_IR_SPEED_SENSOR_PIN, GPIO.RISING, callback=self.on_pulse_event)
-
-    def on_pulse_event(self, channel: int) -> None:
-        """
-        :param channel: In the RPi.GPIO lib, an event detection callback function of is called with the channel arg,
-        which is the pin number, where the event was detected.
-        """
-        if self.last_time_pulse_measured:
-            print(f"The event detected on the RPi pin {channel}")
-
-            period_between_pulses: float = time.time() - self.last_time_pulse_measured
-            print(f"Detected the period between pulses {period_between_pulses}")
-
-            self.last_time_pulse_measured: float = time.time()
+    # def on_pulse_event(self, channel: int) -> None:
+    #     """
+    #     :param channel: In the RPi.GPIO lib, an event detection callback function of is called with the channel arg,
+    #     which is the pin number, where the event was detected.
+    #     """
+    #     if self.last_time_pulse_measured:
+    #         print(f"The event detected on the RPi pin {channel}")
+    #
+    #         period_between_pulses: float = time.time() - self.last_time_pulse_measured
+    #         print(f"Detected the period between pulses {period_between_pulses}")
+    #
+    #         self.last_time_pulse_measured: float = time.time()
 
     @staticmethod
     def run(direction: str) -> None:
@@ -100,3 +92,5 @@ class MotorController:
             GPIO.output(pins.MOTOR2_INPUT3, GPIO.HIGH)
             GPIO.output(pins.MOTOR2_INPUT4, GPIO.LOW)
             GPIO.output(pins.MOTOR2_ENABLE2, GPIO.HIGH)
+
+motor_controller = MotorController()
