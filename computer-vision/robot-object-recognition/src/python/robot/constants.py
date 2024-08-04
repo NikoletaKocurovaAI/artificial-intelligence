@@ -13,7 +13,7 @@ class RpiPinsConstants:
     MOTOR2_INPUT3: int = 22
     MOTOR2_INPUT4: int = 27
 
-    MOTOR1_IR_SPEED_SENSOR_PIN: int = 18
+    MOTOR1_IR_SPEED_SENSOR_PIN: int = 14
     MOTOR1_ENCODER_CHANNEL_B_PIN: int = 6  # todo remove/replace
     NO_PULSES_PER_MOTOR_REVOLUTION: int = 2
     IR_SPEED_SENSOR_TIMEOUT: int = 1  # 1 second timeout for zero RPM (Revolutions per minute)
@@ -24,8 +24,8 @@ class RpiPwmConstants:
     This class set-ups the Pulse With Modulation (PWM) for a motor control.
     """
 
-    PWM_FREQUENCY_MOTOR1: int = 40
-    DUTY_CYCLE_MOTOR1: int = 40
+    PWM_FREQUENCY_MOTOR1: int = 5
+    DUTY_CYCLE_MOTOR1: int = 5
 
     PWM_FREQUENCY_MOTOR2: int = 40
     DUTY_CYCLE_MOTOR2: int = 40

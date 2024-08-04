@@ -52,7 +52,7 @@ Each commit message consists of the type (such as feat, refactor, ...), scope, t
   - model
   - status-api
   - model-api
-  - raspberry-pi-scripts
+  - robot
 
 **Example:**
 
