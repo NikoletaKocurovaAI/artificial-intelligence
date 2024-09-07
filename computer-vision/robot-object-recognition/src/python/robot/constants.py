@@ -14,9 +14,6 @@ class RpiPinsConstants:
     MOTOR2_INPUT4: int = 27
 
     MOTOR1_IR_SPEED_SENSOR_PIN: int = 14
-    MOTOR1_ENCODER_CHANNEL_B_PIN: int = 6  # todo remove/replace
-    NO_PULSES_PER_MOTOR_REVOLUTION: int = 2
-    IR_SPEED_SENSOR_TIMEOUT: int = 1  # 1 second timeout for zero RPM (Revolutions per minute)
 
 
 class RpiPwmConstants:

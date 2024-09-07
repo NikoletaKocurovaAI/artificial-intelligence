@@ -1,3 +1,6 @@
+import threading
+from typing import Optional
+
 import cv2
 import RPi.GPIO as GPIO
 
@@ -7,32 +10,49 @@ from constants import RpiPinsConstants as pins, DistanceTrackerConstants as trac
 class PositionEstimator:
     """
     Counting wheels rotations, recognize how far the robot went.
+
+    This class uses the Encapsulation design pattern, which is a fundamental principle of object-oriented
+    programming. Encapsulation means combining the data (attributes) and methods (functions) into a single class, and
+    restricting access to some of the object's components.
     """
 
     # Set the pin numbering mode to BCM
     GPIO.setmode(GPIO.BCM)
 
-    # GPIO.IN This constant is used to configure a GPIO pin as an input pin. It indicates that the GPIO pin will be
-    # used to read external signals or data from sensors.
-    # GPIO.PUD_UP enables the internal pull-up resistor on the GPIO pin, ensuring a defined logic level
-    GPIO.setup(pins.MOTOR1_IR_SPEED_SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.setup(pins.MOTOR1_ENCODER_CHANNEL_B_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    # Set up motor 1 IR speed sensor
+    GPIO.setup(pins.MOTOR1_IR_SPEED_SENSOR_PIN, GPIO.IN)
 
-    # rotations_counter: int = 0
+    def __init__(self) -> None:
+        self.motor1_rotations_counter: int = 0
+        self.motor1_running: bool = False
+        self.motor1_ir_sensor_run: Optional[threading.Thread] = None
 
-    # @staticmethod
-    # def _handle_rotation_event() -> int:
-    #     global rotations_counter
-    #     if GPIO.input(pins.MOTOR1_ENCODER_CHANNEL_B_PIN):
-    #         rotations_counter += 1
-    #     else:
-    #         rotations_counter -= 1
-    #
-    #     return rotations_counter
+    def _read_ir_sensor_pulses(self) -> None:
+        while self.motor1_running:
+            if GPIO.input(pins.MOTOR1_IR_SPEED_SENSOR_PIN):
+                self.motor1_rotations_counter += 1
+
+    def start(self) -> None:
+        self.motor1_running: bool = True
+
+        self.motor1_ir_sensor_run = threading.Thread(target=self._read_ir_sensor_pulses)
+        self.motor1_ir_sensor_run.start()
+
+    def stop(self):
+        self.motor1_running: bool = False
+
+        if self.motor1_ir_sensor_run is not None:
+            self.motor1_ir_sensor_run.join()
+
+    def get_rotations_count(self) -> int:
+        return self.motor1_rotations_counter
 
     @staticmethod
     def _calculate_distance_rotations_total() -> int:
-        # _handle_rotation_event()
+        """
+        Calculate the total distance traveled by the differential wheeled robot based on the number of rotations.
+        """
+        # self.get_rotations_count()
         return 20
 
     def should_robot_continue(self) -> bool:

@@ -244,29 +244,29 @@ def pad_images(category_name: str) -> None:
 def main() -> None:
     category_name: str = "cup"
 
-    # coco_annotations_getter = CocoAnnotationsGetter()
-    #
-    # instances_annotations: COCO = coco_annotations_getter.load_annotations(
-    #     INSTANCES_TRAIN_FILE
-    # )
-    #
-    # category_id, instances_annotations_images = (
-    #     coco_annotations_getter.get_images_by_category(
-    #         instances_annotations, category_name
-    #     )
-    # )
+    coco_annotations_getter = CocoAnnotationsGetter()
 
-    # coco_annotations_getter.download_images(instances_annotations_images, category_name)
+    instances_annotations: COCO = coco_annotations_getter.load_annotations(
+        INSTANCES_TRAIN_FILE
+    )
 
-    # bounding_boxes: dict[str, list[list[float]]] = (
-    #     coco_annotations_getter.get_bounding_boxes_by_image_id(
-    #         instances_annotations, instances_annotations_images, category_id
-    #     )
-    # )
-    #
-    # coco_annotations_getter.crop_images_by_bounding_boxes(
-    #     instances_annotations_images, bounding_boxes, category_name
-    # )
+    category_id, instances_annotations_images = (
+        coco_annotations_getter.get_images_by_category(
+            instances_annotations, category_name
+        )
+    )
+
+    coco_annotations_getter.download_images(instances_annotations_images, category_name)
+
+    bounding_boxes: dict[str, list[list[float]]] = (
+        coco_annotations_getter.get_bounding_boxes_by_image_id(
+            instances_annotations, instances_annotations_images, category_id
+        )
+    )
+
+    coco_annotations_getter.crop_images_by_bounding_boxes(
+        instances_annotations_images, bounding_boxes, category_name
+    )
 
     pad_images(category_name)
 
