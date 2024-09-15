@@ -21,8 +21,8 @@ class RpiPwmConstants:
     This class set-ups the Pulse With Modulation (PWM) for a motor control.
     """
 
-    PWM_FREQUENCY_MOTOR1: int = 5
-    DUTY_CYCLE_MOTOR1: int = 5
+    PWM_FREQUENCY_MOTOR1: int = 40
+    DUTY_CYCLE_MOTOR1: int = 40
 
     PWM_FREQUENCY_MOTOR2: int = 40
     DUTY_CYCLE_MOTOR2: int = 40
