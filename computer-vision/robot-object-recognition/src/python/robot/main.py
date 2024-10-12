@@ -13,28 +13,35 @@ def main():
 
     # net, output_layers = object_detector.load_yolov3()
 
-    print("Initializing camera")
+    # print("Initializing camera")
 
-    camera = cv2.VideoCapture(0)
-    fourcc: int = cv2.VideoWriter_fourcc(*'XVID')
-    camera_file_output = cv2.VideoWriter('output.avi', fourcc, 20.0, (640, 480))
+    # camera = cv2.VideoCapture(0)
+    # fourcc: int = cv2.VideoWriter_fourcc(*'XVID')
+    # camera_file_output = cv2.VideoWriter('output.avi', fourcc, 20.0, (640, 480))
+    #
+    # if not camera.isOpened():
+    #     raise CameraNotOpenedException
 
-    if not camera.isOpened():
-        raise CameraNotOpenedException
-
-    start_time: float = time.time()
+    # start_time: float = time.time()
 
     motor_controller.run("forwards")
+    time.sleep(2)
 
-    print("Capturing camera frame")
+    motor_controller.turn("right")
+    time.sleep(4)
 
-    while time.time() - start_time < 5:
-        ret, frame = camera.read()
+    motor_controller.turn("left")
+    time.sleep(4)
 
-        if not ret:
-            raise CameraFrameNotCapturedException
+    # print("Capturing camera frame")
 
-        camera_file_output.write(frame)
+    # while time.time() - start_time < 5:
+    #     ret, frame = camera.read()
+    #
+    #     if not ret:
+    #         raise CameraFrameNotCapturedException
+    #
+    #     camera_file_output.write(frame)
 
         # object_detector.detect_objects(net, output_layers, frame)
         # running_robot_enabled: bool = position_estimator.should_robot_continue()
@@ -44,8 +51,8 @@ def main():
     # position_estimator.stop()
     # print(f"No of rotations {position_estimator.get_rotations_count()}")
 
-    camera.release()
-    camera_file_output.release()
+    # camera.release()
+    # camera_file_output.release()
 
 
 if __name__ == "__main__":
