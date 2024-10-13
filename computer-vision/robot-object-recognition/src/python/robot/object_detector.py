@@ -4,10 +4,53 @@ from cv2 import dnn_Net
 from typing import Sequence
 
 from constants import ObjectDetectorConstants as detector_cons
+from exceptions import CameraNotOpenedException, CameraFrameNotCapturedException
 from position_estimator import position_estimator
 
 
 class ObjectDetector:
+    # A class variable to control the camera loop in start_video_capture()
+    capturing = True
+
+    @classmethod
+    def start_video_capture(cls) -> None:
+        print("Initializing camera")
+        output_file_path: str = "/home/pi/Desktop/artificial-intelligence/computer-vision/robot-object-recognition/src/python/robot/output.avi"
+
+        camera = cv2.VideoCapture(0)
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        camera_file_output = cv2.VideoWriter(
+            output_file_path,
+            fourcc, 20.0, (640, 480)
+        )
+
+        if not camera.isOpened():
+            print("Camera not opened.")
+            raise CameraNotOpenedException
+
+        print("Starting camera capture")
+
+        # Capture frames for 10 seconds or as needed
+        while cls.capturing:
+            ret, frame = camera.read()
+
+            if not ret:
+                print("Failed to capture frame.")
+                raise CameraFrameNotCapturedException
+
+            # Write the captured frame to the file
+            camera_file_output.write(frame)
+
+        # Release the camera and output file
+        camera.release()
+        camera_file_output.release()
+
+        print("Camera capture ended")
+
+    @classmethod
+    def stop_video_capture(cls):
+        cls.capturing = False
+
     @staticmethod
     def load_yolov3() -> (dnn_Net, list):
         print("loading yolo weights")
