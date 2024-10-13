@@ -16,6 +16,8 @@ def main():
     camera_thread = threading.Thread(target=object_detector.start_video_capture)
     camera_thread.start()
 
+    time.sleep(2)
+
     motor_controller.run("forwards")
     time.sleep(2)
 
