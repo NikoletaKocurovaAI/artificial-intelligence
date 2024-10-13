@@ -15,12 +15,11 @@ class ObjectDetector:
     @classmethod
     def start_video_capture(cls) -> None:
         print("Initializing camera")
-        output_file_path: str = "/home/pi/Desktop/artificial-intelligence/computer-vision/robot-object-recognition/src/python/robot/output.avi"
 
         camera = cv2.VideoCapture(0)
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         camera_file_output = cv2.VideoWriter(
-            output_file_path,
+            "output.avi",
             fourcc, 20.0, (640, 480)
         )
 

@@ -64,6 +64,7 @@ class MotorController:
     @staticmethod
     def turn(direction: str) -> None:
         if direction == "right":
+            print("Turning right")
             GPIO.output(pins.MOTOR1_INPUT1, GPIO.HIGH)
             GPIO.output(pins.MOTOR1_INPUT2, GPIO.LOW)
             GPIO.output(pins.MOTOR1_ENABLE, GPIO.HIGH)
@@ -73,6 +74,7 @@ class MotorController:
             GPIO.output(pins.MOTOR2_ENABLE2, GPIO.LOW)
 
         elif direction == "left":
+            print("Turning left")
             GPIO.output(pins.MOTOR1_INPUT1, GPIO.LOW)
             GPIO.output(pins.MOTOR1_INPUT2, GPIO.LOW)
             GPIO.output(pins.MOTOR1_ENABLE, GPIO.LOW)
