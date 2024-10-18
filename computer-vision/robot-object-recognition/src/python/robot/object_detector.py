@@ -5,7 +5,7 @@ from typing import Sequence
 
 from constants import ObjectDetectorConstants as detector_cons
 from exceptions import CameraNotOpenedException, CameraFrameNotCapturedException
-from position_estimator import position_estimator
+# from position_estimator import position_estimator
 
 
 class ObjectDetector:
@@ -14,7 +14,7 @@ class ObjectDetector:
 
     @classmethod
     def start_video_capture(cls) -> None:
-        net, output_layers = object_detector.load_yolov3()
+        # net, output_layers = object_detector.load_yolov3()
 
         print("Initializing camera")
 
@@ -39,7 +39,7 @@ class ObjectDetector:
                 print("Failed to capture frame.")
                 raise CameraFrameNotCapturedException
 
-            cls.detect_objects(net, output_layers, frame)
+            # cls.detect_objects(net, output_layers, frame)
 
             # Write the captured frame to the file
             camera_file_output.write(frame)

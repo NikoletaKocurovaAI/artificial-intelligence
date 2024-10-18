@@ -11,6 +11,8 @@ def main():
     # running_robot_enabled: bool = True
     # position_estimator.start()
 
+    net, output_layers = object_detector.load_yolov3()
+
     camera_thread = threading.Thread(target=object_detector.start_video_capture)
     camera_thread.start()
 
