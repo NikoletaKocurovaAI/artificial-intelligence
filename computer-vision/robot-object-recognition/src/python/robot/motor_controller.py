@@ -12,10 +12,6 @@ class MotorController:
     # Set the pin numbering mode to BCM
     GPIO.setmode(GPIO.BCM)
 
-    # Set up motor 1 & 2 enable control pins
-    GPIO.setup(pins.MOTOR1_ENABLE, GPIO.OUT)
-    GPIO.setup(pins.MOTOR2_ENABLE2, GPIO.OUT)
-
     # Set up motor 1 & 2 PWM and duty cycle
     pwm_motor1 = GPIO.PWM(pins.MOTOR1_ENABLE, pwm.PWM_FREQUENCY_MOTOR1)
     pwm_motor1.start(pwm.DUTY_CYCLE_MOTOR1)
@@ -32,6 +28,10 @@ class MotorController:
 
     @staticmethod
     def run(direction: str) -> None:
+        # Set up motor 1 & 2 enable control pins
+        GPIO.setup(pins.MOTOR1_ENABLE, GPIO.OUT)
+        GPIO.setup(pins.MOTOR2_ENABLE2, GPIO.OUT)
+
         if direction == "forwards":
             print("Running robot forwards")
 
@@ -65,6 +65,10 @@ class MotorController:
 
     @staticmethod
     def turn(direction: str) -> None:
+        # Set up motor 1 & 2 enable control pins
+        GPIO.setup(pins.MOTOR1_ENABLE, GPIO.OUT)
+        GPIO.setup(pins.MOTOR2_ENABLE2, GPIO.OUT)
+
         if direction == "right":
             print("Turning right")
             GPIO.output(pins.MOTOR1_INPUT1, GPIO.HIGH)

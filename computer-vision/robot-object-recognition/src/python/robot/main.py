@@ -10,7 +10,9 @@ def main():
     # TODO
     # running_robot_enabled: bool = True
     # position_estimator.start()
+
     net, output_layers = object_detector.load_yolov3()
+    time.sleep(2)
 
     # ensures that the camera keeps capturing frames while the robot is executing its movements
     camera_thread = threading.Thread(target=object_detector.start_video_capture)
