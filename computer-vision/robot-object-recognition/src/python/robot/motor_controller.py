@@ -92,6 +92,4 @@ class MotorController:
             GPIO.output(pins.MOTOR2_INPUT4, GPIO.LOW)
             GPIO.output(pins.MOTOR2_ENABLE2, GPIO.HIGH)
 
-            self.pwm_motor2.ChangeDutyCycle(pwm.DUTY_CYCLE_MOTOR2)  # Start motor
-
-# motor_controller = MotorController()
+            self.pwm_motor2.ChangeDutyCycle(pwm.DUTY_CYCLE_MOTOR2)
