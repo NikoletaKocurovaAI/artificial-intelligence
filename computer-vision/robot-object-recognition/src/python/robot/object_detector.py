@@ -14,6 +14,8 @@ class ObjectDetector:
 
     @classmethod
     def start_video_capture(cls) -> None:
+        net, output_layers = cls.load_yolov3()
+
         print("Initializing camera")
 
         camera = cv2.VideoCapture(0)
@@ -52,21 +54,21 @@ class ObjectDetector:
 
     @staticmethod
     def load_yolov3() -> (dnn_Net, list):
-        print("loading yolo weights")
+        print("Loading yolo weights")
 
         net: dnn_Net = cv2.dnn.readNet("data/yolov3.weights", "data/yolov3.cfg")
 
         layer_names: Sequence[str] = net.getLayerNames()
         output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
-        print(f"net {net}")
-        print(f"output_layers {output_layers}")
+        print(f"Net {net}")
+        print(f"Output_layers {output_layers}")
 
         return net, output_layers
 
     @staticmethod
     def detect_objects(net, output_layers, frame) -> None:
-        print(f"detecting objects")
+        print(f"Detecting objects")
 
         # Perform object detection
         blob = cv2.dnn.blobFromImage(
@@ -106,17 +108,17 @@ class ObjectDetector:
                         2,
                     )
 
-                    if position_estimator.should_robot_avoid_object(
-                        frame, center_x, center_y
-                    ):
-                        is_detecting_objects_enabled = False
-
-                        break
-
-            if not is_detecting_objects_enabled:
-                position_estimator.avoid_object()
-
-                break
+            #         if position_estimator.should_robot_avoid_object(
+            #             frame, center_x, center_y
+            #         ):
+            #             is_detecting_objects_enabled = False
+            #
+            #             break
+            #
+            # if not is_detecting_objects_enabled:
+            #     position_estimator.avoid_object()
+            #
+            #     break
 
         cv2.imshow("Frame", frame)
 
