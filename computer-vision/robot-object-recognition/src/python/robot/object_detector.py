@@ -69,62 +69,75 @@ class ObjectDetector:
         return net, output_layers
 
     @staticmethod
-    def detect_objects(net, output_layers, frame) -> None:
+    def detect_objects(net, output_layers) -> None:
         print(f"Detecting objects")
 
-        # Perform object detection
-        blob = cv2.dnn.blobFromImage(
-            frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False
-        )
-        net.setInput(blob)
-        outs = net.forward(output_layers)
+        video_capture = cv2.VideoCapture("output.avi")
 
-        # is_detecting_objects_enabled: bool = True
+        if not video_capture.isOpened():
+            print("Could not open the video")
+            return
 
-        # print(f"Outs {outs}")
+        # Get video properties
+        frame_width = int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+        frame_height = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        fps = int(video_capture.get(cv2.CAP_PROP_FPS))
 
-        # Process each detected object
-        for out in outs:
-            for detection in out:
-                # print(f"Detection in out {detection}")
+        # Define the codec and create VideoWriter object
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        video_writer = cv2.VideoWriter("output_detected.avi", fourcc, fps, (frame_width, frame_height))
 
-                scores = detection[5:]
-                class_id = np.argmax(scores)
-                confidence = scores[class_id]
+        while True:
+            ret, frame = video_capture.read()
+            if not ret:
+                break  # Exit the loop if there are no more frames
 
-                print(f"Confidence: {confidence}")
+            # Perform object detection
+            blob = cv2.dnn.blobFromImage(
+                frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False
+            )
+            net.setInput(blob)
+            outs = net.forward(output_layers)
 
-        #         if confidence > detector_cons.CONFIDENCE:
-        #             print("confidence higher than 0.5")
-        #
-        #             # Get object coordinates
-        #             center_x = int(detection[0] * frame.shape[1])
-        #             center_y = int(detection[1] * frame.shape[0])
-        #             w = int(detection[2] * frame.shape[1])
-        #             h = int(detection[3] * frame.shape[0])
-        #
-        #             # Draw bounding box
-        #             cv2.rectangle(
-        #                 frame,
-        #                 (center_x - w // 2, center_y - h // 2),
-        #                 (center_x + w // 2, center_y + h // 2),
-        #                 (255, 0, 0),
-        #                 2,
-        #             )
+            # print(f"Outs {outs}")
 
-            #         if position_estimator.should_robot_avoid_object(
-            #             frame, center_x, center_y
-            #         ):
-            #             is_detecting_objects_enabled = False
-            #
-            #             break
-            #
-            # if not is_detecting_objects_enabled:
-            #     position_estimator.avoid_object()
-            #
-            #     break
+            # Process each detected object
+            for out in outs:
+                for detection in out:
+                    # print(f"Detection in out {detection}")
 
-        # cv2.imshow("Frame", frame)
+                    scores = detection[5:]
+                    class_id = np.argmax(scores)
+                    confidence = scores[class_id]
 
+                    # print(f"Confidence: {confidence}")
+
+                    if confidence > detector_cons.CONFIDENCE:
+                        print(f"Confidence higher than {detector_cons.CONFIDENCE}")
+
+                        # Get object coordinates
+                        center_x = int(detection[0] * frame.shape[1])
+                        center_y = int(detection[1] * frame.shape[0])
+                        w = int(detection[2] * frame.shape[1])
+                        h = int(detection[3] * frame.shape[0])
+
+                        # Draw bounding box
+                        cv2.rectangle(
+                            frame,
+                            (center_x - w // 2, center_y - h // 2),
+                            (center_x + w // 2, center_y + h // 2),
+                            (255, 0, 0),
+                            2,
+                        )
+
+                        # Optionally, you can add labels here if you have class names
+
+            # Write the processed frame to the output video
+            video_writer.write(frame)
+
+        # Release resources
+        video_capture.release()
+        video_writer.release()
+        print("Object detection completed")
 
 object_detector = ObjectDetector()

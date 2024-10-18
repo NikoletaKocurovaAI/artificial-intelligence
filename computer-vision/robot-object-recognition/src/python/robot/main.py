@@ -46,6 +46,8 @@ def main():
     # position_estimator.stop()
     # print(f"No of rotations {position_estimator.get_rotations_count()}")
 
+    object_detector.detect_objects(net, output_layers)
+
 
 if __name__ == "__main__":
     main()
