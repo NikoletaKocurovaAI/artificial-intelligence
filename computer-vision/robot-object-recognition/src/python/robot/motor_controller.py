@@ -7,6 +7,8 @@ class MotorController:
     """
     This class sets control pins, runs the robot and turns it left or right.
     """
+    print("Initializing motor controller")
+
     # Set the pin numbering mode to BCM
     GPIO.setmode(GPIO.BCM)
 
@@ -83,4 +85,4 @@ class MotorController:
             GPIO.output(pins.MOTOR2_INPUT4, GPIO.LOW)
             GPIO.output(pins.MOTOR2_ENABLE2, GPIO.HIGH)
 
-motor_controller = MotorController()
+# motor_controller = MotorController()

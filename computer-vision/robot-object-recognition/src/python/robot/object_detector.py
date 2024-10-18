@@ -14,8 +14,6 @@ class ObjectDetector:
 
     @classmethod
     def start_video_capture(cls) -> None:
-        net, output_layers = cls.load_yolov3()
-
         print("Initializing camera")
 
         camera = cv2.VideoCapture(0)

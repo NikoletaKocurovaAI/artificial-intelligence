@@ -1,7 +1,7 @@
 import threading
 import time
 
-from motor_controller import motor_controller
+from motor_controller import MotorController
 from object_detector import object_detector
 # from position_estimator import position_estimator
 
@@ -10,13 +10,16 @@ def main():
     # TODO
     # running_robot_enabled: bool = True
     # position_estimator.start()
-    # net, output_layers = object_detector.load_yolov3()
+    net, output_layers = object_detector.load_yolov3()
 
     # ensures that the camera keeps capturing frames while the robot is executing its movements
     camera_thread = threading.Thread(target=object_detector.start_video_capture)
     camera_thread.start()
 
+    print("Robot is waiting to start")
     time.sleep(2)
+
+    motor_controller = MotorController()
 
     motor_controller.run("forwards")
     time.sleep(2)
