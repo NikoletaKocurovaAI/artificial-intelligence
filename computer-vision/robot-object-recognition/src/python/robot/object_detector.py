@@ -83,11 +83,19 @@ class ObjectDetector:
         frame_height = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
         fps = int(video_capture.get(cv2.CAP_PROP_FPS))
 
+        print(f"FPS {fps}")
+
         # Define the codec and create VideoWriter object
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         video_writer = cv2.VideoWriter("output_detected.avi", fourcc, fps, (frame_width, frame_height))
 
-        while True:
+        # Calculate the total number of frames to process for 5 seconds
+        max_frames = 5 * fps
+
+        frame_count = 0  # Keep track of frames processed
+
+        while frame_count < max_frames:
+            print(f"Processing frame no {frame_count+1}")
             ret, frame = video_capture.read()
             if not ret:
                 break  # Exit the loop if there are no more frames
@@ -134,6 +142,7 @@ class ObjectDetector:
 
             # Write the processed frame to the output video
             video_writer.write(frame)
+            frame_count += 1  # Increment the frame count
 
         # Release resources
         video_capture.release()
