@@ -35,11 +35,11 @@ class ObjectDetector:
         while cls.capturing:
             ret, frame = camera.read()
 
-            cls.detect_objects(net, output_layers, frame)
-
             if not ret:
                 print("Failed to capture frame.")
                 raise CameraFrameNotCapturedException
+
+            cls.detect_objects(net, output_layers, frame)
 
             # Write the captured frame to the file
             camera_file_output.write(frame)
@@ -81,17 +81,19 @@ class ObjectDetector:
 
         # is_detecting_objects_enabled: bool = True
 
-        print(f"Outs {outs}")
+        # print(f"Outs {outs}")
 
-        # # Process each detected object
-        # for out in outs:
-        #     for detection in out:
-        #         print(f"Detection in out {detection}")
-        #
-        #         scores = detection[5:]
-        #         class_id = np.argmax(scores)
-        #         confidence = scores[class_id]
-        #
+        # Process each detected object
+        for out in outs:
+            for detection in out:
+                # print(f"Detection in out {detection}")
+
+                scores = detection[5:]
+                class_id = np.argmax(scores)
+                confidence = scores[class_id]
+
+                print(f"Confidence: {confidence}")
+
         #         if confidence > detector_cons.CONFIDENCE:
         #             print("confidence higher than 0.5")
         #
