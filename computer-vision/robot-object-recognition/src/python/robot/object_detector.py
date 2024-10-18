@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from cv2 import dnn_Net
+from datetime import datetime
 from typing import Sequence
 
 from constants import ObjectDetectorConstants as detector_cons
@@ -72,6 +73,9 @@ class ObjectDetector:
     def detect_objects(net, output_layers) -> None:
         print(f"Detecting objects")
 
+        start_time = datetime.now()
+        print(f"Start Date and Time: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+
         video_capture = cv2.VideoCapture("output.avi")
 
         if not video_capture.isOpened():
@@ -90,7 +94,7 @@ class ObjectDetector:
         video_writer = cv2.VideoWriter("output_detected.avi", fourcc, fps, (frame_width, frame_height))
 
         # Calculate the total number of frames to process for 5 seconds
-        max_frames = 5 * fps
+        max_frames = 1 * fps
 
         frame_count = 0  # Keep track of frames processed
 
@@ -148,5 +152,11 @@ class ObjectDetector:
         video_capture.release()
         video_writer.release()
         print("Object detection completed")
+
+        end_time = datetime.now()
+        print(f"End Date and Time: {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
+
+        duration = end_time - start_time
+        print(f"Duration: {duration}")
 
 object_detector = ObjectDetector()
