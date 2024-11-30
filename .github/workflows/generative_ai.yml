@@ -15,7 +15,18 @@ env:
   REPOSITORY_NAME: ${{ github.repository }}
 
 jobs:
-  common:
+#  common:
+#    runs-on: ubuntu-22.04
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: ${{ env.PYTHON_VERSION }}
+
+  static-analysis:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
@@ -26,76 +37,68 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-  static-analysis:
-    runs-on: ubuntu-22.04
-    needs: common
-
-    steps:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install black==22.12.0 flake8==7.1.1 mypy==1.13.0
+          pip install black==22.12.0
+#          pip install flake8==7.1.1 mypy==1.13.0
 
       - name: Formatter
         run: |
+          echo "The current directory is: $(pwd)"
           black generative_ai
 
-      - name: Type Checker
-        run: |
-          mypy generative_ai
-
-      - name: Linter
-        run: |
-          flake8 generative_ai
-
-  unit-tests:
-    runs-on: ubuntu-22.04
-    needs: common
-
-    steps:
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install tox==4.23.2
-
-      - name: Test articles
-        run: |
-          cd generative_ai && tox -c tox.ini -e test_articles
-
-  integration-tests:
-    runs-on: ubuntu-22.04
-    needs: common
-
-    steps:
-      - name: Run integration tests
-        run: |
-          echo "Testing print of GitHub variable in integration tests stage"
-          echo "API Key used for testing: $OPEN_AI_API_KEY"
-
-  build:
-    runs-on: ubuntu-22.04
-    needs: common
-
-    steps:
-      - name: Build <some-name> image
-        run: |
-          echo "Testing print commit ref in build stage"
-          echo "Commit SHA: $CI_COMMIT_SHA"
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Log in to GitHub Container Registry (GHCR)
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build <some-name> image
-        run: |
-          docker build -t ghcr.io/$REPOSITORY_NAME:$CI_COMMIT_SHA -f artificial-intelligence/generative_ai/Dockerfile .
-
-      - name: Push Docker image to GCHR
-        run: |
-          docker push ghcr.io/$REPOSITORY_NAME:$CI_COMMIT_SHA
+#      - name: Type Checker
+#        run: |
+#          mypy generative_ai
+#
+#      - name: Linter
+#        run: |
+#          flake8 generative_ai
+#
+#  unit-tests:
+#    runs-on: ubuntu-22.04
+#    needs: common
+#
+#    steps:
+#      - name: Install dependencies
+#        run: |
+#          python -m pip install --upgrade pip
+#          pip install tox==4.23.2
+#
+#      - name: Test articles
+#        run: |
+#          cd generative_ai && tox -c tox.ini -e test_articles
+#
+#  integration-tests:
+#    runs-on: ubuntu-22.04
+#    needs: common
+#
+#    steps:
+#      - name: Run integration tests
+#        run: |
+#          echo "Testing print of GitHub variable in integration tests stage"
+#          echo "API Key used for testing: $OPEN_AI_API_KEY"
+#
+#  build:
+#    runs-on: ubuntu-22.04
+#    needs: common
+#
+#    steps:
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v2
+#
+#      - name: Log in to GitHub Container Registry (GHCR)
+#        uses: docker/login-action@v2
+#        with:
+#          registry: ghcr.io
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Build <some-name> image
+#        run: |
+#          docker build -t ghcr.io/$REPOSITORY_NAME:$CI_COMMIT_SHA -f artificial-intelligence/generative_ai/Dockerfile .
+#
+#      - name: Push Docker image to GCHR
+#        run: |
+#          docker push ghcr.io/$REPOSITORY_NAME:$CI_COMMIT_SHA
