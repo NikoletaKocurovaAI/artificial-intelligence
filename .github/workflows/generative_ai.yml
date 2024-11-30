@@ -59,4 +59,4 @@ jobs:
 
       - name: Test articles
         run: |
-          tox -e articles/tests
+          tox -e test_articles
