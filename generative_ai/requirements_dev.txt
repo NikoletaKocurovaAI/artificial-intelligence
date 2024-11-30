@@ -1,4 +1,6 @@
 black==24.10.0
 fastapi==0.115.5
+flake8==7.1.1
 httpx==0.28.0
+mypy==1.13.0
 uvicorn==0.32.1

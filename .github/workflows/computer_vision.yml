@@ -1,6 +1,12 @@
-name: Static Analysis Check
+name: Computer Vision
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'computer-vision/**'
+  pull_request:
+    paths:
+      - 'computer-vision/**'
 
 jobs:
   static-analysis-check:
@@ -20,6 +26,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install black==22.12.0
 
-      - name: Static Analysis Formatting
+      - name: Static Analysis
         run: |
-          black .
+          black comp-vision/
