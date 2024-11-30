@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient  # type: ignore
 from fastapi import Response  # type: ignore
-from run_app import app
+from run_app import app  # type: ignore
 from unittest import TestCase
 
 
