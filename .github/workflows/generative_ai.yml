@@ -52,15 +52,6 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install tox==4.23.2
-
-      - name: List files in generative_ai/articles
-        run: |
-          ls -R generative_ai/articles
-
       - name: Test articles
         run: |
           cd generative_ai && tox -c tox.ini -e test_articles
