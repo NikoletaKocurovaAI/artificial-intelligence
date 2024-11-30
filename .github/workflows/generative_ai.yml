@@ -57,6 +57,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install tox==4.23.2
 
+      - name: List files in generative_ai/articles
+        run: |
+          ls -R generative_ai/articles
+
       - name: Test articles
         run: |
           tox -c generative_ai/tox.ini -e test_articles
