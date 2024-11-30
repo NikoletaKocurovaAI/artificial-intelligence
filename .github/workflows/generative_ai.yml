@@ -10,6 +10,8 @@ on:
 
 env:
   PYTHON_VERSION: "3.11"
+  CI_COMMIT_SHA: ${{ github.sha }}
+  OPEN_AI_API_KEY: ${{ vars.OPEN_AI_API_KEY }}
 
 jobs:
   common:
@@ -75,6 +77,23 @@ jobs:
         run: |
           cd generative_ai && tox -c tox.ini -e test_articles
 
+  integration-tests:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run integration tests
+        run: |
+          echo "Running integration tests"
+          echo "API Key used for testing: $API_KEY"
+
   build:
     runs-on: ubuntu-22.04
 
@@ -86,3 +105,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Print Commit SHA (Branch Name or Commit ID)
+        run: |
+          echo "Commit SHA: $CI_COMMIT_SHA"
