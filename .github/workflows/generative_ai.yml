@@ -46,7 +46,7 @@ jobs:
 
       - name: Formatter
         run: |
-          echo "The current directory is: $(pwd)"
+          echo "The Current directory is: $(pwd)"
           black generative_ai
 
 #      - name: Type Checker
