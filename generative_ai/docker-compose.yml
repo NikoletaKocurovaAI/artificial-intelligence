@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  backend_app:
+    build: .  # Uses Dockerfile in the current directory
+    container_name: generative_ai_backend_app
+    ports:
+      - "8000:8000"  # host:container
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - .:/app  # Mounts the current directory to /app inside the container (useful for development)
+    command: uvicorn run_app:app --host 0.0.0.0 --port 8000
