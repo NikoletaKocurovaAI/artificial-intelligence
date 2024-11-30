@@ -32,7 +32,6 @@ class ObjectDetector:
 
         print("Starting camera capture")
 
-        # Capture frames for 10 seconds or as needed
         while cls.capturing:
             ret, frame = camera.read()
 
@@ -95,6 +94,8 @@ class ObjectDetector:
 
         # Calculate the total number of frames to process for 5 seconds
         max_frames = 1 * fps
+
+        print(f"Max frames set to {max_frames}")
 
         frame_count = 0  # Keep track of frames processed
 

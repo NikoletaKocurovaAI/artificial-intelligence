@@ -53,6 +53,7 @@ Each commit message consists of the type (such as feat, refactor, ...), scope, t
   - status-api
   - model-api
   - robot
+- Generative AI (GAI)
 
 **Example:**
 
