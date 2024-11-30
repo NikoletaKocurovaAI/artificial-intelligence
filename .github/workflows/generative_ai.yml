@@ -15,19 +15,20 @@ env:
   REPOSITORY_NAME: ${{ github.repository }}
 
 jobs:
-#  common:
-#    runs-on: ubuntu-22.04
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v3
-#
-#      - name: Set up Python
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: ${{ env.PYTHON_VERSION }}
+  common:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
   static-analysis:
     runs-on: ubuntu-22.04
+    needs: common
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
