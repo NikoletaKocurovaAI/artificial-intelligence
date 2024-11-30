@@ -9,7 +9,7 @@ on:
       - 'generative_ai/**'
 
 jobs:
-  static-analysis-check:
+  static-analysis:
     runs-on: ubuntu-22.04
 
     steps:
