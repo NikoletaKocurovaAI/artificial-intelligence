@@ -59,4 +59,4 @@ jobs:
 
       - name: Test articles
         run: |
-          tox -e test_articles
+          tox -c generative_ai/tox.ini -e test_articles

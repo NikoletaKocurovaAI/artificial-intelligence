@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI  # type: ignore
 
 from articles.views import router as articles_router  # type: ignore
 
