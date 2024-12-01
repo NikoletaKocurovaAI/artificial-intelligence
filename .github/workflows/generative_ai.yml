@@ -10,9 +10,16 @@ on:
 
 env:
   PYTHON_VERSION: "3.11"
-  OPEN_AI_API_KEY: ${{ vars.OPEN_AI_API_KEY }}
-  CI_COMMIT_SHA: ${{ github.sha }}
+  BLACK_VERSION: "22.12.0"
+  FLAKE_VERSION: "7.1.1"
+  MYPY_VERSION: "1.13.0"
+  TOX_VERSION: "4.23.2"
+  PACKAGE: "generative_ai"
   REPOSITORY_NAME: ${{ github.repository }}
+  BUILD: "artificial-intelligence/generative_ai"
+  REGISTRY: "ghcr.io"
+  OPENAI_API_KEY: ${{ vars.OPENAI_API_KEY }}
+  CI_COMMIT_SHA: ${{ github.sha }}
 
 jobs:
   common:
@@ -20,7 +27,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -30,76 +36,61 @@ jobs:
     runs-on: ubuntu-22.04
     needs: common
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install black==22.12.0
-#          pip install flake8==7.1.1 mypy==1.13.0
-
+          pip install black==${{ env.BLACK_VERSION }} flake8==${{ env.FLAKE_VERSION }} mypy==${{ env.MYPY_VERSION }}
       - name: Formatter
         run: |
-          echo "Current directory is: $(pwd)"
-          black generative_ai
+          echo "Current directory: $(pwd)"
+          black ${{ env.PACKAGE }}
+      - name: Type Checker
+        run: |
+          echo "Current directory: $(pwd)"
+          mypy ${{ env.PACKAGE }}
+      - name: Linter
+        run: |
+          echo "Current directory: $(pwd)"
+          flake8 ${{ env.PACKAGE }}
 
-#      - name: Type Checker
-#        run: |
-#          mypy generative_ai
-#
-#      - name: Linter
-#        run: |
-#          flake8 generative_ai
-#
-#  unit-tests:
-#    runs-on: ubuntu-22.04
-#    needs: common
-#
-#    steps:
-#      - name: Install dependencies
-#        run: |
-#          python -m pip install --upgrade pip
-#          pip install tox==4.23.2
-#
-#      - name: Test articles
-#        run: |
-#          cd generative_ai && tox -c tox.ini -e test_articles
-#
-#  integration-tests:
-#    runs-on: ubuntu-22.04
-#    needs: common
-#
-#    steps:
-#      - name: Run integration tests
-#        run: |
-#          echo "Testing print of GitHub variable in integration tests stage"
-#          echo "API Key used for testing: $OPEN_AI_API_KEY"
-#
-#  build:
-#    runs-on: ubuntu-22.04
-#    needs: common
-#
-#    steps:
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v2
-#
-#      - name: Log in to GitHub Container Registry (GHCR)
-#        uses: docker/login-action@v2
-#        with:
-#          registry: ghcr.io
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GITHUB_TOKEN }}
-#
-#      - name: Build <some-name> image
-#        run: |
-#          docker build -t ghcr.io/$REPOSITORY_NAME:$CI_COMMIT_SHA -f artificial-intelligence/generative_ai/Dockerfile .
-#
-#      - name: Push Docker image to GCHR
-#        run: |
-#          docker push ghcr.io/$REPOSITORY_NAME:$CI_COMMIT_SHA
+  unit-tests:
+    runs-on: ubuntu-22.04
+    needs: common
+    steps:
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox==${{ env.TOX_VERSION }}
+      - name: Test articles
+        run: |
+          cd ${{ env.PACKAGE }}
+          echo "Current directory: $(pwd)"
+          tox -c tox.ini -e test_articles
+
+  integration-tests:
+    runs-on: ubuntu-22.04
+    needs: common
+    steps:
+      - name: Run integration tests
+        run: |
+          echo "Testing print of GitHub variable in integration tests stage"
+          echo "API Key used for testing: $OPENAI_API_KEY"
+
+  build:
+    runs-on: ubuntu-22.04
+    needs: common
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Log in to GitHub Container Registry (GHCR)
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY_NAME }}:${{ env.CI_COMMIT_SHA }} -f ${{ env.BUILD }}/Dockerfile .
+      - name: Push Docker image to GCHR
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY_NAME }}:${{ env.CI_COMMIT_SHA }}
