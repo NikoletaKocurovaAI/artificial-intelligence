@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: generative-ai
+  labels:
+    app: generative-ai
+    group: generative-ai-services
+    team: generative-ai-team
+    network-group: generative-ai
+spec:
+  podSelector:
+    matchLabels:
+      app: generative-ai
+      group: generative-ai-services
+      team: generative-ai-team
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          networking/access-generative-ai: http
+    ports:
+      - port: 8080
+  - from:
+    - ipBlock:
+        cidr:
+    - ipBlock:
+        cidr:
+  egress: []
