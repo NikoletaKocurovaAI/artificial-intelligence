@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: generative-ai-service
+  labels:
+    app: generative-ai
+    group: generative-ai-services
+    team: generative-ai-team
+spec:
+  selector:
+    app: generative-ai
+  type: ClusterIP
+  ClusterIP: None
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
