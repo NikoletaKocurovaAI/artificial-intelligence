@@ -1,0 +1,2 @@
+class InvalidArticleRequestException(Exception):
+    pass

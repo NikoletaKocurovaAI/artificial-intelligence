@@ -9,7 +9,12 @@ This RFC describes the implementation of a backend API that generates weather-re
 ![Alt text](architecture.png)
 
 ### Front-End Back-End Contract
-TBD
+Request Payload (Example)
+```
+{
+    "language": "en:
+}
+```
 
 ## Cost Analysis
 TBD

@@ -3,5 +3,6 @@ fastapi==0.115.5
 flake8==7.1.1
 httpx==0.28.0
 mypy==1.13.0
+stereotype==1.5.2
 tox==4.23.2
 uvicorn==0.32.1
