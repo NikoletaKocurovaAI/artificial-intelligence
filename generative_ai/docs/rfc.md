@@ -5,8 +5,8 @@ This RFC describes the implementation of a backend API that generates weather-re
 
 ## Technical Specification
 
-### System Overview
-TBD
+### System Context Diagram
+![Alt text](architecture.png)
 
 ### Front-End Back-End Contract
 TBD

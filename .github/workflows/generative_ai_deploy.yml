@@ -1,0 +1,35 @@
+name: Generative AI Deploy
+
+on:
+  workflow_dispatch:
+
+env:
+  GCP_CREDENTIALS: secrets.GCP_CREDENTIALS
+  GCP_PROJECT_ID: secrets.GCP_PROJECT_ID
+  GKE_ZONE: secrets.GKE_ZONE
+  GKE_CLUSTER_NAME: secrets.GKE_CLUSTER_NAME
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: ${{ env.GCP_PROJECT_ID }}
+        credentials: ${{ env.GCP_CREDENTIALS }}
+        echo "GCP project_id used for testing: $GCP_PROJECT_ID"
+        echo "GCP credentials used for testing: $GCP_CREDENTIALS"
+    - name: Build Docker image
+      run: |
+        echo "Building PROD Image"
+    - name: Set up kubectl
+      run: |
+        echo "Setting up the kubectl"
+        echo "gcloud container clusters get-credentials $env.GKE_CLUSTER_NAME --zone env.GKE_ZONE --project env.GCP_PROJECT_ID"
+    - name: Deploy to Kubernetes
+      run: |
+        echo "Applying Kubernetes manifests..."
+        echo "kubectl apply -f deploy/generative_ai/deployment.yaml"
