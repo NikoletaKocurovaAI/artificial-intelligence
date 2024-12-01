@@ -15,8 +15,9 @@ env:
   MYPY_VERSION: "1.13.0"
   TOX_VERSION: "4.23.2"
   PACKAGE: "generative_ai"
-  REPOSITORY_NAME: ${{ github.repository }}
+  REPOSITORY_NAME: ${{ toLower(github.repository) }}
   BUILD: "artificial-intelligence/generative_ai"
+  BUILD_TAG: "dev-0-0-1"
   REGISTRY: "ghcr.io"
   OPENAI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
   CI_COMMIT_SHA: ${{ github.sha }}
@@ -43,7 +44,9 @@ jobs:
       - name: Formatter
         run: |
           echo "Current directory: $(pwd)"
-          black ${{ env.PACKAGE }}
+          ls -la
+          echo "Running command black $(pwd)/${{ env.PACKAGE }}"
+          black "$(pwd)/${{ env.PACKAGE }}"
       - name: Type Checker
         run: |
           echo "Current directory: $(pwd)"
@@ -55,7 +58,7 @@ jobs:
 
   unit-tests:
     runs-on: ubuntu-22.04
-    needs: [common]
+    needs: common
     steps:
       - name: Install dependencies
         run: |
@@ -69,16 +72,16 @@ jobs:
 
   integration-tests:
     runs-on: ubuntu-22.04
-    needs: [common]
+    needs: common
     steps:
-      - name: Run integration tests
+      - name: Test integration articles
         run: |
-          echo "Testing print of GitHub variable in integration tests stage"
-          echo "API Key used for testing: $OPENAI_API_KEY"
+          echo "Setting ENV variables"
+          echo "API Key: $OPENAI_API_KEY"
 
   build:
     runs-on: ubuntu-22.04
-    needs: [common]
+    needs: common
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -90,7 +93,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Docker image
         run: |
-          docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY_NAME }}:${{ env.CI_COMMIT_SHA }} -f ${{ env.BUILD }}/Dockerfile .
+          echo "Current directory: $(pwd)"          
+          echo "Running command docker build -t ${ { env.PACKAGE }}_app:latest -f ${ { env.BUILD }}/Dockerfile ."
+          docker build -t "${{ env.PACKAGE }}_app:latest" -f "${{ env.BUILD }}/Dockerfile" .          
+          echo "Running command docker tag ${{ env.PACKAGE }}_app:latest ${{ env.REGISTRY}}/${{ env.REPOSITORY_NAME}}/${{ env.PACKAGE}}/${{ env.BUILD_TAG}}"
+          docker tag "${{ env.PACKAGE }}_app:latest" "${{ env.REGISTRY}}/${{ env.REPOSITORY_NAME}}/${{ env.PACKAGE}}/${{ env.BUILD_TAG}}"
       - name: Push Docker image to GHCR
         run: |
-          docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY_NAME }}:${{ env.CI_COMMIT_SHA }}
+          echo "Running command docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY_NAME }}/${{ env.PACKAGE }}:${{ env.BUILD_TAG }}"
