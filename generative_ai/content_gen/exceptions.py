@@ -1,0 +1,2 @@
+class InvalidContentGenRequestException(Exception):
+    pass

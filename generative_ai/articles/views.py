@@ -4,7 +4,8 @@ from fastapi import APIRouter  # type: ignore
 from pydantic import ValidationError
 
 from articles.exceptions import InvalidArticleRequestException
-from articles.models import ArticleRequest
+from articles.models import ArticleRequest, ArticleResponse
+from articles import operations
 
 router = APIRouter(prefix="/articles")
 
@@ -13,12 +14,22 @@ router = APIRouter(prefix="/articles")
 def hello_world() -> dict[str, str]:
     return {"message": "Hello, World!"}
 
+
 @router.post("/api/articles/get-article")
 def get_article(payload: dict[str, Any]) -> dict[str, Any]:
-    print(f"received payload: {payload}")
+    """
+    This route returns generated weather-related articles.
+
+    :param payload:
+    :type payload: dict
+    :return:
+    :rtype: dict
+    """
     try:
         request = ArticleRequest(**payload)
+        response: ArticleResponse = operations.generate_article(request)
+
     except (TypeError, ValidationError) as e:
         raise InvalidArticleRequestException(f"Message: {e}")
 
-    return {"article": "Some article", "type": "fallback"}
+    return response.dict()
