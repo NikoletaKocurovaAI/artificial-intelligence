@@ -2,6 +2,7 @@ from fastapi import FastAPI  # type: ignore
 
 from articles.views import router as articles_router  # type: ignore
 from weather.views import router as weather_router  # type: ignore
+from content_gen.views import router as content_gen_router  # type: ignore
 
 
 def create_app() -> FastAPI:

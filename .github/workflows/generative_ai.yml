@@ -16,8 +16,7 @@ env:
   TOX_VERSION: "4.23.2"
   PACKAGE: "generative_ai"
   PACKAGE_SUFFIX: "app"
-  REPOSITORY_NAME: ${{ github.repository | tolower }}
-  BUILD_PATH: "artificial-intelligence/generative_ai"
+  REPOSITORY_NAME: "artificial-intelligence"
   BUILD_TAG: "dev-0-0-1"
   REGISTRY: "ghcr.io"
   OPENAI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
@@ -101,7 +100,7 @@ jobs:
         run: |
           echo "Current directory: $(pwd)"
           
-          DOCKER_BUILD_CMD="docker build -t ${ { env.PACKAGE }}_${{ env.PACKAGE_SUFFIX }}:latest -f ${ { env.BUILD_PATH }}/Dockerfile ."
+          DOCKER_BUILD_CMD="docker build -t ${ { env.PACKAGE }}_${{ env.PACKAGE_SUFFIX }}:latest -f ${ { env.REPOSITORY_NAME }}/${ { env.PACKAGE }}/Dockerfile ."
           echo "Running command: $DOCKER_CMD"
           $DOCKER_CMD
 
