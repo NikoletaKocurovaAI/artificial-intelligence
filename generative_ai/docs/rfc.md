@@ -12,9 +12,8 @@ This RFC describes the implementation of a backend API that generates weather-re
 Request Payload (Example)
 ```
 {
-    "language": "en:
+    "language": "english"
+    "content_style": "factual",
+    "location": "Slovensko"
 }
 ```
-
-## Cost Analysis
-TBD

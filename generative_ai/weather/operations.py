@@ -14,7 +14,7 @@ class WeatherApi:
     """
     def __init__(self, location: str) -> None:
         self.location: str = location
-        self.weather_api_key = os.getenv("OPENAI_API_KEY", None)
+        self.weather_api_key = os.getenv("WEATHER_API_KEY", None)
 
     def get_current(self) -> dict[str, Any]:
         url: str = f"{cons.BASE_URL}/current.json?key={self.weather_api_key}&q={self.location}&aqi=no"

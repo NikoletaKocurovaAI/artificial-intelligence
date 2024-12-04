@@ -2,6 +2,7 @@ from typing import Any
 
 import articles.constants as cons
 from articles.models import ArticleRequest, ArticleResponse
+from content_gen.views import get_completion
 from weather.views import get_current_forecast
 
 
@@ -9,29 +10,46 @@ def generate_article(data: ArticleRequest) -> ArticleResponse:
     weather_forecast: dict[str, Any] = get_current_forecast(data.location)
 
     if not weather_forecast:
-        return get_fallback(data.location, data.language)
+        return _get_fallback(data.location, data.language)
 
-    generated_article: dict[str, Any] = {}
+    generated_article: dict[str, Any] = get_completion({
+        "system_prompt": _prepare_system_prompt(data.content_style, data.language),
+        "user_prompt": _prepare_user_prompt(weather_forecast)
+    })
 
-    return {}
+    if not generated_article:
+        return _get_fallback(data.location, data.language)
+
+    return ArticleResponse(**generated_article)
 
 
-def get_fallback(location: str, language: str) -> ArticleResponse:
-    if language == "en":
+def _get_fallback(location: str, language: str) -> ArticleResponse:
+    if language == cons.Language.ENGLISH.value:
         return ArticleResponse(
-            title=f"Weather Update for {location}",
-            intro="Weather can be unpredictable, so stay prepared and keep an eye on the skies.",
-            body="Long before weather forecasts became a regular part of our lives, people relied on a variety of "
-                 "methods to predict the weather. Ancient civilizations looked to the skies, observing the movements "
-                 "of clouds and the behavior of animals to get a glimpse of what the day might bring.",
+            title=cons.FALLBACK_TITLE_EN.format(location=location),
+            intro=cons.FALLBACK_INTRO_EN,
+            body=cons.FALLBACK_BODY_EN,
             content_type=cons.FALLBACK_CONTENT_TYPE,
         )
     else:
         return ArticleResponse(
-            title=f"Aktualizácia počasia pre {location}",
-            intro="Počasie môže byť nepredvídateľné, preto buďte pripravení a sledujte oblohu.",
-            body="Dlho predtým, ako sa predpovede počasia stali bežnou súčasťou našich životov, ľudia sa spoliehali "
-                 "na rôzne metódy na predpovedanie počasia. Staroveké civilizácie sa pozerali na oblohu, sledovali "
-                 "pohyby oblakov a správanie zvierat, aby získali náhľad na to, čo deň prinesie.",
+            title=cons.FALLBACK_TITLE_SK.format(location=location),
+            intro=cons.FALLBACK_INTRO_SK,
+            body=cons.FALLBACK_BODY_SK,
             content_type=cons.FALLBACK_CONTENT_TYPE,
         )
+
+
+def _prepare_system_prompt(content_style: str, language: str) -> dict[str, Any]:
+    return {
+        "role": "system",
+        "content": f"You are a writer creating {content_style} article in {language} language about the weather.",
+    }
+
+
+def _prepare_user_prompt(weather_forecast: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "role": "user",
+        "content": f"Write an article and send result in the json format with attributes title, intro and body. Use "
+        f"this weather data: {weather_forecast}",
+    }

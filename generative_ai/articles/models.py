@@ -3,11 +3,8 @@ from typing import Literal
 
 
 class ArticleRequest(BaseModel):
-    ALLOWED_LANGUAGES: list[str] = ["en", "sk"]
-
-    language: Literal["en", "sk"] = Field(..., description="Allowed languages are en and sk.")
+    language: Literal["english", "slovak"] = Field(..., description="Allowed languages are english and slovak.")
     content_style: Literal["factual", "tabloid"] = Field(..., description="Allowed styles are factual and tabloid.")
-
     location: str = Field(..., description="Country for which the weather forecast is requested.")
 
 class ArticleResponse(BaseModel):

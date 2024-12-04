@@ -25,13 +25,23 @@ env:
 jobs:
   common:
     runs-on: ubuntu-latest
+    outputs:
+      repository_path: ${{ steps.checkout.outputs.repo }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Debug repository structure
+        run: |
+          echo "Repository directory structure after checkout:"
+          ls -R /home/runner/work/artificial-intelligence/artificial-intelligence
 
   static-analysis:
     runs-on: ubuntu-latest
@@ -42,10 +52,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install black==${{ env.BLACK_VERSION }} flake8==${{ env.FLAKE_VERSION }} mypy==${{ env.MYPY_VERSION }}
 
+      - name: Debug repository structure
+        run: |
+          echo "Repository directory:"
+          ls -R /home/runner/work/artificial-intelligence/artificial-intelligence
+
       - name: Formatter
         run: |
           echo "Current directory: $(pwd)"
+          
+          echo "Listing current directory:"
           ls -la
+
+          echo "Listing current directory:"
+          ls -R $(pwd)
+    
           echo "Running command black $(pwd)/${{ env.PACKAGE }}"
           black "$(pwd)/${{ env.PACKAGE }}"
 
@@ -100,9 +121,9 @@ jobs:
         run: |
           echo "Current directory: $(pwd)"
           
-          DOCKER_BUILD_CMD="docker build -t ${ { env.PACKAGE }}_${{ env.PACKAGE_SUFFIX }}:latest -f ${ { env.REPOSITORY_NAME }}/${ { env.PACKAGE }}/Dockerfile ."
-          echo "Running command: $DOCKER_CMD"
-          $DOCKER_CMD
+          DOCKER_BUILD_CMD="docker build -t ${{ env.PACKAGE }}_${{ env.PACKAGE_SUFFIX }}:latest -f ${{ env.REPOSITORY_NAME }}/${{ env.PACKAGE }}/Dockerfile ."
+          echo "Running command: $DOCKER_BUILD_CMD"
+          $DOCKER_BUILD_CMD
 
           DOCKER_TAG_CMD="docker tag ${ { env.PACKAGE }}_${{ env.PACKAGE_SUFFIX }}:latest ${ { env.REGISTRY}}/${{ env.REPOSITORY_NAME}}/${{ env.PACKAGE}}/${{ env.BUILD_TAG}}"
           echo "Running command: $DOCKER_TAG_CMD"
