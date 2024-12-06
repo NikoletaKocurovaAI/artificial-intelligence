@@ -19,7 +19,6 @@ env:
   REPOSITORY_NAME: "artificial-intelligence"
   BUILD_TAG: "dev-0-0-1"
   REGISTRY: "ghcr.io"
-  OPENAI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
   CI_COMMIT_SHA: ${{ github.sha }}
 
 jobs:
@@ -125,7 +124,7 @@ jobs:
           echo "Running command: $DOCKER_BUILD_CMD"
           $DOCKER_BUILD_CMD
 
-          DOCKER_TAG_CMD="docker tag ${ { env.PACKAGE }}_${{ env.PACKAGE_SUFFIX }}:latest ${ { env.REGISTRY}}/${{ env.REPOSITORY_NAME}}/${{ env.PACKAGE}}/${{ env.BUILD_TAG}}"
+          DOCKER_TAG_CMD="docker tag ${{ env.PACKAGE }}_${{ env.PACKAGE_SUFFIX }}:latest ${{ env.REGISTRY}}/${{ env.REPOSITORY_NAME}}/${{ env.PACKAGE}}:${{ env.BUILD_TAG}}"
           echo "Running command: $DOCKER_TAG_CMD"
           $DOCKER_TAG_CMD
 

@@ -1,5 +1,18 @@
 from enum import Enum
+from typing import Any
 
+
+class Language(Enum):
+    SLOVAK = "slovak"
+    ENGLISH = "english"
+
+
+class PromptRoles(Enum):
+    SYSTEM = "system"
+    USER = "user"
+
+
+MAX_USER_PROMPT_LENGTH: int = 50
 
 FALLBACK_CONTENT_TYPE: str = "model_fallback"
 AI_MODEL_CONTENT_TYPE: str = "model_personalized"
@@ -17,9 +30,20 @@ FALLBACK_BODY_SK: str = "Dlho predtým, ako sa predpovede počasia stali bežnou
                         "oblohu, sledovali pohyby oblakov a správanie zvierat, aby získali náhľad na to, čo deň " \
                         "prinesie."
 
-MAX_USER_PROMPT_LENGTH: int = 50
+FALLBACK_CONTENT: dict[str, Any] = {
+    Language.ENGLISH.value: {
+        "title": FALLBACK_TITLE_EN,
+        "intro": FALLBACK_INTRO_EN,
+        "body": FALLBACK_BODY_EN
+    },
+    Language.SLOVAK.value: {
+        "title": FALLBACK_TITLE_SK,
+        "intro": FALLBACK_INTRO_SK,
+        "body": FALLBACK_BODY_SK
+    }
+}
 
-
-class Language(Enum):
-    SLOVAK = "slovak"
-    ENGLISH = "english"
+SYSTEM_PROMPT_CONTENT: str = "You are a writer creating {content_style} article in {language} language about the " \
+                             "weather."
+USER_PROMPT_CONTENT: str = "Write an article and send result in the json format with attributes title, intro and " \
+                             "body. Use this weather data: {weather_forecast}"

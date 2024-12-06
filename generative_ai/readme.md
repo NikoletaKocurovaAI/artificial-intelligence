@@ -4,11 +4,15 @@ This project provides a platform for generating personalized weather-based conte
 
 # Features
 
-Multi-language content generation (English, Slovak)
-
-Support for multiple styles (factual, tabloid)
+Multi-language content generation (English, Slovak) with support for multiple styles (factual, tabloid)
 
 Integration with weather forecasting API
+
+# DEV Set-up
+
+```
+uvicorn run_app:app --reload
+```
 
 # Dependency management
 
