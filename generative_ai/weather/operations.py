@@ -6,19 +6,29 @@ from requests import Response
 from typing import Any
 
 import weather.constants as cons
+from weather.exceptions import MissingApiKeyException
 
 
 class WeatherApi:
     """
-    Facade class responsible for the generation of text articles that interpret weather forecasts into a readable format.
+    Class responsible for fetching the weather forecast.
     """
-    def __init__(self, location: str) -> None:
-        self.location: str = location
-        self.weather_api_key = os.getenv("WEATHER_API_KEY", None)
+    def __init__(self) -> None:
+        self._weather_api_key = os.getenv("WEATHER_API_KEY", None)
 
-    def get_current(self) -> dict[str, Any]:
-        url: str = f"{cons.BASE_URL}/current.json?key={self.weather_api_key}&q={self.location}&aqi=no"
-        response: Response = requests.post(url, params={"location": self.location}, timeout=cons.REQUEST_TIMEOUT_SEC)
+        if not self._weather_api_key:
+            raise MissingApiKeyException("WeatherAPI key env variable not set")
+
+    def get_current(self, location: str) -> dict[str, Any]:
+        response: Response = requests.get(
+            url=f"{cons.BASE_URL}/current.json",
+            params={
+                "key": self._weather_api_key,
+                "q": location,
+                "aqi": "no"
+            },
+            timeout=cons.REQUEST_TIMEOUT_SEC
+        )
 
         if response.status_code == 200:
             return response.json()
@@ -34,3 +44,6 @@ class WeatherApi:
     @staticmethod
     def get_history() -> dict[str, Any]:
         return {}
+
+
+weather_api = WeatherApi()

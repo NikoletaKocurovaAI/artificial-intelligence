@@ -2,7 +2,7 @@ from typing import Any, Type
 
 from fastapi import APIRouter  # type: ignore
 
-from weather.operations import WeatherApi
+from weather.operations import weather_api
 
 router = APIRouter(prefix="/articles")
 
@@ -17,8 +17,7 @@ def get_current_forecast(location: str) -> dict[str, Any]:
     :return:
     :rtype: dict
     """
-    weather_api = WeatherApi(location)
-    return weather_api.get_current()
+    return weather_api.get_current(location)
 
 
 @router.post("/api/weather/get-history-forecast")
