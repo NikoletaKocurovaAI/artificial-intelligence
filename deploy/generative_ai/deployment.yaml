@@ -2,29 +2,29 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: generative-ai
-  labels:
+  labels:  # categorizing k8s resources
     app: generative-ai
     group: generative-ai-services
     team: generative-ai-team
 spec:
   replicas: 1
   selector:
-    matchLabels:
+    matchLabels:  # for k8s to associate a Deployment with the Pods
       app: generative-ai
   template:
     metadata:
-      labels:
+      labels:  # categorizing k8s resources
         app: generative-ai
         group: generative-ai-services
         team: generative-ai-team
-        networking/access-redis-cache: api
+        networking/access-redis-cache: api  # access policy for interacting with a Redis cache
     spec:
-      automountServiceAccountToken: false
+      automountServiceAccountToken: false  # authenticate with the Kubernetes API server
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-        runAsNonRoot: true
+        runAsNonRoot: true  # run container as a non-root user
       containers:
       - name: generative-ai-container
         image: gcr.io/artificial-intelligence/generative_ai:${BUILD_TAG}
@@ -33,13 +33,13 @@ spec:
             memory: "256Mi"
             cpu: "250m"
           limits:
-            memory: "512Mi"
-            cpu: "500m"
-        volumeMounts:
+            memory: "512Mi"  # Mebibytes
+            cpu: "500m"  # millicores, 0.25 CPU
+        volumeMounts:  # container's filesystem
         - name: generative-ai-credentials-volume
           mountPath: /etc/secrets
           readOnly: true
-      volumes:
+      volumes:  # directory
       - name: generative-ai-credentials-volume
         secret:
           secretName: generative-ai-credentials

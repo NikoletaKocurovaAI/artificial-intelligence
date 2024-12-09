@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Any
 
 
-class Language(Enum):
+class Language(str, Enum):
     SLOVAK = "slovak"
     ENGLISH = "english"
 
@@ -12,10 +12,17 @@ class PromptRoles(Enum):
     USER = "user"
 
 
-MAX_USER_PROMPT_LENGTH: int = 50
+class ContentStyle(str, Enum):
+    TABLOID = "tabloid"
+    FACTUAL = "factual"
 
-FALLBACK_CONTENT_TYPE: str = "model_fallback"
-AI_MODEL_CONTENT_TYPE: str = "model_personalized"
+
+class ContentType:
+    FALLBACK: str = "model_fallback"
+    AI_MODEL: str = "model_personalized"
+
+
+MAX_USER_PROMPT_LENGTH: int = 50
 
 FALLBACK_TITLE_EN: str = "Weather Update for {location}"
 FALLBACK_INTRO_EN: str = "Weather can be unpredictable, so stay prepared and keep an eye on the skies."

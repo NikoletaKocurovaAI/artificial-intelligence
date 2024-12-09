@@ -32,13 +32,13 @@ def _get_fallback(location: str, language: str) -> ArticleResponse:
 
     if not content:
         logging.warning(f"Unsupported language {language}, article fallback defaulting to English")
-        return cons.FALLBACK_CONTENT.get(cons.Language.ENGLISH.value)
+        content: dict[str, Any] = cons.FALLBACK_CONTENT.get(cons.Language.ENGLISH.value)
 
     return ArticleResponse(
         title=content["title"].format(location=location),
         intro=content["intro"],
         body=content["body"],
-        content_type=cons.FALLBACK_CONTENT_TYPE,
+        content_type=cons.ContentType.FALLBACK,
     )
 
 

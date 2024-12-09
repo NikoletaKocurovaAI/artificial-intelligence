@@ -9,28 +9,28 @@ on:
       - 'generative_ai/**'
 
 env:
+  # Common
   PYTHON_VERSION: "3.11"
+
+  # Clean code
   BLACK_VERSION: "22.12.0"
   FLAKE_VERSION: "7.1.1"
   MYPY_VERSION: "1.13.0"
+
+  # Tests
   TOX_VERSION: "4.23.2"
-  PACKAGE: "generative_ai"
-  PACKAGE_SUFFIX: "app"
+
+  # Build
   REPOSITORY_NAME: "artificial-intelligence"
-  BUILD_TAG: "dev-0-0-1"
+  PACKAGE: "generative_ai"
   REGISTRY: "ghcr.io"
-  CI_COMMIT_SHA: ${{ github.sha }}
 
 jobs:
   common:
     runs-on: ubuntu-latest
-    outputs:
-      repository_path: ${{ steps.checkout.outputs.repo }}
     steps:
-      - name: Checkout repository
+      - name: Checkout repository  # the format owner/repo
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -46,15 +46,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: common
     steps:
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install black==${{ env.BLACK_VERSION }} flake8==${{ env.FLAKE_VERSION }} mypy==${{ env.MYPY_VERSION }}
-
       - name: Debug repository structure
         run: |
           echo "Repository directory:"
           ls -R /home/runner/work/artificial-intelligence/artificial-intelligence
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install black==${{ env.BLACK_VERSION }} flake8==${{ env.FLAKE_VERSION }} mypy==${{ env.MYPY_VERSION }}
 
       - name: Formatter
         run: |
@@ -116,18 +116,73 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set Build Tag
+        run: |
+          if [[ "${GITHUB_REF##*/}" == "master" ]]; then
+            echo "BUILD_TAG=latest" >> $GITHUB_ENV
+          else
+            echo "BUILD_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
+          fi
+
       - name: Build Docker image
         run: |
-          echo "Current directory: $(pwd)"
-          
-          DOCKER_BUILD_CMD="docker build -t ${{ env.PACKAGE }}_${{ env.PACKAGE_SUFFIX }}:latest -f ${{ env.REPOSITORY_NAME }}/${{ env.PACKAGE }}/Dockerfile ."
+          DOCKER_BUILD_CMD="docker build -t ${{ env.PACKAGE }} -f ${{ env.REPOSITORY_NAME }}/${{ env.PACKAGE }}/Dockerfile ."
           echo "Running command: $DOCKER_BUILD_CMD"
           $DOCKER_BUILD_CMD
 
-          DOCKER_TAG_CMD="docker tag ${{ env.PACKAGE }}_${{ env.PACKAGE_SUFFIX }}:latest ${{ env.REGISTRY}}/${{ env.REPOSITORY_NAME}}/${{ env.PACKAGE}}:${{ env.BUILD_TAG}}"
+          DOCKER_TAG_CMD="docker tag ${{ env.PACKAGE }} ${{ env.REGISTRY}}/${{ env.REPOSITORY_NAME}}/${{ env.PACKAGE}}:${{ env.BUILD_TAG}}"
           echo "Running command: $DOCKER_TAG_CMD"
           $DOCKER_TAG_CMD
 
-      - name: Push Docker image to GHCR
+          docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY_NAME }}/${{ env.PACKAGE }}:${{ env.BUILD_TAG }}
+
+  # TODO workflow triggered by "Git tag" event
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          credentials: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Set up kubectl
         run: |
-          echo "Running command docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY_NAME }}/${{ env.PACKAGE }}:${{ env.BUILD_TAG }}"
+          $SET_CLI_CMD="gcloud container clusters get-credentials secrets.GKE_CLUSTER_NAME --zone secrets.GKE_ZONE --project secrets.GCP_PROJECT_ID"
+          echo "Running command: $SET_CLI_CMD"
+          $SET_CLI_CMD
+
+      - name: Switch to namespace
+        run: |
+          $SET_CTX_CMD="kubectl config set-context --current --namespace=rin"
+          echo "Running command: $SET_CTX_CMD"
+          $SET_CTX_CMD
+
+      - name: Apply Secrets
+        run: |
+          export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          
+          $APPLY_CMD="envsubst < deploy/generative_ai/secrets.yaml | kubectl apply -f -"
+          echo "Running command: $APPLY_CMD"
+          $APPLY_CMD
+
+      - name: Apply NetworkPolicy
+        run: |
+          $APPLY_CMD="kubectl apply -f deploy/generative_ai/netpol.yaml"
+          echo "Running command: $APPLY_CMD"
+          $APPLY_CMD
+
+      - name: Apply Deployment
+        run: |          
+          export BUILD_TAG=${{ env.BUILD_TAG }}
+          
+          $APPLY_CMD="envsubst < deploy/generative_ai/deployment.yaml | kubectl apply -f -"
+          echo "Running command: $APPLY_CMD"
+          $APPLY_CMD
+
+      - name: Apply Service
+        run: |
+          $APPLY_CMD="kubectl apply -f deploy/generative_ai/service.yaml"
+          echo "Running command: $APPLY_CMD"
+          $APPLY_CMD
