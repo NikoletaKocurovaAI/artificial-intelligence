@@ -25,17 +25,23 @@ class ContentType:
 MAX_USER_PROMPT_LENGTH: int = 50
 
 FALLBACK_TITLE_EN: str = "Weather Update for {location}"
-FALLBACK_INTRO_EN: str = "Weather can be unpredictable, so stay prepared and keep an eye on the skies."
-FALLBACK_BODY_EN: str = "Long before weather forecasts became a regular part of our lives, people relied on a variety " \
-                        "of methods to predict the weather. Ancient civilizations looked to the skies, observing the " \
-                        "movements of clouds and the behavior of animals to get a glimpse of what the day might bring."
+FALLBACK_INTRO_EN: str = (
+    "Weather can be unpredictable, so stay prepared and keep an eye on the skies."
+)
+FALLBACK_BODY_EN: str = (
+    "Long before weather forecasts became a regular part of our lives, people relied on a variety "
+    "of methods to predict the weather. Ancient civilizations looked to the skies, observing the "
+    "movements of clouds and the behavior of animals to get a glimpse of what the day might bring."
+)
 
 FALLBACK_TITLE_SK: str = "Aktualizácia počasia pre {location}"
 FALLBACK_INTRO_SK: str = "Počasie môže byť nepredvídateľné, preto buďte pripravení a sledujte oblohu."
-FALLBACK_BODY_SK: str = "Dlho predtým, ako sa predpovede počasia stali bežnou súčasťou našich životov, ľudia sa " \
-                        "spoliehali na rôzne metódy na predpovedanie počasia. Staroveké civilizácie sa pozerali na " \
-                        "oblohu, sledovali pohyby oblakov a správanie zvierat, aby získali náhľad na to, čo deň " \
-                        "prinesie."
+FALLBACK_BODY_SK: str = (
+    "Dlho predtým, ako sa predpovede počasia stali bežnou súčasťou našich životov, ľudia sa "
+    "spoliehali na rôzne metódy na predpovedanie počasia. Staroveké civilizácie sa pozerali na "
+    "oblohu, sledovali pohyby oblakov a správanie zvierat, aby získali náhľad na to, čo deň "
+    "prinesie."
+)
 
 FALLBACK_CONTENT: dict[str, Any] = {
     Language.ENGLISH.value: {
@@ -50,7 +56,11 @@ FALLBACK_CONTENT: dict[str, Any] = {
     }
 }
 
-SYSTEM_PROMPT_CONTENT: str = "You are a writer creating {content_style} article in {language} language about the " \
-                             "weather."
-USER_PROMPT_CONTENT: str = "Write an article and send result in the json format with attributes title, intro and " \
-                             "body. Use this weather data: {weather_forecast}"
+SYSTEM_PROMPT_CONTENT: str = (
+    "You are a writer creating a {content_style} article in {language} language about the weather."
+)
+USER_PROMPT_CONTENT: str = (
+    "Write an article's title, intro, and body. Return result in JSON format as follows: "
+    "{'title': 'here goes the generated title', 'intro': 'here goes the generated intro', "
+    "'body': 'here goes the generated body'}. Use the following weather data: {weather_forecast}"
+)

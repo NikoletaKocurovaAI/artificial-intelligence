@@ -4,6 +4,7 @@ from typing import Any
 
 import articles.constants as cons
 from articles.models import ArticleRequest, ArticleResponse
+from content_gen.exceptions import ContentGenApiError
 from content_gen.views import get_completion
 from weather.views import get_current_forecast
 
@@ -15,12 +16,13 @@ def generate_article(data: ArticleRequest) -> ArticleResponse:
         logging.info(f"Weather data unavailable for location {data.location}. Using fallback.")
         return _get_fallback(data.location, data.language)
 
-    generated_article: dict[str, Any] = get_completion({
-        "system_prompt": _prepare_system_prompt(data.content_style, data.language),
-        "user_prompt": _prepare_user_prompt(weather_forecast)
-    })
+    try:
+        generated_article: dict[str, Any] = get_completion({
+            "system_prompt": _prepare_system_prompt(data.content_style, data.language),
+            "user_prompt": _prepare_user_prompt(weather_forecast)
+        })
 
-    if not generated_article:
+    except ContentGenApiError:
         logging.info(f"Content generation unavailable. Using fallback.")
         return _get_fallback(data.location, data.language)
 

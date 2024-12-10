@@ -41,9 +41,5 @@ class WeatherApi:
 
         return {}
 
-    @staticmethod
-    def get_history() -> dict[str, Any]:
-        return {}
-
 
 weather_api = WeatherApi()

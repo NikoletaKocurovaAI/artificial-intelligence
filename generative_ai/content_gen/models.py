@@ -1,6 +1,6 @@
 from typing import Any
 
-from pydantic import BaseModel, Field, constr
+from pydantic import BaseModel, Field
 
 
 class ContentGenRequest(BaseModel):
@@ -12,3 +12,8 @@ class ContentGenRequest(BaseModel):
         ...,
         description="The user prompt for the content generation."
     )
+
+class ContentGenResponse(BaseModel):
+    intro: str
+    title: str
+    body: str

@@ -16,6 +16,21 @@ about robotics that is understandable for everyone.
 Feel free to explore my artificial-intelligence repository, which is project focusing on AI and Robotics. It includes 
 the following topics:
 
+### Generative AI project
+
+This project focuses on several key aspects:
+
+- **Web Development**: How to build a back-end web application using the MVC pattern and the FastAPI.
+- **3-rd Party API Integration**: Integrating external APIs such as the WeatherAPI and OpenAI API.
+- **Application Dockerization**: How to containerize the web application using Docker and push an image to GHCR.
+- **CI CD pipeline**: How to use the GitHub Actions, including steps for static analysis, automated testing, building, and deployment.
+- **Kubernetes Deployment**: How to deploy the app to GCP GKE using ClusterIP.
+
+Path:
+```
+https://github.com/NikoletaKocurovaAI/artificial-intelligence/tree/main/generative_ai
+```
+
 ### Object detection and classification research
 
 This research focuses on several key aspects:
