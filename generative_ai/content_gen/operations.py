@@ -3,13 +3,19 @@ import os
 import logging
 
 from openai import OpenAI
+from openai.error import (
+    OpenAIError,
+    RateLimitError,
+    APIConnectionError,
+    AuthenticationError,
+    InvalidRequestError,
+)
 from pydantic import ValidationError
 from typing import Any
 
 import content_gen.constants as cons
 from content_gen.exceptions import InvalidContentGenResponseException, ContentGenApiError
 from content_gen.models import ContentGenRequest, ContentGenResponse
-from openai import RateLimitError, APIConnectionError
 
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY", ""))
@@ -25,13 +31,21 @@ class ContentGenApi:
             response = self._request_completion(data)
             return self._validate_completion(response)
 
-        except (RateLimitError, APIConnectionError) as e:
-            logging.error(f"API key error. Message: {e}")
-            raise ContentGenApiError(f"Message {e}")
+        except (RateLimitError, APIConnectionError, AuthenticationError) as e:
+            logging.error(f"Content gen API key error. Message: {e}")
+            raise ContentGenApiError
 
         except InvalidContentGenResponseException as e:
-            logging.error(f"Content gen returned invalid format. Message: {e}")
-            raise ContentGenApiError(f"Message {e}")
+            logging.error(f"Content gen invalid response. Message: {e}")
+            raise ContentGenApiError
+
+        except InvalidRequestError as e:
+            logging.error(f"Content gen invalid request. Message: {e}")
+            raise ContentGenApiError
+
+        except OpenAIError as e:
+            logging.error(f"An unexpected OpenAI error occurred. Message: {e}")
+            raise ContentGenApiError
 
     @staticmethod
     def _request_completion(data: ContentGenRequest) -> dict[str, Any]:
